@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_menu"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/menu_menu" />
+        <item
+            android:id="@+id/nav_frequent_customers"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/menu_frequent_customers" />
+    </group>
+
+    <item android:title="Tools">
+        <menu>
+            <item
+                android:id="@+id/nav_add_customer"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="@string/menu_add_customers" />
+
+            <item
+                android:id="@+id/nav_add_menu_item"
+                android:icon="@drawable/ic_menu_share"
+                android:title="@string/menu_add_menu_item" />
+        </menu>
+    </item>
+
+</menu>
