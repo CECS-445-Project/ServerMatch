@@ -43,7 +43,7 @@ public class FrequentCustomersAdapter extends RecyclerView.Adapter<FrequentCusto
 
         holder.customersButton.setText(mCustomerNames.get(position));
 
-        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+        holder.customersButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: clicked on: " + mCustomerNames.get(position));
