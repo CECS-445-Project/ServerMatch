@@ -14,4 +14,9 @@
 
     <string name="menu_tools">Tools</string>
     <string name="menu_send">Send</string>
+
+    <string name="new_item_name_text_field">Enter Item Name</string>
+    <string name="new_item_cost_text_field">Enter Item Cost</string>
+    <string name="new_item_description_text_field">Enter Item Description</string>
+    <string name="new_item_add_button">Add Item</string>
 </resources>
