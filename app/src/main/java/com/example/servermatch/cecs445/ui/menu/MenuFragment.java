@@ -27,7 +27,7 @@ public class MenuFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_menu,container,false);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_menu);
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_menu);
 
         ListAdapter listAdapter = new ListAdapter();
         recyclerView.setAdapter(listAdapter);
