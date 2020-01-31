@@ -1,5 +1,8 @@
 package com.example.servermatch.cecs445.models;
 
+/**
+ * comment
+ */
 public class Customer extends Person {
     private String email;
     private String phoneNum;
