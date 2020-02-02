@@ -26,6 +26,7 @@ public class FrequentCustomersFragment extends Fragment {
     private FrequentCustomersViewModel frequentCustomersViewModel;
     private static final String TAG = "FrequentCustomersFragment";
     private ArrayList<String> mCustomerNames = new ArrayList<>();
+    private ArrayList<String> mItemNames = new ArrayList<>();
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -34,7 +35,8 @@ public class FrequentCustomersFragment extends Fragment {
                 ViewModelProviders.of(this).get(FrequentCustomersViewModel.class);
 
         View root = inflater.inflate(R.layout.fragment_frequent_customers, container, false);
-        RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.recycle_view_customers);
+        RecyclerView customersRecyclerView =  root.findViewById(R.id.recycle_view_customers);
+        RecyclerView itemsRecyclerView =  root.findViewById(R.id.recycle_view_top_items);
 
         //hardcoded frequent customers for now
         mCustomerNames.add("Jane Doe");
@@ -43,10 +45,20 @@ public class FrequentCustomersFragment extends Fragment {
         mCustomerNames.add("Sam Garcia");
         mCustomerNames.add("Cynthia Ryan");
         mCustomerNames.add("John Kim");
-        FrequentCustomersAdapter mAdapter = new FrequentCustomersAdapter(mCustomerNames, this.getContext());
-        recyclerView.setAdapter(mAdapter);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        FrequentCustomersAdapter fAdapter = new FrequentCustomersAdapter(mCustomerNames, this.getContext());
+        customersRecyclerView.setAdapter(fAdapter);
+        customersRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        customersRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mItemNames.add("pizza");
+        mItemNames.add("pizza");
+        mItemNames.add("pizza");
+        mItemNames.add("pizza");
+        TopItemsAdapter tAdapter = new TopItemsAdapter(mItemNames, this.getContext());
+        itemsRecyclerView.setAdapter(tAdapter);
+        itemsRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        itemsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         return root;
     }
 
