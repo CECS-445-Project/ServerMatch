@@ -1,3 +1,6 @@
+/*
+  author: Howard Chen
+ */
 package com.example.servermatch.cecs445.ui.frequentcustomers;
 
 import android.os.Bundle;
@@ -45,11 +48,25 @@ public class FrequentCustomersFragment extends Fragment {
         mCustomerNames.add("Sam Garcia");
         mCustomerNames.add("Cynthia Ryan");
         mCustomerNames.add("John Kim");
+        mCustomerNames.add("Jane Doe");
+        mCustomerNames.add("Kevin Lee");
+        mCustomerNames.add("Ryan Brown");
+        mCustomerNames.add("Sam Garcia");
+        mCustomerNames.add("Cynthia Ryan");
+        mCustomerNames.add("John Kim");
         FrequentCustomersAdapter fAdapter = new FrequentCustomersAdapter(mCustomerNames, this.getContext());
         customersRecyclerView.setAdapter(fAdapter);
         customersRecyclerView.setItemAnimator(new DefaultItemAnimator());
         customersRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        mItemNames.add("pizza");
+        mItemNames.add("pizza");
+        mItemNames.add("pizza");
+        mItemNames.add("pizza");
+        mItemNames.add("pizza");
+        mItemNames.add("pizza");
+        mItemNames.add("pizza");
+        mItemNames.add("pizza");
         mItemNames.add("pizza");
         mItemNames.add("pizza");
         mItemNames.add("pizza");
