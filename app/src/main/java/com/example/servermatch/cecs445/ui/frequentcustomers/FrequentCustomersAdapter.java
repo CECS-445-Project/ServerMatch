@@ -1,3 +1,6 @@
+/**
+ * author: Howard Chen
+ */
 package com.example.servermatch.cecs445.ui.frequentcustomers;
 
 import android.content.Context;
