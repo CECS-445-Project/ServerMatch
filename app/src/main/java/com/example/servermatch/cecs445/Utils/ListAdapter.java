@@ -84,20 +84,23 @@ public class ListAdapter extends RecyclerView.Adapter {
     //private class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
     private class ListViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView mItemText;
         private ImageView mItemImage;
+        private TextView mItemText;
+        private TextView mItemCost;
 
         public ListViewHolder(View itemView){
             super(itemView);
-            mItemText = itemView.findViewById(R.id.textView2);
-            mItemImage = itemView.findViewById(R.id.imageView2);
+            mItemImage = itemView.findViewById(R.id.imageView4);
+            mItemText = itemView.findViewById(R.id.item_name);
+            mItemCost = itemView.findViewById(R.id.item_cost);
 
             //itemView.setOnClickListener(this);
         }
 
         public void bindView(int position){
-            mItemText.setText(TestData.title[position]);
             mItemImage.setImageResource(TestData.picturePath[position]);
+            mItemText.setText(TestData.title[position]);
+            mItemCost.setText(TestData.item_cost[position]);
         }
 
         public void onClick(View view){
