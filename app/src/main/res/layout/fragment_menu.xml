@@ -1,35 +1,51 @@
-<?xml version="1.0" encoding="utf-8"?>
-<com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:sothree="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/sliding_layout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="bottom"
-    sothree:umanoPanelHeight="100dp"
-    sothree:umanoShadowHeight="10dp">
+    android:fitsSystemWindows="true">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_menu"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#00FFFFFF"
-            android:padding="5dp">
-
-        </androidx.recyclerview.widget.RecyclerView>
-
-    </RelativeLayout>
-
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center|top"
-        android:text="Bill"
-        android:textSize="20dp" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-</com.sothree.slidinguppanel.SlidingUpPanelLayout>
-    <!-- @Author: Andrew Delgado -->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_menu"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#00FFFFFF"
+                android:padding="5dp">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:clipToPadding="true"
+        android:background="@android:color/holo_orange_light"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center|top"
+            android:text="Bill"
+            android:textSize="20dp" />
+
+    </androidx.core.widget.NestedScrollView>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

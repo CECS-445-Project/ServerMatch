@@ -18,10 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.Utils.ListAdapter;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 public class MenuFragment extends Fragment {
 
     private MenuViewModel menuViewModel;
+    private BottomSheetBehavior mBottomSheetBehavior;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -35,9 +37,12 @@ public class MenuFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(),2);
         recyclerView.setLayoutManager(layoutManager);
 
+        //mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
         return view;
     }
 }
+
 
 //menuViewModel =
 //        ViewModelProviders.of(this).get(MenuViewModel.class);
