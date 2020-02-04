@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.servermatch.cecs445.R;
+import com.example.servermatch.cecs445.Utils.BillListAdapter;
 import com.example.servermatch.cecs445.Utils.ListAdapter;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
@@ -36,6 +37,14 @@ public class MenuFragment extends Fragment {
         recyclerView.setAdapter(listAdapter);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(),2);
         recyclerView.setLayoutManager(layoutManager);
+
+
+        RecyclerView recyclerViewBill = view.findViewById(R.id.recycler_view_bill);
+        BillListAdapter billListAdapter = new BillListAdapter();
+        recyclerViewBill.setAdapter(billListAdapter);
+        RecyclerView.LayoutManager billLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerViewBill.setLayoutManager(billLayoutManager);
+
 
         //mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 

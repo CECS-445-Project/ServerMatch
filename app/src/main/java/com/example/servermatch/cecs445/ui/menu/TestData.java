@@ -28,6 +28,18 @@ public class TestData {
             R.drawable.ic_menu_send
     };
 
+    public static String[] quantity = new String[]{
+            "x 1",
+            "x 2",
+            "x 3",
+            "x 4",
+            "x 5",
+            "x 6",
+            "x 7",
+            "x 8",
+            "x 9"
+    };
+
     public static String[] item_cost = new String[]{
         "$4.20",
         "$12.34",
