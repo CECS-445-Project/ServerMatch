@@ -34,7 +34,7 @@
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorAccent"
+        android:background="#FFE986"
         android:clickable="false"
         android:clipToPadding="true"
         app:behavior_peekHeight="80dp"
@@ -43,12 +43,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_below="@id/recycler_view_menu">
+            android:layout_below="@id/recycler_view_menu"
+            android:orientation="vertical">
 
             <RelativeLayout
+                android:id="@+id/peek"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
                 android:orientation="horizontal">
 
                 <TextView
@@ -83,17 +85,28 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_bill"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="513dp"
                 android:background="#00FFFFFF"
-                android:padding="5dp" />
+                android:padding="5dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_below="@+id/textView1"
+                android:layout_alignParentRight="true"
+                android:background="#000000" />
 
             <TextView
                 android:id="@+id/checkout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center|center_horizontal"
+                android:layout_height="80dp"
+                android:layout_gravity="bottom"
                 android:layout_weight="1"
-                android:background="#4CAF50"
+                android:background="#3E983F"
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="CHECKOUT"
