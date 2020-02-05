@@ -117,4 +117,16 @@
 
     </androidx.core.widget.NestedScrollView>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:backgroundTint="#3949AB"
+        app:fabCustomSize="60dp"
+        app:fabSize="auto"
+        app:layout_anchor="@+id/bottom_sheet"
+        app:layout_anchorGravity="top|center"
+        app:srcCompat="@android:drawable/ic_menu_add" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
