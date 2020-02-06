@@ -1,9 +1,14 @@
+/*
+  author: Howard Chen
+ */
 package com.example.servermatch.cecs445.ui.frequentcustomers;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -11,25 +16,68 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.servermatch.cecs445.R;
+
+import java.util.ArrayList;
 
 public class FrequentCustomersFragment extends Fragment {
 
     private FrequentCustomersViewModel frequentCustomersViewModel;
+    private static final String TAG = "FrequentCustomersFragment";
+    private ArrayList<String> mCustomerNames = new ArrayList<>();
+    private ArrayList<String> mItemNames = new ArrayList<>();
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         frequentCustomersViewModel =
                 ViewModelProviders.of(this).get(FrequentCustomersViewModel.class);
+
         View root = inflater.inflate(R.layout.fragment_frequent_customers, container, false);
-        final TextView textView = root.findViewById(R.id.text_frequent_customers);
-        frequentCustomersViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        RecyclerView customersRecyclerView =  root.findViewById(R.id.recycle_view_customers);
+        RecyclerView itemsRecyclerView =  root.findViewById(R.id.recycle_view_top_items);
+
+        //hardcoded frequent customers for now
+        mCustomerNames.add("Jane Doe");
+        mCustomerNames.add("Kevin Lee");
+        mCustomerNames.add("Ryan Brown");
+        mCustomerNames.add("Sam Garcia");
+        mCustomerNames.add("Cynthia Ryan");
+        mCustomerNames.add("John Kim");
+        mCustomerNames.add("Jane Doe");
+        mCustomerNames.add("Kevin Lee");
+        mCustomerNames.add("Ryan Brown");
+        mCustomerNames.add("Sam Garcia");
+        mCustomerNames.add("Cynthia Ryan");
+        mCustomerNames.add("John Kim");
+        FrequentCustomersAdapter fAdapter = new FrequentCustomersAdapter(mCustomerNames, this.getContext());
+        customersRecyclerView.setAdapter(fAdapter);
+        customersRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        customersRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mItemNames.add("pizza");
+        mItemNames.add("pizza");
+        mItemNames.add("pizza");
+        mItemNames.add("pizza");
+        mItemNames.add("pizza");
+        mItemNames.add("pizza");
+        mItemNames.add("pizza");
+        mItemNames.add("pizza");
+        mItemNames.add("pizza");
+        mItemNames.add("pizza");
+        mItemNames.add("pizza");
+        mItemNames.add("pizza");
+        TopItemsAdapter tAdapter = new TopItemsAdapter(mItemNames, this.getContext());
+        itemsRecyclerView.setAdapter(tAdapter);
+        itemsRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        itemsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         return root;
     }
+
+
 }
