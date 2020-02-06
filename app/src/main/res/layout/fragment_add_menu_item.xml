@@ -83,72 +83,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/filter_tags"
-            android:paddingVertical="10dp">
-            
-        </TextView>
-            
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            
-            <com.google.android.material.chip.ChipGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:singleLine="true">
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_item_filter_1"
-                    android:textColor="@android:color/white"
-                    style="@style/Widget.MaterialComponents.Chip.Entry"
-                    app:chipBackgroundColor="#4CAF50"
-                    app:chipIcon="@drawable/ic_spa_black_24dp"
-                    app:chipIconVisible="true"
-                    app:chipIconTint="#FFFFFF"
-                    />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_item_filter_5"
-                    android:textColor="@android:color/white"
-                    style="@style/Widget.MaterialComponents.Chip.Entry"
-                    app:chipBackgroundColor="#4CAF50"
-                    app:chipIcon="@drawable/ic_spa_black_24dp"
-                    app:chipIconVisible="true"
-                    app:chipIconTint="#FFFFFF"
-                    />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_item_filter_7"
-                    android:textColor="@android:color/white"
-                    style="@style/Widget.MaterialComponents.Chip.Entry"
-                    app:chipIcon="@drawable/ic_whatshot_black_24dp"
-                    app:chipIconVisible="true"
-                    app:chipIconTint="#FFFFFF"
-                    app:chipBackgroundColor="#F44336"
-                    />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_item_filter_8"
-                    style="@style/Widget.MaterialComponents.Chip.Entry"
-                    app:chipIcon="@drawable/ic_fitness_center_black_24dp"
-                    app:chipIconVisible="true"
-                    />
-
-            </com.google.android.material.chip.ChipGroup>
-            
-        </HorizontalScrollView>
 
         <TextView
             android:layout_width="wrap_content"
@@ -160,19 +94,46 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="150dp">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.chip.ChipGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/new_item_filter_1"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    />
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/new_item_filter_5"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    />
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/new_item_filter_7"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    />
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/new_item_filter_8"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    />
 
                 <com.google.android.material.chip.Chip
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/new_item_filter_4"
                     style="@style/Widget.MaterialComponents.Chip.Choice"
-                    app:chipIcon="@drawable/ic_fitness_center_black_24dp"
-                    app:chipIconVisible="true"
                     />
 
                 <com.google.android.material.chip.Chip
@@ -192,10 +153,8 @@
                 <com.google.android.material.chip.Chip
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/new_item_filter_14"
-                    android:textColor="@android:color/white"
+                    android:text="@string/new_item_filter_13"
                     style="@style/Widget.MaterialComponents.Chip.Choice"
-                    app:chipBackgroundColor="#795548"
                     />
 
                 <com.google.android.material.chip.Chip
@@ -236,13 +195,6 @@
                 <com.google.android.material.chip.Chip
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/new_item_filter_13"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="@string/new_item_filter_15"
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     />
@@ -271,6 +223,7 @@
             android:orientation="vertical">
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/add_item_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
