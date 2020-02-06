@@ -1,5 +1,6 @@
 package com.example.servermatch.cecs445.ui.menu;
 
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,25 +12,55 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.servermatch.cecs445.R;
+import com.example.servermatch.cecs445.Utils.BillListAdapter;
+import com.example.servermatch.cecs445.Utils.ListAdapter;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 public class MenuFragment extends Fragment {
 
     private MenuViewModel menuViewModel;
+    private BottomSheetBehavior mBottomSheetBehavior;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        menuViewModel =
-                ViewModelProviders.of(this).get(MenuViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_menu, container, false);
-        final TextView textView = root.findViewById(R.id.text_menu);
-        menuViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root; // hi
+
+        View view = inflater.inflate(R.layout.fragment_menu,container,false);
+
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_menu);
+
+        ListAdapter listAdapter = new ListAdapter();
+        recyclerView.setAdapter(listAdapter);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(),2);
+        recyclerView.setLayoutManager(layoutManager);
+
+
+        RecyclerView recyclerViewBill = view.findViewById(R.id.recycler_view_bill);
+        BillListAdapter billListAdapter = new BillListAdapter();
+        recyclerViewBill.setAdapter(billListAdapter);
+        RecyclerView.LayoutManager billLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerViewBill.setLayoutManager(billLayoutManager);
+
+
+        //mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+        return view;
     }
 }
+
+
+//menuViewModel =
+//        ViewModelProviders.of(this).get(MenuViewModel.class);
+//        View root = inflater.inflate(R.layout.fragment_menu, container, false);
+//final TextView textView = root.findViewById(R.id.text_menu);
+//        menuViewModel.getText().observe(this, new Observer<String>() {
+//@Override
+//public void onChanged(@Nullable String s) {
+//        textView.setText(s);
+//        }
+//        });
+//        return root;

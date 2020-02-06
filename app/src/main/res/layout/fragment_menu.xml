@@ -1,19 +1,133 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
-    <TextView
-        android:id="@+id/text_menu"
+    <ScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="80dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_menu"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#00FFFFFF"
+                android:padding="5dp">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFE986"
+        android:clickable="false"
+        android:clipToPadding="true"
+        app:behavior_peekHeight="80dp"
+        app:layout_behavior="@string/bottom_sheet_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/recycler_view_menu"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/peek"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/bill_text_for_scrollview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:padding="16dp"
+                    android:text="Bill"
+                    android:textColor="#000000"
+                    android:textSize="35dp" />
+
+                <TextView
+                    android:id="@+id/bill_total"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:padding="16dp"
+                    android:text="$16.50"
+                    android:textColor="#000000"
+                    android:textSize="35dp" />
+
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_below="@+id/textView1"
+                android:layout_alignParentRight="true"
+                android:background="#000000" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_bill"
+                android:layout_width="match_parent"
+                android:layout_height="513dp"
+                android:background="#00FFFFFF"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_below="@+id/textView1"
+                android:layout_alignParentRight="true"
+                android:background="#000000" />
+
+            <TextView
+                android:id="@+id/checkout"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_gravity="bottom"
+                android:layout_weight="1"
+                android:background="#3E983F"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="CHECKOUT"
+                android:textColor="#040404"
+                android:textSize="35dp" />
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:clickable="true"
+        app:backgroundTint="#6F53FC"
+        app:fabCustomSize="60dp"
+        app:fabSize="auto"
+        app:layout_anchor="@+id/bottom_sheet"
+        app:layout_anchorGravity="top|center"
+        app:srcCompat="@android:drawable/ic_menu_add" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
