@@ -14,4 +14,42 @@
 
     <string name="menu_tools">Tools</string>
     <string name="menu_send">Send</string>
+    <string name="add_customer_button">Add Customer</string>
+    <string name="add_customer_fname">First Name</string>
+    <string name="add_customer_lname">Last Name</string>
+    <string name="add_customer_email">Email</string>
+    <string name="add_customer_phone">Phone Number</string>
+    <string name="receive_receipts_text">I would like to receive receipts via text.</string>
+    <string name="receive_receipts_email">I would like to receive receipts via email.</string>
+    <string name="add_customer_cancel">CANCEL</string>
+    <string name="add_customer_submit">ADD CUSTOMER</string>
+
+    <string name="new_item_name_text_field">Enter Item Name</string>
+    <string name="new_item_cost_text_field">Enter Item Cost</string>
+    <string name="new_item_description_text_field">Enter Item Description</string>
+    <string name="new_item_add_button">Add Item</string>
+    <string name="new_item_add_photo_button">Add Photo</string>
+    <string name="add_filter_tags">Add Filters</string>
+    <string name="filter_tags">Applied Filters</string>
+
+
+    <string name="new_item_filter_1">Vegan</string>
+    <string name="new_item_filter_2">Dairy Free</string>
+    <string name="new_item_filter_3">Gluten Free</string>
+    <string name="new_item_filter_4">Low-Carb</string>
+    <string name="new_item_filter_5">Vegetarian</string>
+    <string name="new_item_filter_6">Contains Shellfish</string>
+    <string name="new_item_filter_7">Spicy</string>
+    <string name="new_item_filter_8">High Protein</string>
+    <string name="new_item_filter_9">Contains Nuts</string>
+    <string name="new_item_filter_10">Contains Eggs</string>
+    <string name="new_item_filter_11">Contains Fish</string>
+    <string name="new_item_filter_12">Contains Dairy</string>
+    <string name="new_item_filter_13">Soy Free</string>
+    <string name="new_item_filter_14">Nut Free</string>
+    <string name="new_item_filter_15">Contains Beef</string>
+    <string name="new_item_filter_16">Contains Poultry</string>
+    <string name="new_item_filter_17">Contains Pork</string>
+
+
 </resources>
