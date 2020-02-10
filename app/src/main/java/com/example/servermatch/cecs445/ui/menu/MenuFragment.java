@@ -39,6 +39,9 @@ public class MenuFragment extends Fragment {
 
 
         mMenuViewModel = new ViewModelProvider(getActivity()).get(MenuViewModel.class);
+
+        mMenuViewModel.init();
+
         mMenuViewModel.getMenuItems().observe(getViewLifecycleOwner(), new Observer<List<MenuItem>>() {
             @Override
             public void onChanged(List<MenuItem> menuItems) {

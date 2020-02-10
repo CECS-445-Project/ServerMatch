@@ -36,6 +36,19 @@ public class MenuItemRepo {
         dataSet.add(new MenuItem("Burger",2.01));
         dataSet.add(new MenuItem("Cheese",3.00));
         dataSet.add(new MenuItem("Fish",4.20));
+        dataSet.add(new MenuItem("Pizza",3.50));
+        dataSet.add(new MenuItem("Fries",1.00));
+        dataSet.add(new MenuItem("Burger",2.01));
+        dataSet.add(new MenuItem("Cheese",3.00));
+        dataSet.add(new MenuItem("Fish",4.20));
+        dataSet.add(new MenuItem("Pizza",3.50));
+        dataSet.add(new MenuItem("Fries",1.00));
+        dataSet.add(new MenuItem("Burger",2.01));
+        dataSet.add(new MenuItem("Cheese",3.00));
+        dataSet.add(new MenuItem("Fish",4.20));
+        dataSet.add(new MenuItem("Pizza",3.50));
+        dataSet.add(new MenuItem("Fries",1.00));
+        dataSet.add(new MenuItem("Pizza",3.50));
     }
 
 }

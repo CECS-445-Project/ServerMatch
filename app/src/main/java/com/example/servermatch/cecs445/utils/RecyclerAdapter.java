@@ -111,12 +111,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
 
         public void bindView(int position){
             mItemImage.setImageResource(TestData.picturePath[position]);
-            mItemText.setText(TestData.title[position]);
-            mItemCost.setText(TestData.item_cost[position]);
-        }
-
-        public void onClick(View view){
-
+            mItemText.setText(mMenuItem.get(position).getItemName());
+            mItemCost.setText(String.format("%.2f", mMenuItem.get(position).getItemCost()));
         }
     }
 }
