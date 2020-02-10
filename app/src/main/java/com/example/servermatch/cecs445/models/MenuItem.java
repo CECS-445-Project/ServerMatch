@@ -3,9 +3,9 @@ package com.example.servermatch.cecs445.models;
 public class MenuItem {
 
     private String mItemName;
-    private int mItemCost;
+    private double mItemCost;
 
-   public MenuItem(String itemName, int itemCost){
+   public MenuItem(String itemName, double itemCost){
        mItemName = itemName;
        mItemCost = itemCost;
    }
@@ -14,7 +14,7 @@ public class MenuItem {
        mItemName = newItemName;
    }
 
-   public void setmItemCost(int newItemCost) {
+   public void setmItemCost(double newItemCost) {
        mItemCost = newItemCost;
    }
 
@@ -22,7 +22,7 @@ public class MenuItem {
         return mItemName;
     }
 
-    public int getItemCost() {
+    public double getItemCost() {
         return mItemCost;
     }
 }

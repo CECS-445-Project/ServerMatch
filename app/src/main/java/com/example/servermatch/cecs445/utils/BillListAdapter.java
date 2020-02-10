@@ -1,9 +1,8 @@
-package com.example.servermatch.cecs445.Utils;
+package com.example.servermatch.cecs445.utils;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -13,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.ui.menu.TestData;
 
-public class ListAdapter extends RecyclerView.Adapter {
+public class BillListAdapter extends RecyclerView.Adapter {
 
 
     /**
@@ -41,7 +40,7 @@ public class ListAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_menu_list_item,parent,false);
+                .inflate(R.layout.fragment_bill_item,parent,false);
 
         return new ListViewHolder(view);
     }
@@ -84,22 +83,22 @@ public class ListAdapter extends RecyclerView.Adapter {
     //private class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
     private class ListViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView mItemImage;
         private TextView mItemText;
+        private TextView mItemQuantity;
         private TextView mItemCost;
 
         public ListViewHolder(View itemView){
             super(itemView);
-            mItemImage = itemView.findViewById(R.id.imageView4);
-            mItemText = itemView.findViewById(R.id.item_name);
-            mItemCost = itemView.findViewById(R.id.item_cost);
+            mItemText = itemView.findViewById(R.id.bill_item_name);
+            mItemQuantity = itemView.findViewById(R.id.item_quantity);
+            mItemCost = itemView.findViewById(R.id.bill_item_cost);
 
             //itemView.setOnClickListener(this);
         }
 
         public void bindView(int position){
-            mItemImage.setImageResource(TestData.picturePath[position]);
             mItemText.setText(TestData.title[position]);
+            mItemQuantity.setText(TestData.quantity[position]);
             mItemCost.setText(TestData.item_cost[position]);
         }
 

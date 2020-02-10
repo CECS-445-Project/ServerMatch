@@ -1,66 +1,66 @@
 package com.example.servermatch.cecs445.ui.menu;
 
-import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.servermatch.cecs445.R;
-import com.example.servermatch.cecs445.Utils.BillListAdapter;
-import com.example.servermatch.cecs445.Utils.ListAdapter;
+import com.example.servermatch.cecs445.utils.BillListAdapter;
+import com.example.servermatch.cecs445.utils.RecyclerAdapter;
+import com.example.servermatch.cecs445.models.MenuItem;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+
+import java.util.List;
 
 public class MenuFragment extends Fragment {
 
-    private MenuViewModel menuViewModel;
+    private MenuViewModel mMenuViewModel;
     private BottomSheetBehavior mBottomSheetBehavior;
+    RecyclerAdapter mAdapter;
+    RecyclerView recyclerView;
+    RecyclerView recyclerViewBill;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_menu,container,false);
 
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_menu);
+        recyclerView = view.findViewById(R.id.recycler_view_menu);
+        recyclerViewBill = view.findViewById(R.id.recycler_view_bill);
 
-        ListAdapter listAdapter = new ListAdapter();
-        recyclerView.setAdapter(listAdapter);
+
+        mMenuViewModel = new ViewModelProvider(getActivity()).get(MenuViewModel.class);
+        mMenuViewModel.getMenuItems().observe(getViewLifecycleOwner(), new Observer<List<MenuItem>>() {
+            @Override
+            public void onChanged(List<MenuItem> menuItems) {
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+
+        initRecyclerViews();
+        return view;
+    }
+
+    private void initRecyclerViews(){
+        //Menu Items
+        mAdapter = new RecyclerAdapter(getActivity(), mMenuViewModel.getMenuItems().getValue());
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(),2);
+        recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(layoutManager);
 
-
-        RecyclerView recyclerViewBill = view.findViewById(R.id.recycler_view_bill);
+        //Bill Items
         BillListAdapter billListAdapter = new BillListAdapter();
         recyclerViewBill.setAdapter(billListAdapter);
         RecyclerView.LayoutManager billLayoutManager = new LinearLayoutManager(getActivity());
         recyclerViewBill.setLayoutManager(billLayoutManager);
-
-
-        //mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-
-        return view;
     }
 }
-
-
-//menuViewModel =
-//        ViewModelProviders.of(this).get(MenuViewModel.class);
-//        View root = inflater.inflate(R.layout.fragment_menu, container, false);
-//final TextView textView = root.findViewById(R.id.text_menu);
-//        menuViewModel.getText().observe(this, new Observer<String>() {
-//@Override
-//public void onChanged(@Nullable String s) {
-//        textView.setText(s);
-//        }
-//        });
-//        return root;

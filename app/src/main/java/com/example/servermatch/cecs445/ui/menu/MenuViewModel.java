@@ -4,16 +4,19 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.servermatch.cecs445.models.MenuItem;
+
+import java.util.List;
+
 public class MenuViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+    private MutableLiveData<List<MenuItem>> mMenuItems;
 
-    public MenuViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is menu fragment");
+    public void init(){
+
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public LiveData<List<MenuItem>> getMenuItems(){
+        return mMenuItems;
     }
 }
