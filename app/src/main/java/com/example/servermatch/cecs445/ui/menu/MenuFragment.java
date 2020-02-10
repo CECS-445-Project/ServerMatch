@@ -18,6 +18,7 @@ import com.example.servermatch.cecs445.utils.BillListAdapter;
 import com.example.servermatch.cecs445.utils.RecyclerAdapter;
 import com.example.servermatch.cecs445.models.MenuItem;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -25,9 +26,10 @@ public class MenuFragment extends Fragment {
 
     private MenuViewModel mMenuViewModel;
     private BottomSheetBehavior mBottomSheetBehavior;
-    RecyclerAdapter mAdapter;
-    RecyclerView recyclerView;
-    RecyclerView recyclerViewBill;
+    private RecyclerAdapter mAdapter;
+    private RecyclerView recyclerView;
+    private RecyclerView recyclerViewBill;
+    private FloatingActionButton mFab;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -36,9 +38,9 @@ public class MenuFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recycler_view_menu);
         recyclerViewBill = view.findViewById(R.id.recycler_view_bill);
+        mFab = view.findViewById(R.id.floatingActionButton);
 
-
-        mMenuViewModel = new ViewModelProvider(getActivity()).get(MenuViewModel.class);
+        mMenuViewModel = new ViewModelProvider(this).get(MenuViewModel.class);
 
         mMenuViewModel.init();
 
@@ -49,8 +51,19 @@ public class MenuFragment extends Fragment {
             }
         });
 
+        fabActionListener();
+
         initRecyclerViews();
         return view;
+    }
+
+    private void fabActionListener(){
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMenuViewModel.addNewValue(new MenuItem("DOGS", 5.55, R.drawable.ic_menu_share));
+            }
+        });
     }
 
     private void initRecyclerViews(){
