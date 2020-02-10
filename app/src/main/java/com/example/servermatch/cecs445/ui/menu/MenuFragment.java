@@ -54,6 +54,7 @@ public class MenuFragment extends Fragment {
         fabActionListener();
 
         initRecyclerViews();
+
         return view;
     }
 
@@ -62,6 +63,7 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mMenuViewModel.addNewValue(new MenuItem("DOGS", 5.55, R.drawable.ic_menu_share));
+                recyclerView.smoothScrollToPosition(mMenuViewModel.getMenuItems().getValue().size()-1);
             }
         });
     }

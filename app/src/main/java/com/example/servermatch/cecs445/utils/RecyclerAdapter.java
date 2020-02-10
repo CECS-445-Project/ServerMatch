@@ -90,7 +90,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
      */
     @Override
     public int getItemCount() {
-        return TestData.title.length;
+        return mMenuItem.size();
     }
 
     //private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -105,8 +105,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
             mItemImage = itemView.findViewById(R.id.imageView4);
             mItemText = itemView.findViewById(R.id.item_name);
             mItemCost = itemView.findViewById(R.id.item_cost);
-
-            //itemView.setOnClickListener(this);
         }
 
         public void bindView(int position){

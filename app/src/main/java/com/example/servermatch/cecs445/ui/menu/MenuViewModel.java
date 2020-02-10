@@ -22,24 +22,23 @@ public class MenuViewModel extends ViewModel {
 
     public void init(){
         if(mMenuItems != null){
-            Log.d(TAG, "size of list" + mMenuItems.getValue().size() + "");
             return;
         }
         mRepo = MenuItemRepo.getInstance();
         mMenuItems = mRepo.getMenuItems();
-        Log.d(TAG, "size of list" + mMenuItems.getValue().size() + "");
+        // We are getting double items because the repo keeps adding items
+        Log.d(TAG + ":End of init", "size of list" + mMenuItems.getValue().size() + "");
     }
 
     //todo: add the asynctask
     public void addNewValue(final MenuItem menuItem){
-
-        Log.d(TAG, menuItem.toString());
         List<MenuItem> currentMenuItems = mMenuItems.getValue();
         currentMenuItems.add(menuItem);
         mMenuItems.postValue(currentMenuItems);
-        mIsUpdating.postValue(false);
 
-        Log.d(TAG, "size of list" + mMenuItems.getValue().size() + "");
+        // For Debugging
+        Log.d(TAG + ":addNewValue", "size of list" + mMenuItems.getValue().size() + "");
+        Log.d(TAG + ":addNewValue", "size of list" + mMenuItems.getValue().toString() + "");
     }
 
     public LiveData<List<MenuItem>> getMenuItems(){

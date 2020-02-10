@@ -21,7 +21,7 @@ public class MenuItemRepo {
             instance = new MenuItemRepo();
             return instance;
         }
-        else return instance;
+        return instance;
     }
 
     public MutableLiveData<List<MenuItem>> getMenuItems(){
