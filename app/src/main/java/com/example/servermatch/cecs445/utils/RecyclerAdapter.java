@@ -1,12 +1,14 @@
 package com.example.servermatch.cecs445.utils;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.ui.menu.TestData;
 import com.example.servermatch.cecs445.models.MenuItem;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +25,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
 
     private List<MenuItem> mMenuItem;
     private Context mContext;
+    private static final String TAG = "RecyclerAdapter";
 
     public RecyclerAdapter (Context context, List<MenuItem> menuItems){
         mContext = context;
@@ -79,8 +83,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
      * @param position The position of the item within the adapter's data set.
      */
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         ((ViewHolder)holder).bindView(position);
+        ((ViewHolder) holder).parent_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: clicked on: " + mMenuItem.get(position).toString());
+            }
+        });
     }
 
     /**
@@ -99,12 +109,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
         private ImageView mItemImage;
         private TextView mItemText;
         private TextView mItemCost;
+        private MaterialCardView parent_layout;
 
         public ViewHolder(View itemView){
             super(itemView);
             mItemImage = itemView.findViewById(R.id.imageView4);
             mItemText = itemView.findViewById(R.id.item_name);
             mItemCost = itemView.findViewById(R.id.item_cost);
+            parent_layout = itemView.findViewById(R.id.material_parent_layout);
         }
 
         public void bindView(int position){

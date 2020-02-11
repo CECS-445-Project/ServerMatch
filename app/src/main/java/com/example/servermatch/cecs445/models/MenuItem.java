@@ -1,10 +1,13 @@
 package com.example.servermatch.cecs445.models;
 
+import java.util.List;
+
 public class MenuItem {
 
     private String mItemName;
     private double mItemCost;
     private int mImage;
+    private List<String> tags;
 
     public MenuItem(String itemName, double itemCost){
         mItemName = itemName;
@@ -45,7 +48,7 @@ public class MenuItem {
     public String toString() {
         return "MenuItem{" +
                 "mItemName='" + mItemName + '\'' +
-                ", mItemCost=" + mItemCost +
+                ", mItemCost=" + String.format("%.2f",mItemCost) +
                 ", mImage=" + mImage +
                 '}';
     }

@@ -1,6 +1,7 @@
 package com.example.servermatch.cecs445.ui.menu;
 
 import android.util.Log;
+import android.widget.ListAdapter;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -27,7 +28,6 @@ public class MenuViewModel extends ViewModel {
         Log.d(TAG + ":End of init", "size of list" + mMenuItems.getValue().size() + "");
     }
 
-    //todo: add the asynctask
     public void addNewValue(final MenuItem menuItem){
         List<MenuItem> currentMenuItems = mMenuItems.getValue();
         currentMenuItems.add(menuItem);
@@ -36,6 +36,16 @@ public class MenuViewModel extends ViewModel {
         // For Debugging
         Log.d(TAG + ":addNewValue", "size of list" + mMenuItems.getValue().size() + "");
         Log.d(TAG + ":addNewValue", "size of list" + mMenuItems.getValue().toString() + "");
+    }
+
+    public void removePizza(){
+        List<MenuItem> currentMenuItems = mMenuItems.getValue();
+        for(int i = 0; i < currentMenuItems.size(); i++){
+            if(currentMenuItems.get(i).getItemName().contains("Pizza")){
+                currentMenuItems.remove(i);
+            }
+        }
+        mMenuItems.postValue(currentMenuItems);
     }
 
     public LiveData<List<MenuItem>> getMenuItems(){

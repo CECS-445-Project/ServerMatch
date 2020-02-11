@@ -25,7 +25,7 @@ public class MenuItemRepo {
     }
 
     public MutableLiveData<List<MenuItem>> getMenuItems(){
-        setMenuItems();
+        if(dataSet.isEmpty()) setMenuItems();
         MutableLiveData<List<MenuItem>> data = new MutableLiveData<>();
         data.setValue(dataSet);
         return data;

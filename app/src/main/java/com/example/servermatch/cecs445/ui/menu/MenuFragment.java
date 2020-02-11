@@ -61,18 +61,6 @@ public class MenuFragment extends Fragment {
         return view;
     }
 
-    //todo: setting this up to print out which card was clicked
-    private void cardViewListener(){
-        mCardView = view.findViewById(R.id.menu_item_card);
-
-        mCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-    }
-
     private void viewModelObserver(){
         mMenuViewModel.getMenuItems().observe(getViewLifecycleOwner(), new Observer<List<MenuItem>>() {
             @Override
@@ -86,7 +74,8 @@ public class MenuFragment extends Fragment {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMenuViewModel.addNewValue(new MenuItem("DOGS", 5.55, R.drawable.ic_menu_share));
+                //mMenuViewModel.addNewValue(new MenuItem("DOGS", 5.55, R.drawable.ic_menu_share));
+                mMenuViewModel.removePizza();
                 recyclerView.smoothScrollToPosition(mMenuViewModel.getMenuItems().getValue().size()-1);
             }
         });
