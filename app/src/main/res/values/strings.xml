@@ -19,9 +19,8 @@
     <string name="add_customer_lname">Last Name</string>
     <string name="add_customer_email">Email</string>
     <string name="add_customer_phone">Phone Number</string>
-    <string name="add_customer_notify_text">I would like to receive receipts via text.</string>
-    <string name="add_customer_notify_email">I would like to receive receipts via email.</string>
-    <string name="add_customer_cancel">CANCEL</string>
+    <string name="add_customer_receipt_text">I would like to receive receipts via text.</string>
+    <string name="add_customer_receipt_email">I would like to receive receipts via email.</string>
     <string name="add_customer_submit">ADD CUSTOMER</string>
 
     <string name="new_item_name_text_field">Enter Item Name</string>
