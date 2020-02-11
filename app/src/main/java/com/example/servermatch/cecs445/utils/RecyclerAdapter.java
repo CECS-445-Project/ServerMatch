@@ -20,7 +20,7 @@ import java.util.List;
 
 public class RecyclerAdapter extends RecyclerView.Adapter {
 
-    private List<MenuItem> mMenuItem = new ArrayList<>();
+    private List<MenuItem> mMenuItem;
     private Context mContext;
 
     public RecyclerAdapter (Context context, List<MenuItem> menuItems){

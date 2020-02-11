@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFE986"
-        android:clickable="false"
+        android:clickable="true"
         android:clipToPadding="true"
         app:behavior_peekHeight="80dp"
         app:layout_behavior="@string/bottom_sheet_behavior">

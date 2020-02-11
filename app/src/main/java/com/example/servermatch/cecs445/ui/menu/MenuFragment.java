@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -21,6 +22,7 @@ import com.example.servermatch.cecs445.utils.BillListAdapter;
 import com.example.servermatch.cecs445.utils.RecyclerAdapter;
 import com.example.servermatch.cecs445.models.MenuItem;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -28,16 +30,19 @@ import java.util.List;
 public class MenuFragment extends Fragment {
 
     private MenuViewModel mMenuViewModel;
-    private BottomSheetBehavior mBottomSheetBehavior;
+    private BottomSheetBehavior sheetBehavior;
     private RecyclerAdapter mAdapter;
     private RecyclerView recyclerView;
     private RecyclerView recyclerViewBill;
     private FloatingActionButton mFab;
+    private View view;
+    private LinearLayout bottom_sheet;
+    private MaterialCardView mCardView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_menu,container,false);
+        view = inflater.inflate(R.layout.fragment_menu,container,false);
 
         recyclerView = view.findViewById(R.id.recycler_view_menu);
         recyclerViewBill = view.findViewById(R.id.recycler_view_bill);
@@ -47,18 +52,34 @@ public class MenuFragment extends Fragment {
 
         mMenuViewModel.init();
 
-        mMenuViewModel.getMenuItems().observe(getViewLifecycleOwner(), new Observer<List<MenuItem>>() {
-            @Override
-            public void onChanged(List<MenuItem> menuItems) {
-                mAdapter.notifyDataSetChanged();
-            }
-        });
+        viewModelObserver();
 
         fabActionListener();
 
         initRecyclerViews();
 
         return view;
+    }
+
+    //todo: setting this up to print out which card was clicked
+    private void cardViewListener(){
+        mCardView = view.findViewById(R.id.menu_item_card);
+
+        mCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
+    private void viewModelObserver(){
+        mMenuViewModel.getMenuItems().observe(getViewLifecycleOwner(), new Observer<List<MenuItem>>() {
+            @Override
+            public void onChanged(List<MenuItem> menuItems) {
+                mAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private void fabActionListener(){
