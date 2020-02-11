@@ -2,12 +2,20 @@ package com.example.servermatch.cecs445.models;
 
 import java.util.List;
 
+import static java.sql.Types.NULL;
+
 public class MenuItem {
 
     private String mItemName;
     private double mItemCost;
     private int mImage;
     private List<String> tags;
+
+    public MenuItem(){
+        mItemName = "Name Not Set";
+        mItemCost = NULL;
+        mImage = NULL;
+    }
 
     public MenuItem(String itemName, double itemCost){
         mItemName = itemName;
