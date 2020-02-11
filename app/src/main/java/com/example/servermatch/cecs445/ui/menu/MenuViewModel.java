@@ -1,8 +1,6 @@
 package com.example.servermatch.cecs445.ui.menu;
 
-import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.TextView;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -18,7 +16,6 @@ public class MenuViewModel extends ViewModel {
     public static final String TAG = "MenuViewModel";
     private MutableLiveData<List<MenuItem>> mMenuItems;
     private MenuItemRepo mRepo;
-    private MutableLiveData<Boolean> mIsUpdating = new MutableLiveData<>();
 
     public void init(){
         if(mMenuItems != null){
