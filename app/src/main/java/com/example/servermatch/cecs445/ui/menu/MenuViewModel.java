@@ -1,7 +1,9 @@
+/**
+ * @author Andrew Delgado
+ */
 package com.example.servermatch.cecs445.ui.menu;
 
 import android.util.Log;
-import android.widget.ListAdapter;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

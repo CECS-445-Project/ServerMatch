@@ -1,3 +1,6 @@
+/**
+ * @author Andrew Delgado
+ */
 package com.example.servermatch.cecs445.utils;
 
 import android.content.Context;

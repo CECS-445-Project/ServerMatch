@@ -1,3 +1,6 @@
+/**
+ * @author Andrew Delgado
+ */
 package com.example.servermatch.cecs445.repositories;
 
 import androidx.lifecycle.MutableLiveData;
