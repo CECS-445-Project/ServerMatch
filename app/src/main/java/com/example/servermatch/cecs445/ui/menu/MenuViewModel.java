@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.servermatch.cecs445.models.MenuItem;
 import com.example.servermatch.cecs445.repositories.MenuItemRepo;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class MenuViewModel extends ViewModel {
@@ -42,9 +43,11 @@ public class MenuViewModel extends ViewModel {
 
     public void removePizza(){
         List<MenuItem> currentMenuItems = mMenuItems.getValue();
-        for(int i = 0; i < currentMenuItems.size(); i++){
-            if(currentMenuItems.get(i).getItemName().contains("Pizza")){
-                currentMenuItems.remove(i);
+        for(Iterator<MenuItem> j = currentMenuItems.iterator(); j.hasNext();){
+
+            MenuItem temp = j.next();
+            if(temp.getItemName().contains("Pizza")){
+                j.remove();
             }
         }
         mMenuItems.postValue(currentMenuItems);
