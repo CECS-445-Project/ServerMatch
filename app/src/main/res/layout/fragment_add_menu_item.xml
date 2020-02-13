@@ -17,7 +17,8 @@
             android:id="@+id/text_input_item_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:errorEnabled="true">
+            app:errorEnabled="true"
+            android:layout_marginBottom="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -36,7 +37,8 @@
                 android:id="@+id/text_input_item_cost"
                 android:layout_width="185dp"
                 android:layout_height="wrap_content"
-                app:errorEnabled="true">
+                app:errorEnabled="true"
+                android:layout_marginBottom="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -65,7 +67,8 @@
             android:layout_height="wrap_content"
             app:counterEnabled="true"
             app:counterMaxLength="200"
-            app:errorEnabled="true">
+            app:errorEnabled="true"
+            android:layout_marginBottom="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
