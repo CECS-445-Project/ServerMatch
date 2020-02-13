@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bill_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,28 +11,47 @@
         android:id="@+id/bill_item_name"
         android:layout_width="33pt"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_weight="1"
         android:text="Taco"
         android:textColor="@color/primary_text"
         android:textSize="25dp" />
 
+    <ImageButton
+        android:id="@+id/minus_button"
+        android:layout_width="1dp"
+        android:layout_height="45dp"
+        android:layout_weight="1"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/ic_minus" />
+
     <TextView
         android:id="@+id/item_quantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_weight="1"
         android:gravity="center"
         android:text="x 1"
         android:textColor="@color/secondary_text"
         android:textSize="25dp" />
 
+    <ImageButton
+        android:id="@+id/plus_button"
+        android:layout_width="1dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:srcCompat="@drawable/ic_add_24" />
+
     <TextView
         android:id="@+id/bill_item_cost"
         android:layout_width="33pt"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_weight="1"
         android:gravity="right"
         android:text="$8.25"
         android:textColor="@color/primary_text"
         android:textSize="25dp" />
+
 </LinearLayout>

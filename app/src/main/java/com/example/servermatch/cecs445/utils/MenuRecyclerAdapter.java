@@ -1,20 +1,44 @@
-package com.example.servermatch.cecs445.Utils;
+/**
+ * @author Andrew Delgado
+ */
+package com.example.servermatch.cecs445.utils;
 
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.servermatch.cecs445.R;
+import com.example.servermatch.cecs445.ui.menu.BillViewModel;
+import com.example.servermatch.cecs445.ui.menu.MenuViewModel;
 import com.example.servermatch.cecs445.ui.menu.TestData;
+import com.example.servermatch.cecs445.models.MenuItem;
+import com.google.android.material.card.MaterialCardView;
 
-public class ListAdapter extends RecyclerView.Adapter {
+import java.util.ArrayList;
+import java.util.List;
 
+public class MenuRecyclerAdapter extends RecyclerView.Adapter {
+
+    private List<MenuItem> mMenuItem;
+    private Context mContext;
+    private static final String TAG = "MenuRecyclerAdapter";
+    private BillViewModel mBillViewModel;
+
+    public MenuRecyclerAdapter(BillViewModel menuViewModel, Context context, List<MenuItem> menuItems){
+        mBillViewModel = menuViewModel;
+        mContext = context;
+        mMenuItem = menuItems;
+    }
 
     /**
      * Called when RecyclerView needs a new {@link ViewHolder} of the given type to represent
@@ -43,7 +67,7 @@ public class ListAdapter extends RecyclerView.Adapter {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_menu_list_item,parent,false);
 
-        return new ListViewHolder(view);
+        return new ViewHolder(view);
     }
 
     /**
@@ -67,8 +91,17 @@ public class ListAdapter extends RecyclerView.Adapter {
      * @param position The position of the item within the adapter's data set.
      */
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ((ListViewHolder)holder).bindView(position);
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
+        ((ViewHolder)holder).bindView(position);
+        ((ViewHolder) holder).parent_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: clicked on: " + mMenuItem.get(position).toString());
+                //todo: add mMenuViewModel here to add data?
+                mBillViewModel.addNewValue(mMenuItem.get(position));
+
+            }
+        });
     }
 
     /**
@@ -78,33 +111,29 @@ public class ListAdapter extends RecyclerView.Adapter {
      */
     @Override
     public int getItemCount() {
-        return TestData.title.length;
+        return mMenuItem.size();
     }
 
-    //private class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-    private class ListViewHolder extends RecyclerView.ViewHolder {
+    //private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    private class ViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView mItemImage;
         private TextView mItemText;
         private TextView mItemCost;
+        private MaterialCardView parent_layout;
 
-        public ListViewHolder(View itemView){
+        public ViewHolder(View itemView){
             super(itemView);
             mItemImage = itemView.findViewById(R.id.imageView4);
             mItemText = itemView.findViewById(R.id.item_name);
             mItemCost = itemView.findViewById(R.id.item_cost);
-
-            //itemView.setOnClickListener(this);
+            parent_layout = itemView.findViewById(R.id.material_parent_layout);
         }
 
         public void bindView(int position){
-            mItemImage.setImageResource(TestData.picturePath[position]);
-            mItemText.setText(TestData.title[position]);
-            mItemCost.setText(TestData.item_cost[position]);
-        }
-
-        public void onClick(View view){
-
+            mItemImage.setImageResource(mMenuItem.get(position).getImage());
+            mItemText.setText(mMenuItem.get(position).getItemName());
+            mItemCost.setText(String.format("%.2f", mMenuItem.get(position).getItemCost()));
         }
     }
 }
