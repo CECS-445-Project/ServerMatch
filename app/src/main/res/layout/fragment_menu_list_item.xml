@@ -28,7 +28,7 @@
             android:paddingLeft="5pt"
             android:paddingTop="5pt"
             android:text="Item Name"
-            android:textColor="#000000"
+            android:textColor="@color/primary_text"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="5pt"
             android:text="$4.20"
-            android:textColor="#808080"
+            android:textColor="@color/secondary_text"
             android:textSize="18sp"
             android:textStyle="bold" />
 

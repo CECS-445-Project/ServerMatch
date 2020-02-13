@@ -34,7 +34,7 @@
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFE986"
+        android:background="@color/cardview_light_background"
         android:clickable="false"
         android:clipToPadding="true"
         app:behavior_peekHeight="80dp"
@@ -50,7 +50,7 @@
                 android:id="@+id/peek"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/colorAccent"
+                android:background="@color/colorPrimaryLight"
                 android:orientation="horizontal">
 
                 <TextView
@@ -60,7 +60,7 @@
                     android:gravity="left"
                     android:padding="16dp"
                     android:text="Bill"
-                    android:textColor="#000000"
+                    android:textColor="@color/primary_text"
                     android:textSize="35dp" />
 
                 <TextView
@@ -70,7 +70,7 @@
                     android:gravity="right"
                     android:padding="16dp"
                     android:text="$16.50"
-                    android:textColor="#000000"
+                    android:textColor="@color/primary_text"
                     android:textSize="35dp" />
 
             </RelativeLayout>
@@ -81,7 +81,7 @@
                 android:layout_height="4dp"
                 android:layout_below="@+id/textView1"
                 android:layout_alignParentRight="true"
-                android:background="#000000" />
+                android:background="@color/primary_text" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_bill"
@@ -100,7 +100,7 @@
                 android:layout_height="4dp"
                 android:layout_below="@+id/textView1"
                 android:layout_alignParentRight="true"
-                android:background="#000000" />
+                android:background="@color/primary_text" />
 
             <TextView
                 android:id="@+id/checkout"
@@ -108,11 +108,11 @@
                 android:layout_height="80dp"
                 android:layout_gravity="bottom"
                 android:layout_weight="1"
-                android:background="#3E983F"
+                android:background="@color/colorAccent"
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="CHECKOUT"
-                android:textColor="#040404"
+                android:textColor="@color/primary_text"
                 android:textSize="35dp" />
         </LinearLayout>
 
@@ -123,7 +123,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        app:backgroundTint="#6F53FC"
+        app:backgroundTint="@color/colorAccent"
         app:fabCustomSize="60dp"
         app:fabSize="auto"
         app:layout_anchor="@+id/bottom_sheet"
