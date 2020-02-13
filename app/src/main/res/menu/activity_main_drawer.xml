@@ -16,15 +16,17 @@
 
     <item android:title="Tools">
         <menu>
-            <item
-                android:id="@+id/nav_add_customer"
-                android:icon="@drawable/ic_customer_add"
-                android:title="@string/menu_add_customers" />
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_add_customer"
+                    android:icon="@drawable/ic_customer_add"
+                    android:title="@string/menu_add_customers" />
 
-            <item
-                android:id="@+id/nav_add_menu_item"
-                android:icon="@drawable/ic_menu_add"
-                android:title="@string/menu_add_menu_item" />
+                <item
+                    android:id="@+id/nav_add_menu_item"
+                    android:icon="@drawable/ic_menu_add"
+                    android:title="@string/menu_add_menu_item" />
+            </group>
         </menu>
     </item>
 
