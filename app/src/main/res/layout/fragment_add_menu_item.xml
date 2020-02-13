@@ -53,9 +53,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:text="@string/new_item_add_photo_button"
-                android:textColor="@android:color/primary_text_light"
+                android:textColor="@color/primary_text"
                 app:icon="@drawable/ic_photo_black_24dp"
-                app:iconTint="@android:color/primary_text_light"/>
+                app:iconTint="@color/primary_text"/>
 
         </LinearLayout>
 
