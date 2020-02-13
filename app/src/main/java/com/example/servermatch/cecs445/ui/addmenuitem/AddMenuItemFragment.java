@@ -58,6 +58,8 @@ public class AddMenuItemFragment extends Fragment {
         btnAddPhoto = root.findViewById((R.id.add_photo_button));
 
 
+
+        // TODO: add selected chips to list of strings
         btnAddNewItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,7 +72,7 @@ public class AddMenuItemFragment extends Fragment {
                     while(i < chipCount) {
                         Chip chip = (Chip) chipGroup.getChildAt(i);
                         if(chip.isChecked()) {
-                            chip_msg += chip.getText().toString() + " ";
+                            chip_msg += chip.getText().toString() + ", ";
                         }
                         i++;
                     }
@@ -162,6 +164,7 @@ public class AddMenuItemFragment extends Fragment {
         return false;
     }
 
+    //TODO: add new menu item here
     public void addItem(View v) {
         if(!validateName() | !validateCost() | !validateDesc() | !validateFilters()) {
             return;
@@ -175,6 +178,7 @@ public class AddMenuItemFragment extends Fragment {
         Toast.makeText(getContext(), "Menu Item Added", Toast.LENGTH_SHORT).show();
     }
 
+    //TODO: photo permissions
     public void addPhoto(View v) {
         Log.d(TAG, "Photo Button Pressed");
         Toast.makeText(getContext(), "Add Photo", Toast.LENGTH_SHORT).show();
