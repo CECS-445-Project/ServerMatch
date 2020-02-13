@@ -34,12 +34,25 @@ public class BillViewModel extends ViewModel {
 
     public void addNewValue(final MenuItem menuItem){
         List<MenuItem> currentBillMenuItems = mMenuBillItems.getValue();
-        currentBillMenuItems.add(menuItem);
+        if(currentBillMenuItems.contains(menuItem)) menuItem.incrementQuantity();
+        else {
+            menuItem.incrementQuantity();
+            currentBillMenuItems.add(menuItem);
+        }
         mMenuBillItems.postValue(currentBillMenuItems);
 
         // For Debugging
         Log.d(TAG + ":addNewValue", "size of list" + mMenuBillItems.getValue().size() + "");
         Log.d(TAG + ":addNewValue", "size of list" + mMenuBillItems.getValue().toString() + "");
+    }
+
+    public void removeValue(final MenuItem menuItem) {
+        List<MenuItem> currentBillMenuItems = mMenuBillItems.getValue();
+        if(currentBillMenuItems.contains(menuItem)){
+            menuItem.decrementQuantity();
+            if(menuItem.getQuantity() == 0) currentBillMenuItems.remove(menuItem);
+        }
+        mMenuBillItems.postValue(currentBillMenuItems);
     }
 
     public LiveData<List<MenuItem>> getBillItems(){

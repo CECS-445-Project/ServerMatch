@@ -27,14 +27,14 @@ import com.google.android.material.card.MaterialCardView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerAdapter extends RecyclerView.Adapter {
+public class MenuRecyclerAdapter extends RecyclerView.Adapter {
 
     private List<MenuItem> mMenuItem;
     private Context mContext;
-    private static final String TAG = "RecyclerAdapter";
+    private static final String TAG = "MenuRecyclerAdapter";
     private BillViewModel mBillViewModel;
 
-    public RecyclerAdapter (BillViewModel menuViewModel, Context context, List<MenuItem> menuItems){
+    public MenuRecyclerAdapter(BillViewModel menuViewModel, Context context, List<MenuItem> menuItems){
         mBillViewModel = menuViewModel;
         mContext = context;
         mMenuItem = menuItems;

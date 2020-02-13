@@ -12,23 +12,27 @@ public class MenuItem {
     private String mItemName;
     private double mItemCost;
     private int mImage;
+    private int mQuantity;
     private List<String> tags;
 
     public MenuItem(){
         mItemName = "Name Not Set";
         mItemCost = NULL;
         mImage = NULL;
+        mQuantity = 0;
     }
 
     public MenuItem(String itemName, double itemCost){
         mItemName = itemName;
         mItemCost = itemCost;
+        mQuantity = 0;
     }
 
     public MenuItem(String mItemName, double mItemCost, int mImage) {
         this.mItemName = mItemName;
         this.mItemCost = mItemCost;
         this.mImage = mImage;
+        mQuantity = 0;
     }
 
     public void setItemName(String newItemName){
@@ -55,12 +59,20 @@ public class MenuItem {
         this.mImage = mImage;
     }
 
+    public void setQuanity(int quantity){ mQuantity = quantity; }
+
+    public void incrementQuantity(){++mQuantity;}
+    public void decrementQuantity(){--mQuantity;}
+    public int getQuantity(){return mQuantity;}
+
     @Override
     public String toString() {
         return "MenuItem{" +
                 "mItemName='" + mItemName + '\'' +
-                ", mItemCost=" + String.format("%.2f",mItemCost) +
+                ", mItemCost=" + mItemCost +
                 ", mImage=" + mImage +
+                ", mQuantity=" + mQuantity +
+                ", tags=" + tags +
                 '}';
     }
 }

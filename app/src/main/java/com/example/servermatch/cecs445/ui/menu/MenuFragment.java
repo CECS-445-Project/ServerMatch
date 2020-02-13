@@ -7,23 +7,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.servermatch.cecs445.R;
-import com.example.servermatch.cecs445.utils.BillListAdapter;
-import com.example.servermatch.cecs445.utils.RecyclerAdapter;
+import com.example.servermatch.cecs445.utils.BillRecyclerAdapter;
+import com.example.servermatch.cecs445.utils.MenuRecyclerAdapter;
 import com.example.servermatch.cecs445.models.MenuItem;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -32,8 +28,8 @@ public class MenuFragment extends Fragment {
 
     private MenuViewModel mMenuViewModel;
     private BillViewModel mBillViewModel;
-    private RecyclerAdapter mAdapter;
-    private BillListAdapter billListAdapter;
+    private MenuRecyclerAdapter mAdapter;
+    private BillRecyclerAdapter billRecyclerAdapter;
     private RecyclerView recyclerView;
     private RecyclerView recyclerViewBill;
     private FloatingActionButton mFab;
@@ -77,7 +73,7 @@ public class MenuFragment extends Fragment {
         mBillViewModel.getBillItems().observe(getViewLifecycleOwner(), new Observer<List<MenuItem>>() {
             @Override
             public void onChanged(List<MenuItem> menuItems) {
-                billListAdapter.notifyDataSetChanged();
+                billRecyclerAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -96,14 +92,14 @@ public class MenuFragment extends Fragment {
 
     private void initRecyclerViews(){
         //Menu Items
-        mAdapter = new RecyclerAdapter(mBillViewModel, getActivity(), mMenuViewModel.getMenuItems().getValue());
+        mAdapter = new MenuRecyclerAdapter(mBillViewModel, getActivity(), mMenuViewModel.getMenuItems().getValue());
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(),2);
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(layoutManager);
 
         //Bill Items
-        billListAdapter = new BillListAdapter(mBillViewModel.getBillItems().getValue());
-        recyclerViewBill.setAdapter(billListAdapter);
+        billRecyclerAdapter = new BillRecyclerAdapter(mBillViewModel, mBillViewModel.getBillItems().getValue());
+        recyclerViewBill.setAdapter(billRecyclerAdapter);
         RecyclerView.LayoutManager billLayoutManager = new LinearLayoutManager(getActivity());
         recyclerViewBill.setLayoutManager(billLayoutManager);
     }
