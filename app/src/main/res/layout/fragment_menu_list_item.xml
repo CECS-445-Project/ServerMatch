@@ -6,7 +6,8 @@
     android:layout_marginTop="@dimen/mtrl_card_spacing"
     android:layout_marginRight="@dimen/mtrl_card_spacing"
     android:minHeight="175dp"
-    app:cardCornerRadius="5dp">
+    app:cardCornerRadius="5dp"
+    android:id="@+id/material_parent_layout">
 
     <LinearLayout
         android:id="@+id/menu_item_card"
