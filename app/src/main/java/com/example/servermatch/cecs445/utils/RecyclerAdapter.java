@@ -14,9 +14,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.servermatch.cecs445.R;
+import com.example.servermatch.cecs445.ui.menu.BillViewModel;
+import com.example.servermatch.cecs445.ui.menu.MenuViewModel;
 import com.example.servermatch.cecs445.ui.menu.TestData;
 import com.example.servermatch.cecs445.models.MenuItem;
 import com.google.android.material.card.MaterialCardView;
@@ -29,8 +32,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
     private List<MenuItem> mMenuItem;
     private Context mContext;
     private static final String TAG = "RecyclerAdapter";
+    private BillViewModel mBillViewModel;
 
-    public RecyclerAdapter (Context context, List<MenuItem> menuItems){
+    public RecyclerAdapter (BillViewModel menuViewModel, Context context, List<MenuItem> menuItems){
+        mBillViewModel = menuViewModel;
         mContext = context;
         mMenuItem = menuItems;
     }
@@ -92,6 +97,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: clicked on: " + mMenuItem.get(position).toString());
+                //todo: add mMenuViewModel here to add data?
+                mBillViewModel.addNewValue(mMenuItem.get(position));
+
             }
         });
     }

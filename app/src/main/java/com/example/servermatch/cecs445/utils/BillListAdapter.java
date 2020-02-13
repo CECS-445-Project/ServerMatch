@@ -3,6 +3,7 @@ package com.example.servermatch.cecs445.utils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -10,9 +11,21 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.servermatch.cecs445.R;
+import com.example.servermatch.cecs445.models.MenuItem;
+import com.example.servermatch.cecs445.ui.menu.BillViewModel;
 import com.example.servermatch.cecs445.ui.menu.TestData;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BillListAdapter extends RecyclerView.Adapter {
+
+    private List<MenuItem> mMenuItems = new ArrayList<>();
+    private static final String TAG = "BillListAdapter";
+
+    public BillListAdapter(List<MenuItem> billList){
+        mMenuItems = billList;
+    }
 
 
     /**
@@ -42,7 +55,7 @@ public class BillListAdapter extends RecyclerView.Adapter {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_bill_item,parent,false);
 
-        return new ListViewHolder(view);
+        return new ViewHolder(view);
     }
 
     /**
@@ -67,7 +80,7 @@ public class BillListAdapter extends RecyclerView.Adapter {
      */
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ((ListViewHolder)holder).bindView(position);
+        ((ViewHolder)holder).bindView(position);
     }
 
     /**
@@ -77,33 +90,28 @@ public class BillListAdapter extends RecyclerView.Adapter {
      */
     @Override
     public int getItemCount() {
-        return TestData.title.length;
+        // return mMenuItems == null ? 0 : mMenuItems.size();
+        return mMenuItems.size();
     }
 
-    //private class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-    private class ListViewHolder extends RecyclerView.ViewHolder {
+    //private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    private class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView mItemText;
         private TextView mItemQuantity;
         private TextView mItemCost;
 
-        public ListViewHolder(View itemView){
+        public ViewHolder(View itemView){
             super(itemView);
             mItemText = itemView.findViewById(R.id.bill_item_name);
             mItemQuantity = itemView.findViewById(R.id.item_quantity);
             mItemCost = itemView.findViewById(R.id.bill_item_cost);
-
-            //itemView.setOnClickListener(this);
         }
 
         public void bindView(int position){
-            mItemText.setText(TestData.title[position]);
+            mItemText.setText(mMenuItems.get(position).getItemName());
             mItemQuantity.setText(TestData.quantity[position]);
-            mItemCost.setText(TestData.item_cost[position]);
-        }
-
-        public void onClick(View view){
-
+            mItemCost.setText(String.format("%.2f",mMenuItems.get(position).getItemCost()));
         }
     }
 }

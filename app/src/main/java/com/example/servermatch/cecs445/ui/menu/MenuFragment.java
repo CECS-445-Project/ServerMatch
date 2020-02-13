@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,14 +31,13 @@ import java.util.List;
 public class MenuFragment extends Fragment {
 
     private MenuViewModel mMenuViewModel;
-    private BottomSheetBehavior sheetBehavior;
+    private BillViewModel mBillViewModel;
     private RecyclerAdapter mAdapter;
+    private BillListAdapter billListAdapter;
     private RecyclerView recyclerView;
     private RecyclerView recyclerViewBill;
     private FloatingActionButton mFab;
     private View view;
-    private LinearLayout bottom_sheet;
-    private MaterialCardView mCardView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -49,10 +49,13 @@ public class MenuFragment extends Fragment {
         mFab = view.findViewById(R.id.floatingActionButton);
 
         mMenuViewModel = new ViewModelProvider(this).get(MenuViewModel.class);
+        mBillViewModel = new ViewModelProvider(this).get(BillViewModel.class);
 
         mMenuViewModel.init();
+        mBillViewModel.init();
 
         viewModelObserver();
+        billViewModelObserver();
 
         fabActionListener();
 
@@ -70,6 +73,16 @@ public class MenuFragment extends Fragment {
         });
     }
 
+    private void billViewModelObserver(){
+        mBillViewModel.getBillItems().observe(getViewLifecycleOwner(), new Observer<List<MenuItem>>() {
+            @Override
+            public void onChanged(List<MenuItem> menuItems) {
+                billListAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+
     private void fabActionListener(){
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,13 +96,13 @@ public class MenuFragment extends Fragment {
 
     private void initRecyclerViews(){
         //Menu Items
-        mAdapter = new RecyclerAdapter(getActivity(), mMenuViewModel.getMenuItems().getValue());
+        mAdapter = new RecyclerAdapter(mBillViewModel, getActivity(), mMenuViewModel.getMenuItems().getValue());
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(),2);
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(layoutManager);
 
         //Bill Items
-        BillListAdapter billListAdapter = new BillListAdapter();
+        billListAdapter = new BillListAdapter(mBillViewModel.getBillItems().getValue());
         recyclerViewBill.setAdapter(billListAdapter);
         RecyclerView.LayoutManager billLayoutManager = new LinearLayoutManager(getActivity());
         recyclerViewBill.setLayoutManager(billLayoutManager);
