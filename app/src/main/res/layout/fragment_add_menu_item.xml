@@ -17,7 +17,8 @@
             android:id="@+id/text_input_item_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:errorEnabled="true">
+            app:errorEnabled="true"
+            android:layout_marginBottom="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -36,7 +37,8 @@
                 android:id="@+id/text_input_item_cost"
                 android:layout_width="185dp"
                 android:layout_height="wrap_content"
-                app:errorEnabled="true">
+                app:errorEnabled="true"
+                android:layout_marginBottom="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -65,7 +67,8 @@
             android:layout_height="wrap_content"
             app:counterEnabled="true"
             app:counterMaxLength="200"
-            app:errorEnabled="true">
+            app:errorEnabled="true"
+            android:layout_marginBottom="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -94,126 +97,17 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="150dp">
+            android:layout_height="150dp"
+            android:id="@+id/scroll_view_chip_group">
 
             <com.google.android.material.chip.ChipGroup
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/chip_group_filter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_item_filter_1"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_item_filter_5"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_item_filter_7"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_item_filter_8"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_item_filter_4"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_item_filter_2"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_item_filter_3"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_item_filter_13"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_item_filter_6"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_item_filter_9"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_item_filter_10"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_item_filter_11"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_item_filter_12"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_item_filter_15"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_item_filter_16"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_item_filter_17"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    />
-
             </com.google.android.material.chip.ChipGroup>
+
         </ScrollView>
 
         <LinearLayout

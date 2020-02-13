@@ -24,9 +24,6 @@ import android.view.Menu;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-//    private TextInputLayout textInputItemName;
-//    private TextInputLayout textInputItemCost;
-//    private TextInputLayout textInputItemDesc;
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -49,63 +46,7 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-//        textInputItemName = findViewById(R.id.text_input_item_name);
-//        textInputItemCost = findViewById(R.id.text_input_item_cost);
-//        textInputItemDesc = findViewById(R.id.text_input_item_desc);
-
     }
-
-//    private boolean validateName() {
-//        String nameInput = textInputItemName.getEditText().getText().toString().trim();
-//
-//        if(nameInput.isEmpty()) {
-//            textInputItemName.setError("Field can't be empty");
-//            return false;
-//        } else {
-//            textInputItemName.setError(null);
-//            return true;
-//        }
-//    }
-//
-//    private boolean validateCost() {
-//        String costInput = textInputItemCost.getEditText().getText().toString().trim();
-//
-//        if(costInput.isEmpty()) {
-//            textInputItemCost.setError("Field can't be empty");
-//            return false;
-//        } else {
-//            textInputItemCost.setError(null);
-//            return true;
-//        }
-//    }
-//
-//    private boolean validateDesc() {
-//        String descInput = textInputItemDesc.getEditText().getText().toString().trim();
-//
-//        if(descInput.isEmpty()) {
-//            textInputItemDesc.setError("Field can't be empty");
-//            return false;
-//        } else if (descInput.length() > 200) {
-//            textInputItemDesc.setError("Description too long");
-//            return false;
-//        } else {
-//            textInputItemDesc.setError(null);
-//            return true;
-//        }
-//    }
-//
-//    public void addItem(View v) {
-//        if(!validateName() | !validateCost() | !validateDesc()) {
-//            return;
-//        }
-//        String input = "Name: " + textInputItemName.getEditText().getText().toString();
-//        input += "\n";
-//        input += "Cost: " + textInputItemCost.getEditText().getText().toString();
-//        input += "\n";
-//        input += "Description: " + textInputItemDesc.getEditText().getText().toString();
-//
-//        Toast.makeText(this, input, Toast.LENGTH_SHORT).show();
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
