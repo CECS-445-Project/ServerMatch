@@ -47,24 +47,24 @@ public class TestData {
     };
 
     public static String[] quantity = new String[]{
-            "x 1",
-            "x 2",
-            "x 3",
-            "x 4",
-            "x 5",
-            "x 6",
-            "x 7",
-            "x 8",
-            "x 9",
-            "x 1",
-            "x 2",
-            "x 3",
-            "x 4",
-            "x 5",
-            "x 6",
-            "x 7",
-            "x 8",
-            "x 9"
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9"
     };
 
     public static String[] item_cost = new String[]{
