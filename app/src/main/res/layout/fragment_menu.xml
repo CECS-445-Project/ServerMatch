@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:padding="16dp"
-                    android:text="$16.50"
+                    android:text="@string/default_bill"
                     android:textColor="#000000"
                     android:textSize="35dp" />
 

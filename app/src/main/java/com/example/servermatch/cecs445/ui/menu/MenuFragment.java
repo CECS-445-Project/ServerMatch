@@ -74,6 +74,7 @@ public class MenuFragment extends Fragment {
             @Override
             public void onChanged(List<MenuItem> menuItems) {
                 billRecyclerAdapter.notifyDataSetChanged();
+                billRecyclerAdapter.updateBill();
             }
         });
     }
@@ -98,7 +99,7 @@ public class MenuFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         //Bill Items
-        billRecyclerAdapter = new BillRecyclerAdapter(mBillViewModel, mBillViewModel.getBillItems().getValue());
+        billRecyclerAdapter = new BillRecyclerAdapter(view, mBillViewModel, mBillViewModel.getBillItems().getValue());
         recyclerViewBill.setAdapter(billRecyclerAdapter);
         RecyclerView.LayoutManager billLayoutManager = new LinearLayoutManager(getActivity());
         recyclerViewBill.setLayoutManager(billLayoutManager);

@@ -24,9 +24,11 @@ public class BillRecyclerAdapter extends RecyclerView.Adapter {
 
     private List<MenuItem> mMenuItems = new ArrayList<>();
     private BillViewModel mBillViewModel;
+    private View mView;
     private static final String TAG = "BillRecyclerAdapter";
 
-    public BillRecyclerAdapter(BillViewModel billViewModel, List<MenuItem> billList){
+    public BillRecyclerAdapter(View view, BillViewModel billViewModel, List<MenuItem> billList){
+        mView = view;
         mBillViewModel = billViewModel;
         mMenuItems = billList;
     }
@@ -90,7 +92,6 @@ public class BillRecyclerAdapter extends RecyclerView.Adapter {
         ((ViewHolder)holder).mPlusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //might need to notify the view model.
                 mBillViewModel.addNewValue(mMenuItems.get(position));
             }
         });
@@ -99,10 +100,21 @@ public class BillRecyclerAdapter extends RecyclerView.Adapter {
         ((ViewHolder)holder).mMinusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //might need to notify the view model.
                 mBillViewModel.removeValue(mMenuItems.get(position));
             }
         });
+    }
+
+    public void updateBill(){
+        TextView billTotalText = mView.findViewById(R.id.bill_total);
+
+        double billTotal = 0.00;
+
+        for (MenuItem m:mMenuItems) {
+            billTotal += m.getQuantity() * m.getItemCost();
+        }
+
+        billTotalText.setText("$" + (String.format("%.2f",billTotal)));
     }
 
     /**
