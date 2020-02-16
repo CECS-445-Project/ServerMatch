@@ -71,13 +71,14 @@
             android:layout_marginBottom="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_input_item_desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/new_item_description_text_field"
-                android:maxLength="200"
+                android:inputType="textMultiLine"
                 android:lines="4"
-                android:maxLines="4"
-                android:inputType="textMultiLine"/>
+                android:maxLength="200"
+                android:maxLines="4" />
 
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
