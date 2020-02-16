@@ -3,10 +3,21 @@
  */
 package com.example.servermatch.cecs445.repositories;
 
+import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.models.MenuItem;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +29,8 @@ public class MenuItemRepo {
 
     private static MenuItemRepo instance;
     private ArrayList<MenuItem> dataSet = new ArrayList<>();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static final String TAG = "MenuItemRepo";
 
     public static MenuItemRepo getInstance(){
         if(instance == null){
@@ -28,31 +41,54 @@ public class MenuItemRepo {
     }
 
     public MutableLiveData<List<MenuItem>> getMenuItems(){
-        if(dataSet.isEmpty()) setMenuItems();
+        if(dataSet.isEmpty()) loadMenuItems();
         MutableLiveData<List<MenuItem>> data = new MutableLiveData<>();
         data.setValue(dataSet);
         return data;
     }
 
-    private void setMenuItems(){
-        dataSet.add(new MenuItem("1 Pizza",3.50, R.drawable.ic_customer_add));
-        dataSet.add(new MenuItem("2 Fries",1.00, R.drawable.ic_menu_camera));
-        dataSet.add(new MenuItem("3 Burger",2.01, R.drawable.ic_menu_send));
-        dataSet.add(new MenuItem("4 Cheese",3.00, R.drawable.ic_customer_add));
-        dataSet.add(new MenuItem("5 Fish",4.20, R.drawable.ic_menu_camera));
-        dataSet.add(new MenuItem("6 Pizza",3.50, R.drawable.ic_menu_send));
-        dataSet.add(new MenuItem("7 Fries",1.00, R.drawable.ic_customer_add));
-        dataSet.add(new MenuItem("8 Burger",2.01, R.drawable.ic_menu_camera));
-        dataSet.add(new MenuItem("9 Cheese",3.00, R.drawable.ic_menu_send));
-        dataSet.add(new MenuItem("10 Fish",4.20, R.drawable.ic_customer_add));
-        dataSet.add(new MenuItem("11 Pizza",3.50, R.drawable.ic_menu_camera));
-        dataSet.add(new MenuItem("12 Fries",1.00, R.drawable.ic_menu_send));
-        dataSet.add(new MenuItem("13 Burger",2.01, R.drawable.ic_customer_add));
-        dataSet.add(new MenuItem("14 Cheese",3.00, R.drawable.ic_menu_camera));
-        dataSet.add(new MenuItem("15 Fish",4.20, R.drawable.ic_menu_send));
-        dataSet.add(new MenuItem("16 Pizza",3.50, R.drawable.ic_customer_add));
-        dataSet.add(new MenuItem("17 Fries",1.00, R.drawable.ic_menu_camera));
-        dataSet.add(new MenuItem("18 Pizza",3.50, R.drawable.ic_menu_send));
+    private void loadMenuItems(){
+        db.collection("MenuItem").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                if(!queryDocumentSnapshots.isEmpty()){
+                    List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+
+                    for(DocumentSnapshot documentSnapshot : list){
+                        dataSet.add(documentSnapshot.toObject(MenuItem.class));
+                    }
+                }
+
+                Log.e(TAG, "onSuccess: added" );
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG, "onFailure: " + e.toString());
+            }
+        });
     }
+
+    public void addMenuItem(MenuItem newItem, final Context context){
+        final String itemName = newItem.getItemName();
+        db.collection("MenuItem").add(newItem).addOnSuccessListener
+                (new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Toast.makeText(context, itemName +" Added!", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                Log.e(TAG, "onFailure: " + e.toString());
+            }
+        });
+
+
+    }
+
 
 }

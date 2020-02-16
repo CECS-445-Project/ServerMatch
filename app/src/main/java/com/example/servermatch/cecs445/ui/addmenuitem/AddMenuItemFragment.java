@@ -12,14 +12,19 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.servermatch.cecs445.R;
+import com.example.servermatch.cecs445.models.MenuItem;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.ChipDrawable;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddMenuItemFragment extends Fragment {
 
@@ -30,6 +35,9 @@ public class AddMenuItemFragment extends Fragment {
     private MaterialButton btnAddPhoto;
     private static final String TAG = "AddMenuItemFragment";
     private ChipGroup chipGroup;
+    private List<String> tags = new ArrayList<String>();
+    private AddMenuItemViewModel addMenuItemViewModel;
+
     String [] filters = {
             "Vegan",
             "Vegetarian",
@@ -57,6 +65,8 @@ public class AddMenuItemFragment extends Fragment {
         btnAddNewItem = root.findViewById((R.id.add_item_button));
         btnAddPhoto = root.findViewById((R.id.add_photo_button));
 
+        addMenuItemViewModel = new ViewModelProvider(this).get(AddMenuItemViewModel.class);
+        addMenuItemViewModel.init();
 
 
         // TODO: add selected chips to list of strings
@@ -72,11 +82,13 @@ public class AddMenuItemFragment extends Fragment {
                     while(i < chipCount) {
                         Chip chip = (Chip) chipGroup.getChildAt(i);
                         if(chip.isChecked()) {
+                            tags.add(chip.getText().toString());
                             chip_msg += chip.getText().toString() + ", ";
                         }
                         i++;
                     }
                 }
+                //Toast.makeText(getActivity(), chip_msg, Toast.LENGTH_SHORT).show();
                 Log.d(TAG, chip_msg);
                 addItem(v);
             }
@@ -169,18 +181,25 @@ public class AddMenuItemFragment extends Fragment {
         if(!validateName() | !validateCost() | !validateDesc() | !validateFilters()) {
             return;
         }
-        String input = "Name: " + textInputItemName.getEditText().getText().toString();
-        input += " ";
-        input += "Cost: " + textInputItemCost.getEditText().getText().toString();
-        input += " ";
-        input += "Description: " + textInputItemDesc.getEditText().getText().toString();
-        Log.d(TAG, "Menu Item Added " + input);
-        Toast.makeText(getContext(), "Menu Item Added", Toast.LENGTH_SHORT).show();
+        String itemName = textInputItemName.getEditText().getText().toString();
+        Double itemCost = Double.parseDouble(textInputItemCost.getEditText().getText().toString());
+        String itemDescription = textInputItemDesc.getEditText().getText().toString();
+        MenuItem newItem = new MenuItem(itemName, itemDescription, itemCost, 2, tags);
+        addMenuItemViewModel.addMenuItem(newItem, getContext());
+        clearFields();
     }
 
     //TODO: photo permissions
     public void addPhoto(View v) {
         Log.d(TAG, "Photo Button Pressed");
         Toast.makeText(getContext(), "Add Photo", Toast.LENGTH_SHORT).show();
+    }
+
+    private void clearFields(){
+        textInputItemName.getEditText().setText("");
+        textInputItemDesc.getEditText().setText("");
+        textInputItemCost.getEditText().setText("");
+        chipGroup.clearCheck();
+
     }
 }
