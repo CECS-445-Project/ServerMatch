@@ -35,15 +35,14 @@ public class CustomerRepo {
     }
 
     public MutableLiveData<List<Customer>> getCustomers(){
-        loadNicePlaces();
+        if(dataSet.isEmpty()) loadCustomers();
         MutableLiveData<List<Customer>> data = new MutableLiveData<>();
         data.setValue(dataSet);
 
         return data;
     }
 
-    // retreive data from databases
-    private void loadNicePlaces(){
+    private void loadCustomers(){
         db.collection("Customer").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
