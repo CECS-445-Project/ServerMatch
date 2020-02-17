@@ -1,7 +1,7 @@
 /**
  * @author Andrew Delgado
  */
-package com.example.servermatch.cecs445.utils;
+package com.example.servermatch.cecs445.Utils;
 
 import android.content.Context;
 import android.util.Log;
@@ -15,9 +15,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.view.menu.MenuView;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.servermatch.cecs445.R;
+import com.example.servermatch.cecs445.models.Bill;
 import com.example.servermatch.cecs445.ui.menu.BillViewModel;
 import com.example.servermatch.cecs445.ui.menu.MenuViewModel;
 import com.example.servermatch.cecs445.ui.menu.TestData;
@@ -32,12 +34,18 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter {
     private List<MenuItem> mMenuItem;
     private Context mContext;
     private static final String TAG = "MenuRecyclerAdapter";
+    private MenuViewModel mMenuViewModel;
     private BillViewModel mBillViewModel;
 
-    public MenuRecyclerAdapter(BillViewModel menuViewModel, Context context, List<MenuItem> menuItems){
-        mBillViewModel = menuViewModel;
+    public MenuRecyclerAdapter(MenuViewModel menuViewModel, BillViewModel billViewModel, Context context, List<MenuItem> menuItems){
+        mMenuViewModel = menuViewModel;
         mContext = context;
         mMenuItem = menuItems;
+        mBillViewModel = billViewModel;
+    }
+
+    public void setmMenuItem(List<MenuItem> mMenuItem) {
+        this.mMenuItem = mMenuItem;
     }
 
     /**
@@ -97,9 +105,7 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: clicked on: " + mMenuItem.get(position).toString());
-                //todo: add mMenuViewModel here to add data?
                 mBillViewModel.addNewValue(mMenuItem.get(position));
-
             }
         });
     }
@@ -131,7 +137,8 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter {
         }
 
         public void bindView(int position){
-            mItemImage.setImageResource(mMenuItem.get(position).getImage());
+            mItemImage.setImageResource(mMenuItem.get(position).getImageResource(position));
+            //mItemImage.setImageResource(R.drawable.pizza);
             mItemText.setText(mMenuItem.get(position).getItemName());
             mItemCost.setText(String.format("%.2f", mMenuItem.get(position).getItemCost()));
         }
