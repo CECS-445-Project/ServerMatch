@@ -1,5 +1,5 @@
 /**
- * @author Andrew Delgado
+ * @author Andrew Delgado and Howard Chen
  */
 package com.example.servermatch.cecs445.ui.menu;
 
@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.servermatch.cecs445.R;
-import com.example.servermatch.cecs445.utils.BillRecyclerAdapter;
-import com.example.servermatch.cecs445.utils.MenuRecyclerAdapter;
+import com.example.servermatch.cecs445.Utils.BillRecyclerAdapter;
+import com.example.servermatch.cecs445.Utils.MenuRecyclerAdapter;
 import com.example.servermatch.cecs445.models.MenuItem;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -39,22 +39,18 @@ public class MenuFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_menu,container,false);
+        mMenuViewModel = new ViewModelProvider(this).get(MenuViewModel.class);
+        mBillViewModel = new ViewModelProvider(this).get(BillViewModel.class);
+        mMenuViewModel.init();
+        mBillViewModel.init();
 
         recyclerView = view.findViewById(R.id.recycler_view_menu);
         recyclerViewBill = view.findViewById(R.id.recycler_view_bill);
         mFab = view.findViewById(R.id.floatingActionButton);
 
-        mMenuViewModel = new ViewModelProvider(this).get(MenuViewModel.class);
-        mBillViewModel = new ViewModelProvider(this).get(BillViewModel.class);
-
-        mMenuViewModel.init();
-        mBillViewModel.init();
-
         viewModelObserver();
         billViewModelObserver();
-
         fabActionListener();
-
         initRecyclerViews();
 
         return view;
@@ -93,12 +89,12 @@ public class MenuFragment extends Fragment {
 
     private void initRecyclerViews(){
         //Menu Items
-        mAdapter = new MenuRecyclerAdapter(mBillViewModel, getActivity(), mMenuViewModel.getMenuItems().getValue());
+        mAdapter = new MenuRecyclerAdapter(mMenuViewModel, mBillViewModel, getActivity(), mMenuViewModel.getMenuItems().getValue());
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(),2);
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(layoutManager);
 
-        //Bill Items
+//        Bill Items
         billRecyclerAdapter = new BillRecyclerAdapter(view, mBillViewModel, mBillViewModel.getBillItems().getValue());
         recyclerViewBill.setAdapter(billRecyclerAdapter);
         RecyclerView.LayoutManager billLayoutManager = new LinearLayoutManager(getActivity());
