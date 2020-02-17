@@ -3,6 +3,9 @@
  */
 package com.example.servermatch.cecs445.models;
 
+import com.example.servermatch.cecs445.R;
+import com.google.firebase.firestore.Exclude;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -66,6 +69,20 @@ public class MenuItem {
 
     public Integer getImage() {
         return image;
+    }
+    @Exclude
+    public int getImageResource(int num){
+        switch (num){
+            case 0:
+                return R.drawable.chinese_chicken_salad;
+            case 1:
+                return R.drawable.pumpkin_pie;
+            case 2:
+                return R.drawable.shadow_xmas;
+            case 3:
+                return R.drawable.cheeseburger;
+        }
+        return R.drawable.pizza;
     }
 
     public void setImage(Integer image) {
