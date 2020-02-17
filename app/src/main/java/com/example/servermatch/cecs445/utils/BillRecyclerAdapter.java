@@ -1,7 +1,7 @@
 /**
  * @author Andrew Delgado
  */
-package com.example.servermatch.cecs445.utils;
+package com.example.servermatch.cecs445.Utils;
 
 import android.view.LayoutInflater;
 import android.view.View;
