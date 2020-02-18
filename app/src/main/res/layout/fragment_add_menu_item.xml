@@ -97,12 +97,11 @@
         </TextView>
 
         <ScrollView
+            android:id="@+id/scroll_view_chip_group"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:id="@+id/scroll_view_chip_group">
+            android:layout_height="221dp">
 
-            <com.google.android.material.chip.ChipGroup
-                xmlns:android="http://schemas.android.com/apk/res/android"
+            <com.google.android.material.chip.ChipGroup xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/chip_group_filter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
