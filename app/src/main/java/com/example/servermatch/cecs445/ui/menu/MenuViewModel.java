@@ -1,8 +1,9 @@
 /**
- * @author Andrew Delgado
+ * @author Andrew Delgado and Howard Chen
  */
 package com.example.servermatch.cecs445.ui.menu;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -27,6 +28,29 @@ public class MenuViewModel extends ViewModel {
         }
         mRepo = MenuItemRepo.getInstance();
         mMenuItems = mRepo.getMenuItems();
+
+        //sleep for firestore to catch up
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                //super.onPostExecute(aVoid);
+                List<MenuItem> curentItems = mMenuItems.getValue();
+                mMenuItems.postValue(curentItems);
+
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                try {
+                    Thread.sleep(1500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }.execute();
+
         // We are getting double items because the repo keeps adding items
         Log.d(TAG + ":End of init", "size of list" + mMenuItems.getValue().size() + "");
     }

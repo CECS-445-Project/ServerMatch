@@ -9,14 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
+
 
 import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.models.Customer;
@@ -36,8 +35,18 @@ public class AddCustomerFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        addCustomerViewModel =
-                ViewModelProviders.of(this).get(AddCustomerViewModel.class);
+
+        addCustomerViewModel = new ViewModelProvider(this).get(AddCustomerViewModel.class);
+        addCustomerViewModel.init();
+
+        //need to fix observer feature.
+//        addCustomerViewModel.getmCustomers().observe(getActivity(), new Observer<List<Customer>>() {
+//            @Override
+//            public void onChanged(List<Customer> customers) {
+//
+//            }
+//        });
+
         View root = inflater.inflate(R.layout.fragment_add_customer, container, false);
 
         addCustomerFname = root.findViewById(R.id.add_customer_fname);
@@ -53,6 +62,15 @@ public class AddCustomerFragment extends Fragment {
             public void onClick(View v) {
                 validateInput(v);
                 //Todo: set up firebase here
+                String customerFname = addCustomerFname.getEditText().getText().toString();
+                String customerLname  = addCustomerLname.getEditText().getText().toString();
+                String customerEmail  = addCustomerEmail.getEditText().getText().toString().toLowerCase();
+                String customerPhone =  addCustomerPhone.getEditText().getText().toString();
+
+                Customer newCustomer = new Customer(customerFname, customerLname, customerEmail,customerPhone,
+                        addCustomerReceiptText.isChecked(), addCustomerReceiptEmail.isChecked());
+                addCustomerViewModel.addCustomer(newCustomer);
+
             }
         });
 

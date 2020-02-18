@@ -21,8 +21,7 @@
                 android:id="@+id/recycler_view_menu"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#00FFFFFF"
-                android:padding="5dp">
+                android:background="#00FFFFFF">
 
             </androidx.recyclerview.widget.RecyclerView>
 
@@ -88,8 +87,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="513dp"
                 android:background="#00FFFFFF"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             </androidx.recyclerview.widget.RecyclerView>
