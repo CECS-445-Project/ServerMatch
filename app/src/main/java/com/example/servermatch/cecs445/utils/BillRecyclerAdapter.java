@@ -151,8 +151,8 @@ public class BillRecyclerAdapter extends RecyclerView.Adapter {
 
         public void bindView(int position){
             mItemText.setText(mMenuItems.get(position).getItemName());
-            mItemQuantity.setText(String.valueOf(mMenuItems.get(position).getQuantity()));
-            mItemCost.setText(String.format("%.2f",mMenuItems.get(position).getItemCost() * mMenuItems.get(position).getQuantity()));
+            mItemQuantity.setText("X " + String.valueOf(mMenuItems.get(position).getQuantity()));
+            mItemCost.setText("$" + String.format("%.2f",mMenuItems.get(position).getItemCost()));
         }
     }
 }
