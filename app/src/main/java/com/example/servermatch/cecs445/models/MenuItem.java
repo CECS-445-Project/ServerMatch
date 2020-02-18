@@ -82,7 +82,7 @@ public class MenuItem {
             case 3:
                 return R.drawable.cheeseburger;
         }
-        return R.drawable.pizza;
+        return R.drawable.default_dish_tofu;
     }
 
     public void setImage(Integer image) {
