@@ -25,6 +25,10 @@ public class AddCustomerViewModel extends ViewModel {
 
     public void addCustomer(Customer newCustomer){
         cRepo.addCustomer(newCustomer);
+        List<Customer> currentCustomers = mCustomers.getValue();
+        currentCustomers.add(newCustomer); //adds newCustomer to local cache
+        mCustomers.postValue(currentCustomers);
+
     }
     public MutableLiveData<List<Customer>> getmCustomers() {
         return mCustomers;
