@@ -4,7 +4,7 @@
     android:id="@+id/bill_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#00FFFFFF"
+    android:background="@drawable/border_set"
     android:orientation="horizontal"
     android:padding="5dp">
 
@@ -15,10 +15,9 @@
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
         android:gravity="center_vertical"
-        android:text="Taco"
         android:textAlignment="center"
         android:textColor="@color/primary_text"
-        android:textSize="25dp" />
+        android:textSize="20sp" />
 
     <ImageButton
         android:id="@+id/minus_button"
@@ -36,9 +35,8 @@
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="x 1"
         android:textColor="#000000"
-        android:textSize="25dp" />
+        android:textSize="20sp" />
 
     <ImageButton
         android:id="@+id/plus_button"
@@ -49,14 +47,15 @@
         app:srcCompat="@drawable/ic_add_24" />
 
     <TextView
+
         android:id="@+id/bill_item_cost"
         android:layout_width="20pt"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
-        android:gravity="right"
-        android:text="$8.25"
+        android:gravity="end"
         android:textColor="@color/primary_text"
-        android:textSize="25dp" />
+        android:textSize="20sp" />
+
 
 </LinearLayout>
