@@ -94,23 +94,6 @@ public class AddMenuItemFragment extends Fragment {
         btnAddNewItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String chip_msg = "Selected chips are: ";
-                int chipCount = chipGroup.getChildCount();
-                if(chipCount == 0) {
-                    chip_msg += "None.";
-                } else {
-                    int i = 0;
-                    while(i < chipCount) {
-                        Chip chip = (Chip) chipGroup.getChildAt(i);
-                        if(chip.isChecked()) {
-                            tags.add(chip.getText().toString());
-                            chip_msg += chip.getText().toString() + ", ";
-                        }
-                        i++;
-                    }
-                }
-                //Toast.makeText(getActivity(), chip_msg, Toast.LENGTH_SHORT).show();
-                Log.d(TAG, chip_msg);
                 addItem(v);
             }
         });
@@ -158,6 +141,7 @@ public class AddMenuItemFragment extends Fragment {
         Log.d(TAG, "Image Selected from Gallery");
     }
 
+    //ToDO:
     private String getExtension(Uri uri) {
         ContentResolver cr = getContext().getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
@@ -229,22 +213,40 @@ public class AddMenuItemFragment extends Fragment {
     }
 
     private boolean validateFilters() {
+        String chip_msg = "Selected chips are: ";
+        boolean checkedChips = false;
         int chipCount = chipGroup.getChildCount();
         if(chipCount == 0) {
+            chip_msg += "None.";
             return false;
         } else {
             int i = 0;
             while (i < chipCount) {
                 Chip chip = (Chip) chipGroup.getChildAt(i);
                 if (chip.isChecked()) {
-                    return true;
+                    if(!tags.contains(chip.getText().toString())) {
+                        tags.add(chip.getText().toString());
+                        Log.d(TAG, "Added " + chip.getText().toString());
+                        chip_msg += chip.getText().toString() + ", ";
+                    }
+                    checkedChips = true;
+                } else {
+                    if(tags.contains(chip.getText().toString())) {
+                        Log.d(TAG, "Removed " + chip.getText().toString());
+                        tags.remove(chip.getText().toString());
+                    }
                 }
                 i++;
             }
         }
-        Log.d(TAG, "No filters selected");
-        Toast.makeText(getContext(), "No filters selected", Toast.LENGTH_SHORT).show();
-        return false;
+        if(checkedChips) {
+            Log.d(TAG, chip_msg);
+            return true;
+        } else {
+            Log.d(TAG, "No filters selected");
+            Toast.makeText(getContext(), "No filters selected", Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 
     private boolean validateImage() {
