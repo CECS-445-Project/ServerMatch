@@ -126,6 +126,15 @@
 
             </com.google.android.material.button.MaterialButton>
 
-        </LinearLayout>
+        <ProgressBar
+            android:id="@+id/add_item_progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:indeterminate="true"
+            android:visibility="gone">
+        </ProgressBar>
+    </LinearLayout>
     </LinearLayout>
 </LinearLayout>
