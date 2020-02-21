@@ -1,10 +1,12 @@
 package com.example.servermatch.cecs445.models;
 
+import com.google.firebase.firestore.Exclude;
+
 import java.util.List;
 
 public class Bill {
 
-    private String documentID;
+    private String documentId;
     private String customerID;
     private Double totalCost;
     private List<MenuItem> billItems;
@@ -17,7 +19,14 @@ public class Bill {
         this.totalCost = totalCost;
         this.billItems = menuItems;
     }
+    @Exclude
+    public String getDocumentId() {
+        return documentId;
+    }
 
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
+    }
     public String getCustomerID() {
         return customerID;
     }

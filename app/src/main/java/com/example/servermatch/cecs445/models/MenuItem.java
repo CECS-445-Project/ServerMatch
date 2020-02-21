@@ -12,7 +12,7 @@ import java.util.List;
 import static java.sql.Types.NULL;
 
 public class MenuItem {
-
+    private String documentId;
     private String itemName;
     private String itemDesc;
     private Double itemCost;
@@ -20,19 +20,7 @@ public class MenuItem {
     private Integer quantity;
     private List<String> tags;
 
-    public MenuItem(){
-//        mItemName = "Name Not Set";
-//        mItemCost = NULL;
-//        mImage = NULL;
-//        mQuantity = 0;
-    }
-
-//    public MenuItem(String itemName, double itemCost){
-//        mItemName = itemName;
-//        mItemCost = itemCost;
-//        mQuantity = 0;
-//    }
-
+    public MenuItem(){ }
 
     public MenuItem(String mItemName, String mItemDesc, Double mItemCost, Integer mImage, List<String> tags) {
         this.itemName = mItemName;
@@ -42,7 +30,14 @@ public class MenuItem {
         this.quantity = 0;
         this.tags = tags;
     }
+    @Exclude
+    public String getDocumentId() {
+        return documentId;
+    }
 
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
+    }
     public String getItemName() {
         return itemName;
     }

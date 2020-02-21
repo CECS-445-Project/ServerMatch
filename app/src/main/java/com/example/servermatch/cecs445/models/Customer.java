@@ -1,11 +1,14 @@
 package com.example.servermatch.cecs445.models;
 
+import com.google.firebase.firestore.Exclude;
+
 /**
  * author: Howard
  * TO DO : delete comments for old class.
  */
 
 public class Customer {
+    private String documentId;
     private String firstName;
     private String lastName;
     private String email;
@@ -27,6 +30,14 @@ public class Customer {
 
     public Customer(){}
 
+    @Exclude
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
+    }
     public String getFirstName() {
         return firstName;
     }
