@@ -52,10 +52,6 @@ public class FrequentCustomersViewModel extends ViewModel {
         mTopCustomers.postValue(currentTopCustomers);
     }
 
-    public void frequentCustomerListener(){
-        fCRepo.frequentCustomerListenter();
-
-    }
 
     public LiveData<List<Customer>> getTopCustomers() { return mTopCustomers; }
 }
