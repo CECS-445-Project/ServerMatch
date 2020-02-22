@@ -54,6 +54,8 @@ public class MenuItemRepo {
                     List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
 
                     for (DocumentSnapshot documentSnapshot : list) {
+                        MenuItem item = documentSnapshot.toObject(MenuItem.class);
+                        item.setDocumentId(documentSnapshot.getId());
                         dataSet.add(documentSnapshot.toObject(MenuItem.class));
                     }
                 }
