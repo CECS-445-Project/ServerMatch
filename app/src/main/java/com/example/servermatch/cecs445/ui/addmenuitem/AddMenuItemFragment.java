@@ -20,13 +20,17 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.models.MenuItem;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.ChipDrawable;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
@@ -55,6 +59,7 @@ public class AddMenuItemFragment extends Fragment {
     private boolean imageSelected;
     private Uri imguri;
     private StorageTask uploadTask;
+    private  String downloadURL;
 
     String [] filters = {
             "Vegan",
@@ -148,30 +153,59 @@ public class AddMenuItemFragment extends Fragment {
         return mimeTypeMap.getExtensionFromMimeType(cr.getType(uri));
     }
 
-    private void imageUploader() {
+    private void imageUploader(View v) {
         Log.d(TAG, "Image Upload IN PROGRESS");
         progressBar.setVisibility(getView().VISIBLE);
         btnAddNewItem.setEnabled(false);
-        StorageReference ref = mStorageRef.child(System.currentTimeMillis()+"."+getExtension(imguri));
-        ref.putFile(imguri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // Get a URL to the uploaded content
-//                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                        Log.d(TAG, "Image upload SUCCESS");
-                        progressBar.setVisibility(getView().GONE);
-                        btnAddNewItem.setEnabled(true);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle unsuccessful uploads
-                        // ...
-                        Log.d(TAG, "Image upload FAILED");
-                    }
-                });
+        final StorageReference ref = mStorageRef.child(System.currentTimeMillis()+"."+getExtension(imguri));
+
+        //uploads file to Firebase Cloud Storage
+//        ref.putFile(imguri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+////            @Override
+////            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+////
+////                ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+////                    @Override
+////                    public void onSuccess(Uri uri) {
+////                        Log.d(TAG, "Image upload SUCCESS");
+////                        progressBar.setVisibility(getView().GONE);
+////                        btnAddNewItem.setEnabled(true);
+////                        Uri downloadUrl = uri;
+////                        setImageURLListener(downloadUrl);
+////                        Log.d(TAG, "onSuccess0: "+ downloadURL);
+////                    }
+////                });
+////            }
+////        });
+
+        uploadTask = ref.putFile(imguri);
+
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+
+                // Continue with the task to get the download URL
+                return ref.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
+                    downloadURL = downloadUri.toString();
+                } else {
+                    // Handle failures
+                    // ...
+                }
+            }
+        });
+
+
+        Log.d(TAG, "imageUploader: "  + downloadURL);
+
     }
 
     @Override
@@ -268,11 +302,11 @@ public class AddMenuItemFragment extends Fragment {
         if(!validateName() | !validateCost() | !validateDesc() | !validateFilters() | !validateImage()) {
             return;
         }
-        imageUploader();
+        imageUploader(v);
         String itemName = textInputItemName.getEditText().getText().toString();
         Double itemCost = Double.parseDouble(textInputItemCost.getEditText().getText().toString());
         String itemDescription = textInputItemDesc.getEditText().getText().toString();
-        MenuItem newItem = new MenuItem(itemName, itemDescription, itemCost, 2, tags);
+        MenuItem newItem = new MenuItem(itemName, itemDescription, itemCost, downloadURL, tags);
         addMenuItemViewModel.addMenuItem(newItem, getContext());
         clearFields();
     }
@@ -283,5 +317,9 @@ public class AddMenuItemFragment extends Fragment {
         textInputItemCost.getEditText().setText("");
         chipGroup.clearCheck();
         imageSelected = false;
+    }
+
+    private  void setImageURLListener(Uri uri){
+        downloadURL = uri.toString();
     }
 }
