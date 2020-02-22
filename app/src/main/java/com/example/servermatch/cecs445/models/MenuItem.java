@@ -21,18 +21,7 @@ public class MenuItem {
     private List<String> tags;
 
     public MenuItem(){
-//        mItemName = "Name Not Set";
-//        mItemCost = NULL;
-//        mImage = NULL;
-//        mQuantity = 0;
     }
-
-//    public MenuItem(String itemName, double itemCost){
-//        mItemName = itemName;
-//        mItemCost = itemCost;
-//        mQuantity = 0;
-//    }
-
 
     public MenuItem(String mItemName, String mItemDesc, Double mItemCost, String image, List<String> tags) {
         this.itemName = mItemName;
