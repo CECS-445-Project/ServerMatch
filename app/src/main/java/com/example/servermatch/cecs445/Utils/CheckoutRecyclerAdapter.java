@@ -1,41 +1,24 @@
-/**
- * @author Andrew Delgado
- */
 package com.example.servermatch.cecs445.Utils;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.servermatch.cecs445.R;
-import com.example.servermatch.cecs445.models.MenuItem;
-import com.example.servermatch.cecs445.ui.menu.BillViewModel;
-import com.example.servermatch.cecs445.ui.menu.TestData;
+import com.example.servermatch.cecs445.models.Bill;
 
-import java.util.ArrayList;
-import java.util.List;
+public class CheckoutRecyclerAdapter extends RecyclerView.Adapter {
 
-public class BillRecyclerAdapter extends RecyclerView.Adapter {
+    private Bill mBill;
 
-    private List<MenuItem> mMenuItems = new ArrayList<>();
-    private BillViewModel mBillViewModel;
-    private View mView;
-    private static final String TAG = "BillRecyclerAdapter";
-
-    public BillRecyclerAdapter(View view, BillViewModel billViewModel, List<MenuItem> billList){
-        mView = view;
-        mBillViewModel = billViewModel;
-        mMenuItems = billList;
+    public CheckoutRecyclerAdapter(Bill bill){
+        mBill = bill;
     }
-
 
     /**
      * Called when RecyclerView needs a new {@link ViewHolder} of the given type to represent
@@ -60,9 +43,8 @@ public class BillRecyclerAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_bill_item,parent,false);
+                .inflate(R.layout.fragment_checkout_bill,parent,false);
 
         return new ViewHolder(view);
     }
@@ -88,38 +70,8 @@ public class BillRecyclerAdapter extends RecyclerView.Adapter {
      * @param position The position of the item within the adapter's data set.
      */
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ((ViewHolder)holder).bindView(position);
-
-        //Increment Button
-        ((ViewHolder)holder).mPlusButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mBillViewModel.addNewValue(mMenuItems.get(position));
-            }
-        });
-
-        //Subtract Button
-        ((ViewHolder)holder).mMinusButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mBillViewModel.removeValue(mMenuItems.get(position));
-            }
-        });
-    }
-
-    public double updateBill(){
-        TextView billTotalText = mView.findViewById(R.id.bill_total);
-
-        double billTotal = 0.00;
-
-        for (MenuItem m:mMenuItems) {
-            billTotal += m.getQuantity() * m.getItemCost();
-        }
-
-        billTotalText.setText("$" + (String.format("%.2f",billTotal)));
-
-        return billTotal;
     }
 
     /**
@@ -129,32 +81,28 @@ public class BillRecyclerAdapter extends RecyclerView.Adapter {
      */
     @Override
     public int getItemCount() {
-        return mMenuItems.size();
+        return mBill.getMenuItems().size();
     }
 
-    //private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-    private class ViewHolder extends RecyclerView.ViewHolder {
+    private class ViewHolder extends RecyclerView.ViewHolder{
 
         private TextView mItemText;
         private TextView mItemQuantity;
         private TextView mItemCost;
-        private AppCompatImageButton mPlusButton;
-        private AppCompatImageButton mMinusButton;
+        private TextView mCheckoutTotal;
 
-        public ViewHolder(View itemView){
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mItemText = itemView.findViewById(R.id.bill_item_name);
             mItemQuantity = itemView.findViewById(R.id.item_quantity);
             mItemCost = itemView.findViewById(R.id.bill_item_cost);
-            mPlusButton = itemView.findViewById(R.id.plus_button);
-            mMinusButton = itemView.findViewById(R.id.minus_button);
-
         }
 
         public void bindView(int position){
-            mItemText.setText(mMenuItems.get(position).getItemName());
-            mItemQuantity.setText("X " + mMenuItems.get(position).getQuantity());
-            mItemCost.setText("$" + String.format("%.2f",mMenuItems.get(position).getItemCost()));
+
+            mItemText.setText(mBill.getMenuItems().get(position).getItemName());
+            mItemQuantity.setText(String.valueOf(mBill.getMenuItems().get(position).getmIntQuantity()));
+            mItemCost.setText("$" + String.format("%.2f",mBill.getMenuItems().get(position).getItemCost()));
         }
     }
 }

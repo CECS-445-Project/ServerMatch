@@ -12,6 +12,11 @@ public class Bill {
     public Bill() {
     }
 
+    public Bill(Double totalCost, List<MenuItem> menuItems) {
+        this.totalCost = totalCost;
+        this.billItems = menuItems;
+    }
+
     public Bill(String customerID, Double totalCost, List<MenuItem> menuItems) {
         this.customerID = customerID;
         this.totalCost = totalCost;
@@ -40,5 +45,15 @@ public class Bill {
 
     public void setMenuItems(List<MenuItem> billItems) {
         this.billItems = billItems;
+    }
+
+    @Override
+    public String toString() {
+        return "Bill{" +
+                "documentID='" + documentID + '\'' +
+                ", customerID='" + customerID + '\'' +
+                ", totalCost=" + totalCost +
+                ", billItems=" + billItems +
+                '}';
     }
 }
