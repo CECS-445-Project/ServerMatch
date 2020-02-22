@@ -15,6 +15,10 @@ public class MenuItem {
     private Double itemCost;
     private Integer image;
     private Integer mQuantity;
+
+
+    private int mIntQuantity;
+
     private List<String> tags;
 
     public MenuItem(){
@@ -42,8 +46,12 @@ public class MenuItem {
 
     public MenuItem(String name, int quantity, double cost) {
         itemName = name;
-        mQuantity = quantity;
+        mIntQuantity = quantity;
         itemCost = cost;
+    }
+
+    public int getmIntQuantity() {
+        return mIntQuantity;
     }
 
     public String getItemName() {

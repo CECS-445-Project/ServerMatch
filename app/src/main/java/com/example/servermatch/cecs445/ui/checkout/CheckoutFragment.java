@@ -5,12 +5,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.servermatch.cecs445.R;
+import com.example.servermatch.cecs445.Utils.CheckoutRecyclerAdapter;
 import com.example.servermatch.cecs445.models.Bill;
 import com.example.servermatch.cecs445.models.MenuItem;
 
@@ -22,21 +28,48 @@ public class CheckoutFragment extends Fragment {
     private static String TAG = "CheckoutFragment";
     private View view;
     private Bill bill;
+    private RecyclerView recyclerView;
+    private TextView totalCost;
+    private EditText mEmail;
+    private Button mCheckoutButton;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.fragment_checkout,container,false);
+        view = inflater.inflate(R.layout.fragment_checkout2,container,false);
+        recyclerView = view.findViewById(R.id.recycler_view_checkout);
+        totalCost = view.findViewById(R.id.checkout_total_cost);
+        mEmail = view.findViewById(R.id.checkout_email);
+        mCheckoutButton = view.findViewById(R.id.checkout_button);
 
+        checkoutButtonListener();
         setUpBill();
+        initRecyclerView();
 
-        Log.d(TAG, bill.toString());
 
         return view;
     }
 
+    public void checkoutButtonListener(){
+        mCheckoutButton.setOnClickListener(v -> {
+
+
+
+            Log.d(TAG, mEmail.getText().toString());
+            Log.d(TAG, bill.toString());
+
+        });
+    }
+
+
+    public void initRecyclerView(){
+        CheckoutRecyclerAdapter checkoutRecyclerAdapter = new CheckoutRecyclerAdapter(bill);
+        recyclerView.setAdapter(checkoutRecyclerAdapter);
+        RecyclerView.LayoutManager checkoutLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(checkoutLayoutManager);
+    }
 
 
     public void setUpBill(){
@@ -62,6 +95,12 @@ public class CheckoutFragment extends Fragment {
             }
 
             bill.setMenuItems(menuItems);
+
+            bill.setTotalCost((double)bundle.get("billTotal"));
+
+
+
+            totalCost.setText("$" + String.format("%.2f",bundle.get("billTotal")));
         }
     }
 }

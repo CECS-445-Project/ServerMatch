@@ -39,6 +39,7 @@ public class MenuFragment extends Fragment {
     private FloatingActionButton mFab;
     private View view;
     private Button checkoutButton;
+    private double totalBill;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -57,7 +58,6 @@ public class MenuFragment extends Fragment {
         // This works without the recycler view. Time to add that.
         checkoutButtonListener();
 
-
         viewModelObserver();
         billViewModelObserver();
         fabActionListener();
@@ -73,7 +73,7 @@ public class MenuFragment extends Fragment {
     private void billViewModelObserver(){
         mBillViewModel.getBillItems().observe(getViewLifecycleOwner(), menuItems -> {
             billRecyclerAdapter.notifyDataSetChanged();
-            billRecyclerAdapter.updateBill();
+            totalBill = billRecyclerAdapter.updateBill();
         });
     }
 
@@ -108,6 +108,7 @@ public class MenuFragment extends Fragment {
             bundle.putStringArrayList("billItemNames", billItemNames);
             bundle.putStringArrayList("billItemQuantity", billItemQuantity);
             bundle.putStringArrayList("billItemCost", billItemCost);
+            bundle.putDouble("billTotal", totalBill);
             checkoutFragment.setArguments(bundle);
 
 
