@@ -48,8 +48,8 @@ public class FrequentCustomersViewModel extends ViewModel {
                 return null;
             }
         }.execute();
-        List<Customer> currentTopCustomers = mTopCustomers.getValue();
-        mTopCustomers.postValue(currentTopCustomers);
+//        List<Customer> currentTopCustomers = mTopCustomers.getValue();
+//        mTopCustomers.postValue(currentTopCustomers);
     }
 
 
