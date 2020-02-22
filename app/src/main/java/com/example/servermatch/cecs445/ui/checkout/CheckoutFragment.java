@@ -55,11 +55,10 @@ public class CheckoutFragment extends Fragment {
     public void checkoutButtonListener(){
         mCheckoutButton.setOnClickListener(v -> {
 
-
+            bill.setCustomerID(mEmail.getText().toString());
 
             Log.d(TAG, mEmail.getText().toString());
             Log.d(TAG, bill.toString());
-
         });
     }
 
@@ -80,7 +79,7 @@ public class CheckoutFragment extends Fragment {
             ArrayList<String> itemNames;
             ArrayList<String> itemQuantity;
             ArrayList<String> itemCost;
-            bill = new Bill();
+//            bill = new Bill();
             List<MenuItem> menuItems = new ArrayList<>();
 
             itemNames = (ArrayList) bundle.get("billItemNames");
@@ -94,12 +93,11 @@ public class CheckoutFragment extends Fragment {
                         Double.parseDouble(itemCost.get(i))));
             }
 
-            bill.setMenuItems(menuItems);
+//            bill.setMenuItems(menuItems);
+//
+//            bill.setTotalCost((double)bundle.get("billTotal"));
 
-            bill.setTotalCost((double)bundle.get("billTotal"));
-
-
-
+            bill = new Bill((double)bundle.get("billTotal"),menuItems);
             totalCost.setText("$" + String.format("%.2f",bundle.get("billTotal")));
         }
     }
