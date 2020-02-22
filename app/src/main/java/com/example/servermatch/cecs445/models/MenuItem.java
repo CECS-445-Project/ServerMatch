@@ -15,8 +15,6 @@ public class MenuItem {
     private Double itemCost;
     private Integer image;
     private Integer mQuantity;
-
-
     private int mIntQuantity;
 
     private List<String> tags;
@@ -35,6 +33,8 @@ public class MenuItem {
     public String getDocumentId() {
         return documentId;
     }
+
+    public void setDocumentId(String documentId) { this.documentId = documentId; }
 
     public MenuItem(String name, int quantity, double cost) {
         itemName = name;
