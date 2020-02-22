@@ -55,10 +55,6 @@ public class BillViewModel extends ViewModel {
         mMenuBillItems.postValue(currentBillMenuItems);
     }
 
-    public void updateBill(){
-
-    }
-
     public LiveData<List<MenuItem>> getBillItems(){
         return mMenuBillItems;
     }

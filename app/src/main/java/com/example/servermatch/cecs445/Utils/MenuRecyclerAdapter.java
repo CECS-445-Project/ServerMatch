@@ -146,8 +146,6 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter {
         }
 
         public void bindView(int position){
-            //use glide
-          //  mItemImage.setImageResource(mMenuItem.get(position).getImageResource(position));
             mItemText.setText(mMenuItem.get(position).getItemName());
             mItemCost.setText(String.format("%.2f", mMenuItem.get(position).getItemCost()));
         }
