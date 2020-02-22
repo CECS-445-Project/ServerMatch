@@ -8,11 +8,13 @@ public class Bill {
 
     private String documentId;
     private String customerId;
+    private String customerEmail;
     private Double totalCost;
     private List<MenuItem> billItems;
 
     public Bill() {
     }
+
 
     public Bill(Double totalCost, List<MenuItem> menuItems) {
         this.totalCost = totalCost;
@@ -24,6 +26,32 @@ public class Bill {
         this.totalCost = totalCost;
         this.billItems = menuItems;
     }
+
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
+
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
+    }
+
+    public List<MenuItem> getBillItems() {
+        return billItems;
+    }
+
+    public void setBillItems(List<MenuItem> billItems) {
+        this.billItems = billItems;
+    }
+
     @Exclude
     public String getDocumentId() {
         return documentId;
@@ -32,6 +60,7 @@ public class Bill {
     public void setDocumentId(String documentId) {
         this.documentId = documentId;
     }
+
     public String getCustomerID() {
         return customerId;
     }
