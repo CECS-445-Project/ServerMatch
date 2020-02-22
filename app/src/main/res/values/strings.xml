@@ -50,6 +50,7 @@
     <string name="new_item_filter_16">Contains Poultry</string>
     <string name="new_item_filter_17">Contains Pork</string>
     <string name="default_bill">$0.00</string>
+    <string name="checkout_email">Enter in your email</string>
 
 
 </resources>

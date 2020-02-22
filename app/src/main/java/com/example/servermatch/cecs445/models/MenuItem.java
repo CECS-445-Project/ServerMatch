@@ -6,10 +6,7 @@ package com.example.servermatch.cecs445.models;
 import com.example.servermatch.cecs445.R;
 import com.google.firebase.firestore.Exclude;
 
-import java.util.Collection;
 import java.util.List;
-
-import static java.sql.Types.NULL;
 
 public class MenuItem {
 
@@ -17,7 +14,7 @@ public class MenuItem {
     private String itemDesc;
     private Double itemCost;
     private Integer image;
-    private Integer quantity;
+    private Integer mQuantity;
     private List<String> tags;
 
     public MenuItem(){
@@ -39,8 +36,14 @@ public class MenuItem {
         this.itemDesc = mItemDesc;
         this.itemCost = mItemCost;
         this.image = mImage;
-        this.quantity = 0;
+        this.mQuantity = 0;
         this.tags = tags;
+    }
+
+    public MenuItem(String name, int quantity, double cost) {
+        itemName = name;
+        mQuantity = quantity;
+        itemCost = cost;
     }
 
     public String getItemName() {
@@ -90,7 +93,7 @@ public class MenuItem {
     }
 
     public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+        this.mQuantity = quantity;
     }
 
     public List<String> getTags() {
@@ -101,9 +104,9 @@ public class MenuItem {
         this.tags = tags;
     }
 
-    public void incrementQuantity(){++quantity;}
-    public void decrementQuantity(){--quantity;}
-    public int getQuantity(){return quantity;}
+    public void incrementQuantity(){++mQuantity;}
+    public void decrementQuantity(){--mQuantity;}
+    public int getQuantity(){return mQuantity;}
 
     @Override
     public String toString() {
@@ -111,7 +114,7 @@ public class MenuItem {
                 "mItemName='" + itemName + '\'' +
                 ", mItemCost=" + itemCost +
                 ", mImage=" + image +
-                ", mQuantity=" + quantity +
+                ", mQuantity=" + mQuantity +
                 ", tags=" + tags +
                 '}';
     }
