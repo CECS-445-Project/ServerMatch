@@ -138,7 +138,6 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter {
 
         public void bindView(int position){
             mItemImage.setImageResource(mMenuItem.get(position).getImageResource(position));
-            //mItemImage.setImageResource(R.drawable.pizza);
             mItemText.setText(mMenuItem.get(position).getItemName());
             mItemCost.setText(String.format("%.2f", mMenuItem.get(position).getItemCost()));
         }

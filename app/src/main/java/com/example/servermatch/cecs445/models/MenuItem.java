@@ -9,7 +9,7 @@ import com.google.firebase.firestore.Exclude;
 import java.util.List;
 
 public class MenuItem {
-
+    private String documentId;
     private String itemName;
     private String itemDesc;
     private Double itemCost;
@@ -21,19 +21,7 @@ public class MenuItem {
 
     private List<String> tags;
 
-    public MenuItem(){
-//        mItemName = "Name Not Set";
-//        mItemCost = NULL;
-//        mImage = NULL;
-//        mQuantity = 0;
-    }
-
-//    public MenuItem(String itemName, double itemCost){
-//        mItemName = itemName;
-//        mItemCost = itemCost;
-//        mQuantity = 0;
-//    }
-
+    public MenuItem(){ }
 
     public MenuItem(String mItemName, String mItemDesc, Double mItemCost, Integer mImage, List<String> tags) {
         this.itemName = mItemName;
@@ -42,6 +30,10 @@ public class MenuItem {
         this.image = mImage;
         this.mQuantity = 0;
         this.tags = tags;
+    }
+    @Exclude
+    public String getDocumentId() {
+        return documentId;
     }
 
     public MenuItem(String name, int quantity, double cost) {
