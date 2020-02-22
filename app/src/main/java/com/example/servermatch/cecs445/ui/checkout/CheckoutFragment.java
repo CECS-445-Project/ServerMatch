@@ -1,3 +1,7 @@
+/**
+ * @author Andrew Delgado
+ */
+
 package com.example.servermatch.cecs445.ui.checkout;
 
 import android.os.Bundle;
