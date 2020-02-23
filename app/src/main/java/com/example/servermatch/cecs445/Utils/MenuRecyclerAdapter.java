@@ -4,6 +4,7 @@
 package com.example.servermatch.cecs445.Utils;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.models.Bill;
+import com.example.servermatch.cecs445.ui.description.DescriptionFragment;
 import com.example.servermatch.cecs445.ui.menu.BillViewModel;
 import com.example.servermatch.cecs445.ui.menu.MenuViewModel;
 import com.example.servermatch.cecs445.ui.menu.TestData;
@@ -103,13 +105,23 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
 
-        ((ViewHolder) holder).parent_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: clicked on: " + mMenuItem.get(position).toString());
-                mBillViewModel.addNewValue(mMenuItem.get(position));
-            }
+        ((ViewHolder) holder).parent_layout.setOnClickListener(v -> {
+            Log.d(TAG, "onClick: clicked on: " + mMenuItem.get(position).toString());
+            mBillViewModel.addNewValue(mMenuItem.get(position));
         });
+
+        ((ViewHolder)holder).parent_layout.setOnLongClickListener(v -> {
+            Log.d(TAG, "onLongClick: clicked on: " + mMenuItem.get(position).toString());
+
+
+            DescriptionFragment descriptionFragment = new DescriptionFragment();
+            Bundle
+
+           return false;
+        });
+
+
+
         ((ViewHolder)holder).bindView(position);
         RequestOptions defaultOptions = new RequestOptions()
                 .error(R.drawable.ic_launcher_background);
