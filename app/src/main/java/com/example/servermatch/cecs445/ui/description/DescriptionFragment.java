@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.servermatch.cecs445.R;
+import com.squareup.picasso.Picasso;
 
 public class DescriptionFragment extends Fragment {
 
@@ -41,9 +42,12 @@ public class DescriptionFragment extends Fragment {
     private void initItemInfo(){
         Bundle bundle = getArguments();
         if(bundle != null){
+
+
+            Picasso.get().load(bundle.get("itemUrl").toString()).into(mImageMenuItem);
             //mImageMenuItem.setImageResource(bundle.get("itemImage").toString());
             mNameMenuItem.setText(bundle.get("itemName").toString());
-            mCostMenuItem.setText(bundle.get("itemCost").toString());
+            mCostMenuItem.setText("$" + String.format("%.2f",bundle.get("itemCost")));
             mDescriptionMenuItem.setText(bundle.get("itemDescription").toString());
         }
     }
