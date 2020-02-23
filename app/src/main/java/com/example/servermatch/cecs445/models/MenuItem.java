@@ -13,7 +13,7 @@ public class MenuItem {
     private String itemName;
     private String itemDesc;
     private Double itemCost;
-    private Integer image;
+    private String image;
     private Integer mQuantity;
 
 
@@ -23,7 +23,7 @@ public class MenuItem {
 
     public MenuItem(){ }
 
-    public MenuItem(String mItemName, String mItemDesc, Double mItemCost, Integer mImage, List<String> tags) {
+    public MenuItem(String mItemName, String mItemDesc, Double mItemCost, String mImage, List<String> tags) {
         this.itemName = mItemName;
         this.itemDesc = mItemDesc;
         this.itemCost = mItemCost;
@@ -70,25 +70,10 @@ public class MenuItem {
         this.itemCost = itemCost;
     }
 
-    public Integer getImage() {
+    public String getImage() {
         return image;
     }
-    @Exclude
-    public int getImageResource(int num){
-        switch (num){
-            case 0:
-                return R.drawable.chinese_chicken_salad;
-            case 1:
-                return R.drawable.pumpkin_pie;
-            case 2:
-                return R.drawable.shadow_xmas;
-            case 3:
-                return R.drawable.cheeseburger;
-        }
-        return R.drawable.default_dish_tofu;
-    }
-
-    public void setImage(Integer image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
