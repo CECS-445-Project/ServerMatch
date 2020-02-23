@@ -39,6 +39,12 @@ public class DescriptionFragment extends Fragment {
     }
 
     private void initItemInfo(){
-
+        Bundle bundle = getArguments();
+        if(bundle != null){
+            //mImageMenuItem.setImageResource(bundle.get("itemImage").toString());
+            mNameMenuItem.setText(bundle.get("itemName").toString());
+            mCostMenuItem.setText(bundle.get("itemCost").toString());
+            mDescriptionMenuItem.setText(bundle.get("itemDescription").toString());
+        }
     }
 }

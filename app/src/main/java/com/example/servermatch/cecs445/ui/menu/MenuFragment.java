@@ -40,6 +40,7 @@ public class MenuFragment extends Fragment {
     private View view;
     private Button checkoutButton;
     private double totalBill;
+    private FragmentTransaction ft;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -62,6 +63,8 @@ public class MenuFragment extends Fragment {
         billViewModelObserver();
         fabActionListener();
         initRecyclerViews();
+
+        ft = getParentFragmentManager().beginTransaction();
 
         return view;
     }
@@ -111,7 +114,6 @@ public class MenuFragment extends Fragment {
             bundle.putDouble("billTotal", totalBill);
             checkoutFragment.setArguments(bundle);
 
-
             FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
             transaction.replace(R.id.nav_host_fragment, checkoutFragment);
             transaction.addToBackStack(null);
@@ -130,7 +132,8 @@ public class MenuFragment extends Fragment {
 
     private void initRecyclerViews(){
         //Menu Items
-        mAdapter = new MenuRecyclerAdapter(mMenuViewModel, mBillViewModel, getActivity(), mMenuViewModel.getMenuItems().getValue());
+        //mAdapter = new MenuRecyclerAdapter(mMenuViewModel, mBillViewModel, getActivity(), mMenuViewModel.getMenuItems().getValue());
+        mAdapter = new MenuRecyclerAdapter(this.getContext(), mMenuViewModel, mBillViewModel, getActivity(), mMenuViewModel.getMenuItems().getValue());
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(),2);
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(layoutManager);
