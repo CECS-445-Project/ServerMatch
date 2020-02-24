@@ -48,18 +48,10 @@ public class CheckoutViewModel extends ViewModel {
 //        mCustomers.postValue(currentCustomers);
     }
 
-    public boolean checkOutCustomer(Context context, String email, List<MenuItem> billItems){
-        List<Customer> customerList = mCustomers.getValue();
-        for(Customer customer: customerList){ //should use other loop.
-            if(customer.getEmail().equals(email) ){
-                String customerId = customer.getDocumentId();
-                Integer visits = customer.getVisits() + 1;
-                customer.setVisits(visits); //sets locally
-                cRepo.checkOutCustomer(context, customer, billItems);
-                return true;
-            }
-        }
-       return false;
+    public void checkOutCustomer(Context context, Bill bill, String checkOutTime){
+
+        cRepo.checkOutCustomer(context, bill, checkOutTime);
+
     }
 
     public MutableLiveData<List<Customer>> getmCustomers() {

@@ -14,17 +14,15 @@ import com.example.servermatch.cecs445.models.MenuItem;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * @author Howard
@@ -39,6 +37,7 @@ public class CustomerRepo {
             db.collection("Customer");
     private  final CollectionReference billRef =
             db.collection("Bill");
+    private boolean incrementedVisit;
 
     public static CustomerRepo getInstance(){
         if(instance == null){
@@ -80,20 +79,7 @@ public class CustomerRepo {
     }
 
     public void addCustomer(Customer newCustomer){
-//        customerRef.add(newCustomer).addOnSuccessListener
-//                (new OnSuccessListener<DocumentReference>() {
-//                    @Override
-//            public void onSuccess(DocumentReference documentReference) {
-//                //Where Toast would go for success
-//                        //still needs to figure out how to Toast from Repo Class.
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                Log.e(TAG, "onFailure: " + e.toString());
-//            }
-//        });
-
+        //stores new customer with email as document id.
         customerRef.document(newCustomer.getEmail()).set(newCustomer)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -107,48 +93,59 @@ public class CustomerRepo {
             }
         });
 
-        HashMap<String, Integer> itemMap = new HashMap<>();
-        MenuItemRepo mRepo = MenuItemRepo.getInstance();
-        List<MenuItem> menuItemList = mRepo.getMenuItems().getValue();
-        for(MenuItem menuItem: menuItemList){
-            itemMap.put(menuItem.getDocumentId(), 0);
-        }
-        billRef.document(newCustomer.getEmail()).set(itemMap)
+    }
+
+    public void checkOutCustomer(Context context, Bill bill, String checkoutTime) {
+
+        //increments visit
+        String email  = bill.getCustomerID();
+        incrementVisit(context, email);
+        storeBill(context, email, bill, checkoutTime);
+
+    }
+
+    public void incrementVisit(Context context, String email){
+
+        customerRef.document(email)
+                .update("visits", FieldValue.increment(1))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-
+                Toast.makeText(context, "Visits incremented!", Toast.LENGTH_SHORT).show();
+                incrementedVisit = true;
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.e(TAG, "onFailure: " + e.toString());
+                Log.e(TAG, "onFailure: " + e.toString() );
+                incrementedVisit = false;
             }
         });
+
     }
 
-    public void checkOutCustomer(Context context, Customer customer,
-                                 List<MenuItem> billItems) {
+    public void storeBill(Context context, String email, Bill bill, String checkoutTime){
+        Map<String, Object> billInformation =  new HashMap<>();
+        billInformation.put("TransactionDateTime:", checkoutTime);
+        List<MenuItem> billItems = bill.getBillItems();
+        for(MenuItem menuItem : billItems){
+            String menuItemName = menuItem.getItemName();
+            Integer menuItemQty =  menuItem.getmIntQuantity();
+            billInformation.put(menuItemName, menuItemQty);
+        }
 
-        //increments visit
-        String email  = customer.getEmail();
-        customerRef.document(email)
-                .set(customer).addOnSuccessListener(new OnSuccessListener<Void>() {
+        customerRef.document(email).collection("Bills").document(checkoutTime)
+                .set(billInformation).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(context, "Visit updated!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Bill Stored @" + checkoutTime, Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.e(TAG, "onFailure: " + e.toString());
+                Log.e(TAG, "onFailure: " + e.toString() );
             }
         });
-
-        for(MenuItem item: billItems){
-            //need to check if menuItem has been ordered before or not.
-            billRef.document(email).update(item.getDocumentId(), FieldValue.increment(item.getmIntQuantity()));
-        }
 
     }
 }

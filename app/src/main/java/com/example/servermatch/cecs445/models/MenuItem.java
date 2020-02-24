@@ -9,11 +9,12 @@ import com.google.firebase.firestore.Exclude;
 import java.util.List;
 
 public class MenuItem {
+
     private String documentId;
     private String itemName;
     private String itemDesc;
     private Double itemCost;
-    private Integer image;
+    private String image;
     private Integer mQuantity;
     private int mIntQuantity;
 
@@ -21,7 +22,7 @@ public class MenuItem {
 
     public MenuItem(){ }
 
-    public MenuItem(String mItemName, String mItemDesc, Double mItemCost, Integer mImage, List<String> tags) {
+    public MenuItem(String mItemName, String mItemDesc, Double mItemCost, String mImage, List<String> tags) {
         this.itemName = mItemName;
         this.itemDesc = mItemDesc;
         this.itemCost = mItemCost;
@@ -70,7 +71,7 @@ public class MenuItem {
         this.itemCost = itemCost;
     }
 
-    public Integer getImage() {
+    public String getImage() {
         return image;
     }
     @Exclude
@@ -88,7 +89,7 @@ public class MenuItem {
         return R.drawable.default_dish_tofu;
     }
 
-    public void setImage(Integer image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

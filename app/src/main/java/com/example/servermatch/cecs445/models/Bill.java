@@ -10,7 +10,8 @@ public class Bill {
     private String customerId;
     private String customerEmail;
     private Double totalCost;
-    private List<MenuItem> billItems;
+
+   @Exclude private List<MenuItem> billItems; //excluded for database but handled in app
 
     public Bill() {
     }

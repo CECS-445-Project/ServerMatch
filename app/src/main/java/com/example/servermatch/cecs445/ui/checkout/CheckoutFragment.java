@@ -6,7 +6,6 @@ package com.example.servermatch.cecs445.ui.checkout;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +27,8 @@ import com.example.servermatch.cecs445.models.Bill;
 import com.example.servermatch.cecs445.models.Customer;
 import com.example.servermatch.cecs445.models.MenuItem;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,30 +59,21 @@ public class CheckoutFragment extends Fragment {
         setUpBill();
         initRecyclerView();
 
-
-
-
-
         return view;
     }
 
     public void checkoutButtonListener(){
         mCheckoutButton.setOnClickListener(v -> {
-            String email = mEmail.getText().toString().toLowerCase();
-            bill.setCustomerID(email);
-//            Pair result = checkOutViewModel.getCustomerWithEmail(email);
-//            if( result.first.equals(true)){
-//                Customer customer = result.second.getClass();
-//
-//            }
+            //get checkout time
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime now = LocalDateTime.now();
+            String checkoutTime= dtf.format(now);
 
-            boolean emailValid= checkOutViewModel.checkOutCustomer(getContext(), email,
-                     bill.getBillItems());
-            if(!emailValid){
-                Toast.makeText(getContext(), "Not a registered email! Please try again", Toast.LENGTH_LONG).show();
-            }else{
+            String emailString = mEmail.getText().toString();
+            bill.setCustomerID(emailString);
+            checkOutViewModel.checkOutCustomer(getContext(), bill, checkoutTime);
 
-            }
+
             Log.d(TAG, mEmail.getText().toString());
             Log.d(TAG, bill.toString());
         });
