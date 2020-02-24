@@ -3,7 +3,9 @@
  */
 package com.example.servermatch.cecs445.Utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,7 +27,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.models.Bill;
+import com.example.servermatch.cecs445.ui.description.DescriptionFragment;
 import com.example.servermatch.cecs445.ui.menu.BillViewModel;
+import com.example.servermatch.cecs445.ui.menu.MenuFragment;
 import com.example.servermatch.cecs445.ui.menu.MenuViewModel;
 import com.example.servermatch.cecs445.ui.menu.TestData;
 import com.example.servermatch.cecs445.models.MenuItem;
@@ -38,6 +45,15 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter {
     private static final String TAG = "MenuRecyclerAdapter";
     private MenuViewModel mMenuViewModel;
     private BillViewModel mBillViewModel;
+    private Context thisContext;
+
+    public MenuRecyclerAdapter(Context ft, MenuViewModel menuViewModel, BillViewModel billViewModel, Context context, List<MenuItem> menuItems){
+        thisContext = ft;
+        mMenuViewModel = menuViewModel;
+        mContext = context;
+        mMenuItem = menuItems;
+        mBillViewModel = billViewModel;
+    }
 
     public MenuRecyclerAdapter(MenuViewModel menuViewModel, BillViewModel billViewModel, Context context, List<MenuItem> menuItems){
         mMenuViewModel = menuViewModel;
@@ -103,14 +119,40 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
 
-        ((ViewHolder) holder).parent_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: clicked on: " + mMenuItem.get(position).toString());
-                mBillViewModel.addNewValue(mMenuItem.get(position));
-            }
+        ((ViewHolder) holder).parent_layout.setOnClickListener(v -> {
+            Log.d(TAG, "onClick: clicked on: " + mMenuItem.get(position).toString());
+            mBillViewModel.addNewValue(mMenuItem.get(position));
         });
+
+        ((ViewHolder)holder).parent_layout.setOnLongClickListener(v -> {
+            Log.d(TAG, "onLongClick: clicked on: " + mMenuItem.get(position).toString());
+
+
+            DescriptionFragment descriptionFragment = new DescriptionFragment();
+            Bundle bundle = new Bundle();
+
+            bundle.putString("itemName",mMenuItem.get(position).getItemName());
+            bundle.putDouble("itemCost",mMenuItem.get(position).getItemCost());
+            bundle.putString("itemDescription",mMenuItem.get(position).getItemDesc());
+            bundle.putString("itemUrl",mMenuItem.get(position).getImage());
+            descriptionFragment.setArguments(bundle);
+
+            //FragmentTransaction transaction = mContext.getParentFragmentManager().beginTransaction();
+            FragmentTransaction transaction = ((AppCompatActivity)thisContext).getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_right,R.anim.slide_in_right,R.anim.slide_out_right);
+
+
+            transaction.replace(R.id.nav_host_fragment,descriptionFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+
+           return true;
+        });
+
+
+
         ((ViewHolder)holder).bindView(position);
+
         RequestOptions defaultOptions = new RequestOptions()
                 .error(R.drawable.ic_launcher_background);
         Glide.with(mContext)
@@ -147,7 +189,7 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter {
 
         public void bindView(int position){
             mItemText.setText(mMenuItem.get(position).getItemName());
-            mItemCost.setText(String.format("%.2f", mMenuItem.get(position).getItemCost()));
+            mItemCost.setText(String.format("$%.2f", mMenuItem.get(position).getItemCost()));
         }
     }
 }
