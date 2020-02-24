@@ -115,6 +115,7 @@ public class MenuFragment extends Fragment {
             checkoutFragment.setArguments(bundle);
 
             FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_right,R.anim.slide_in_right,R.anim.slide_out_right);
             transaction.replace(R.id.nav_host_fragment, checkoutFragment);
             transaction.addToBackStack(null);
             transaction.commit();

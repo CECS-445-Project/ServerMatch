@@ -139,6 +139,9 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter {
 
             //FragmentTransaction transaction = mContext.getParentFragmentManager().beginTransaction();
             FragmentTransaction transaction = ((AppCompatActivity)thisContext).getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_right,R.anim.slide_in_right,R.anim.slide_out_right);
+
+
             transaction.replace(R.id.nav_host_fragment,descriptionFragment);
             transaction.addToBackStack(null);
             transaction.commit();
@@ -186,7 +189,7 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter {
 
         public void bindView(int position){
             mItemText.setText(mMenuItem.get(position).getItemName());
-            mItemCost.setText(String.format("%.2f", mMenuItem.get(position).getItemCost()));
+            mItemCost.setText(String.format("$%.2f", mMenuItem.get(position).getItemCost()));
         }
     }
 }

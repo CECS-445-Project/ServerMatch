@@ -4,6 +4,7 @@
     android:id="@+id/parent_layout_item_description"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:background="#FFFFFF"
     android:clickable="true"
     android:contextClickable="false"
@@ -55,5 +56,6 @@
         android:paddingLeft="5dp"
         android:paddingTop="5dp"
         android:text="item_description"
+        android:textColor="#2D2C2C"
         android:textSize="18sp" />
 </LinearLayout>
