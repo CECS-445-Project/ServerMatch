@@ -18,6 +18,8 @@ import androidx.appcompat.view.menu.MenuView;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.models.Bill;
 import com.example.servermatch.cecs445.ui.menu.BillViewModel;
@@ -100,7 +102,7 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter {
      */
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
-        ((ViewHolder)holder).bindView(position);
+
         ((ViewHolder) holder).parent_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,6 +110,13 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter {
                 mBillViewModel.addNewValue(mMenuItem.get(position));
             }
         });
+        ((ViewHolder)holder).bindView(position);
+        RequestOptions defaultOptions = new RequestOptions()
+                .error(R.drawable.ic_launcher_background);
+        Glide.with(mContext)
+                .setDefaultRequestOptions(defaultOptions)
+                .load(mMenuItem.get(position).getImage())
+                .into(((ViewHolder)holder).mItemImage);
     }
 
     /**
@@ -137,7 +146,6 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter {
         }
 
         public void bindView(int position){
-            mItemImage.setImageResource(mMenuItem.get(position).getImageResource(position));
             mItemText.setText(mMenuItem.get(position).getItemName());
             mItemCost.setText(String.format("%.2f", mMenuItem.get(position).getItemCost()));
         }

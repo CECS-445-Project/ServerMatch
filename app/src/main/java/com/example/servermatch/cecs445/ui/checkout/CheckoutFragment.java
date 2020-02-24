@@ -65,11 +65,11 @@ public class CheckoutFragment extends Fragment {
     public void checkoutButtonListener(){
         mCheckoutButton.setOnClickListener(v -> {
             //get checkout time
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
             LocalDateTime now = LocalDateTime.now();
             String checkoutTime= dtf.format(now);
 
-            String emailString = mEmail.getText().toString();
+            String emailString = mEmail.getText().toString().toLowerCase();
             bill.setCustomerID(emailString);
             checkOutViewModel.checkOutCustomer(getContext(), bill, checkoutTime);
 
