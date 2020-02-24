@@ -139,7 +139,7 @@ public class AddMenuItemFragment extends Fragment {
         imageSelected = true;
         Log.d(TAG, "Image Selected from Gallery");
     }
-    
+
     private String getExtension(Uri uri) {
         ContentResolver cr = getContext().getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
