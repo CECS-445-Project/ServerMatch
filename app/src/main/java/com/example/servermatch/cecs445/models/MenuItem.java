@@ -96,10 +96,13 @@ public class MenuItem {
     @Override
     public String toString() {
         return "MenuItem{" +
-                "mItemName='" + itemName + '\'' +
-                ", mItemCost=" + itemCost +
-                ", mImage=" + image +
+                "documentId='" + documentId + '\'' +
+                ", itemName='" + itemName + '\'' +
+                ", itemDesc='" + itemDesc + '\'' +
+                ", itemCost=" + itemCost +
+                ", image='" + image + '\'' +
                 ", mQuantity=" + mQuantity +
+                ", mIntQuantity=" + mIntQuantity +
                 ", tags=" + tags +
                 '}';
     }
