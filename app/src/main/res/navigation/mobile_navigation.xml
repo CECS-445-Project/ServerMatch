@@ -32,7 +32,7 @@
         android:id="@+id/checkoutFragment"
         android:name="com.example.servermatch.cecs445.ui.checkout.CheckoutFragment"
         android:label="fragment_checkout2"
-        tools:layout="@layout/fragment_checkout2" />
+        tools:layout="@layout/fragment_checkout" />
     <fragment
         android:id="@+id/descriptionFragment"
         android:name="com.example.servermatch.cecs445.ui.description.DescriptionFragment"

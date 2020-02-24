@@ -1,3 +1,6 @@
+/**
+ * @author Andrew Delgado
+ */
 package com.example.servermatch.cecs445.ui.description;
 
 import android.os.Bundle;
@@ -33,7 +36,6 @@ public class DescriptionFragment extends Fragment {
         mCostMenuItem = view.findViewById(R.id.item_cost_description);
         mDescriptionMenuItem = view.findViewById(R.id.item_description);
 
-
         initItemInfo();
 
         return view;
@@ -45,7 +47,6 @@ public class DescriptionFragment extends Fragment {
 
 
             Picasso.get().load(bundle.get("itemUrl").toString()).into(mImageMenuItem);
-            //mImageMenuItem.setImageResource(bundle.get("itemImage").toString());
             mNameMenuItem.setText(bundle.get("itemName").toString());
             mCostMenuItem.setText("$" + String.format("%.2f",bundle.get("itemCost")));
             mDescriptionMenuItem.setText(bundle.get("itemDescription").toString());
