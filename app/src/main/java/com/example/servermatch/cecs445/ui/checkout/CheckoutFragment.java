@@ -3,7 +3,9 @@
  */
 
 package com.example.servermatch.cecs445.ui.checkout;
-
+/*
+@author -  Andrew Delgado and Howard Chen
+ */
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -96,7 +97,7 @@ public class CheckoutFragment extends Fragment {
             ArrayList<String> itemNames;
             ArrayList<String> itemQuantity;
             ArrayList<String> itemCost;
-//            bill = new Bill();
+
             List<MenuItem> menuItems = new ArrayList<>();
 
             itemNames = (ArrayList) bundle.get("billItemNames");
