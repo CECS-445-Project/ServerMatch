@@ -1,16 +1,14 @@
 package com.example.servermatch.cecs445.ui.checkout;
-
+/*
+@author - Howard Chen
+ */
 import android.content.Context;
 import android.os.AsyncTask;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.example.servermatch.cecs445.models.Bill;
 import com.example.servermatch.cecs445.models.Customer;
-import com.example.servermatch.cecs445.models.MenuItem;
 import com.example.servermatch.cecs445.repositories.CustomerRepo;
-
 import java.util.List;
 
 public class CheckoutViewModel extends ViewModel {
@@ -44,8 +42,7 @@ public class CheckoutViewModel extends ViewModel {
                 return null;
             }
         }.execute();
-//        List<Customer> currentCustomers = mCustomers.getValue();
-//        mCustomers.postValue(currentCustomers);
+
     }
 
     public void checkOutCustomer(Context context, Bill bill, String checkOutTime){

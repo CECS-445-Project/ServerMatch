@@ -25,7 +25,7 @@ import java.util.Map;
 
 
 /**
- * @author Howard
+ * @author Howard Chen
  */
 public class CustomerRepo {
 
