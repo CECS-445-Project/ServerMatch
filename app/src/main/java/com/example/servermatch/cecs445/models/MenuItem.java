@@ -6,41 +6,44 @@ package com.example.servermatch.cecs445.models;
 import com.example.servermatch.cecs445.R;
 import com.google.firebase.firestore.Exclude;
 
-import java.util.Collection;
 import java.util.List;
 
-import static java.sql.Types.NULL;
-
 public class MenuItem {
-
+    private String documentId;
     private String itemName;
     private String itemDesc;
     private Double itemCost;
-    private Integer image;
-    private Integer quantity;
+    private String image;
+    private Integer mQuantity;
+
+
+    private int mIntQuantity;
+
     private List<String> tags;
 
-    public MenuItem(){
-//        mItemName = "Name Not Set";
-//        mItemCost = NULL;
-//        mImage = NULL;
-//        mQuantity = 0;
-    }
+    public MenuItem(){ }
 
-//    public MenuItem(String itemName, double itemCost){
-//        mItemName = itemName;
-//        mItemCost = itemCost;
-//        mQuantity = 0;
-//    }
-
-
-    public MenuItem(String mItemName, String mItemDesc, Double mItemCost, Integer mImage, List<String> tags) {
+    public MenuItem(String mItemName, String mItemDesc, Double mItemCost, String mImage, List<String> tags) {
         this.itemName = mItemName;
         this.itemDesc = mItemDesc;
         this.itemCost = mItemCost;
         this.image = mImage;
-        this.quantity = 0;
+        this.mQuantity = 0;
         this.tags = tags;
+    }
+    @Exclude
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public MenuItem(String name, int quantity, double cost) {
+        itemName = name;
+        mIntQuantity = quantity;
+        itemCost = cost;
+    }
+
+    public int getmIntQuantity() {
+        return mIntQuantity;
     }
 
     public String getItemName() {
@@ -67,30 +70,15 @@ public class MenuItem {
         this.itemCost = itemCost;
     }
 
-    public Integer getImage() {
+    public String getImage() {
         return image;
     }
-    @Exclude
-    public int getImageResource(int num){
-        switch (num){
-            case 0:
-                return R.drawable.chinese_chicken_salad;
-            case 1:
-                return R.drawable.pumpkin_pie;
-            case 2:
-                return R.drawable.shadow_xmas;
-            case 3:
-                return R.drawable.cheeseburger;
-        }
-        return R.drawable.default_dish_tofu;
-    }
-
-    public void setImage(Integer image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
     public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+        this.mQuantity = quantity;
     }
 
     public List<String> getTags() {
@@ -101,17 +89,20 @@ public class MenuItem {
         this.tags = tags;
     }
 
-    public void incrementQuantity(){++quantity;}
-    public void decrementQuantity(){--quantity;}
-    public int getQuantity(){return quantity;}
+    public void incrementQuantity(){++mQuantity;}
+    public void decrementQuantity(){--mQuantity;}
+    public int getQuantity(){return mQuantity;}
 
     @Override
     public String toString() {
         return "MenuItem{" +
-                "mItemName='" + itemName + '\'' +
-                ", mItemCost=" + itemCost +
-                ", mImage=" + image +
-                ", mQuantity=" + quantity +
+                "documentId='" + documentId + '\'' +
+                ", itemName='" + itemName + '\'' +
+                ", itemDesc='" + itemDesc + '\'' +
+                ", itemCost=" + itemCost +
+                ", image='" + image + '\'' +
+                ", mQuantity=" + mQuantity +
+                ", mIntQuantity=" + mIntQuantity +
                 ", tags=" + tags +
                 '}';
     }

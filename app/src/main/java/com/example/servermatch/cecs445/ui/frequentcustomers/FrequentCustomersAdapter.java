@@ -4,31 +4,31 @@
 package com.example.servermatch.cecs445.ui.frequentcustomers;
 
 import android.content.Context;
-import android.nfc.Tag;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.servermatch.cecs445.R;
-
-import java.util.ArrayList;
+import com.example.servermatch.cecs445.models.Customer;
+import java.util.List;
 
 public class FrequentCustomersAdapter extends RecyclerView.Adapter<FrequentCustomersAdapter.ViewHolder>{
 
     private static final String TAG = "FrequentCustomersRecyclerView";
-    private ArrayList<String> mCustomerNames;
+    private List<Customer> mFrequentCustomerNames;
     private Context mContext;
+    private FrequentCustomersViewModel mFrequentCustomersViewModel;
 
-    public FrequentCustomersAdapter(ArrayList<String> mCustomerNames, Context mContext) {
-        this.mCustomerNames = mCustomerNames;
-        this.mContext = mContext;
+
+    public FrequentCustomersAdapter(FrequentCustomersViewModel mFrequentCustomersViewModel, Context context, List<Customer> mFrequentCustomerNames){
+        this.mFrequentCustomersViewModel = mFrequentCustomersViewModel;
+        this.mFrequentCustomerNames = mFrequentCustomerNames;
+        mContext = context;
 
     }
 
@@ -36,21 +36,21 @@ public class FrequentCustomersAdapter extends RecyclerView.Adapter<FrequentCusto
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_listitem_frequent_customers, parent, false);
-        ViewHolder holder = new ViewHolder(view);
-        return holder;
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder,final int position) {
         Log.d(TAG, "onBindViewHolder: called.");
-
-        holder.customersButton.setText(mCustomerNames.get(position));
+        ((FrequentCustomersAdapter.ViewHolder)holder).bindView(position);
 
         holder.customersButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick: clicked on: " + mCustomerNames.get(position));
-                Toast.makeText(mContext, mCustomerNames.get(position), Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onClick: clicked on: " + mFrequentCustomerNames.get(position));
+                //TODO: should send frequent customer document id ... to populate menu items to topMenuItemsAdapter.
+                String documentId = mFrequentCustomerNames.get(position).getDocumentId();
+               // Toast.makeText(mContext, mFrequentCustomerNames.get(position), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -58,7 +58,7 @@ public class FrequentCustomersAdapter extends RecyclerView.Adapter<FrequentCusto
 
     @Override
     public int getItemCount() {
-        return mCustomerNames.size();
+        return mFrequentCustomerNames.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -72,6 +72,13 @@ public class FrequentCustomersAdapter extends RecyclerView.Adapter<FrequentCusto
             super(itemView);
             customersButton = itemView.findViewById(R.id.bu_frequent_customers);
             parentLayout = itemView.findViewById(R.id.parent_layout_frequent_customers);
+        }
+
+        public void bindView(int position){
+            //mItemImage.setImageResource(R.drawable.pizza);
+            String customerName = mFrequentCustomerNames.get(position).getFirstName() + " " +
+                    mFrequentCustomerNames.get(position).getLastName();
+            customersButton.setText(customerName);
         }
 
     }

@@ -4,79 +4,60 @@
 package com.example.servermatch.cecs445.ui.frequentcustomers;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.servermatch.cecs445.R;
-
-import java.util.ArrayList;
+import com.example.servermatch.cecs445.models.Customer;
+import java.util.List;
 
 public class FrequentCustomersFragment extends Fragment {
 
     private FrequentCustomersViewModel frequentCustomersViewModel;
+    private FrequentCustomersAdapter frequentCustomersAdapter;
+    private RecyclerView recyclerViewFrequentCustomers;
+    private RecyclerView recyclerViewTopItems;
     private static final String TAG = "FrequentCustomersFragment";
-    private ArrayList<String> mCustomerNames = new ArrayList<>();
-    private ArrayList<String> mItemNames = new ArrayList<>();
+    private View view;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        frequentCustomersViewModel =
-                ViewModelProviders.of(this).get(FrequentCustomersViewModel.class);
 
-        View root = inflater.inflate(R.layout.fragment_frequent_customers, container, false);
-        RecyclerView customersRecyclerView =  root.findViewById(R.id.recycle_view_customers);
-        RecyclerView itemsRecyclerView =  root.findViewById(R.id.recycle_view_top_items);
+        view = inflater.inflate(R.layout.fragment_frequent_customers, container, false);
+        frequentCustomersViewModel = new ViewModelProvider(this)
+                .get(FrequentCustomersViewModel.class);
+        frequentCustomersViewModel.init();
 
-        //hardcoded frequent customers for now
-        mCustomerNames.add("Jane Doe");
-        mCustomerNames.add("Kevin Lee");
-        mCustomerNames.add("Ryan Brown");
-        mCustomerNames.add("Sam Garcia");
-        mCustomerNames.add("Cynthia Ryan");
-        mCustomerNames.add("John Kim");
-        mCustomerNames.add("Jane Doe");
-        mCustomerNames.add("Kevin Lee");
-        mCustomerNames.add("Ryan Brown");
-        mCustomerNames.add("Sam Garcia");
-        mCustomerNames.add("Cynthia Ryan");
-        mCustomerNames.add("John Kim");
-        FrequentCustomersAdapter fAdapter = new FrequentCustomersAdapter(mCustomerNames, this.getContext());
-        customersRecyclerView.setAdapter(fAdapter);
-        customersRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        customersRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerViewFrequentCustomers =  view.findViewById(R.id.recycle_view_customers);
+        recyclerViewTopItems =  view.findViewById(R.id.recycle_view_top_items);
+        initRecyclerViews();
 
-        mItemNames.add("pizza");
-        mItemNames.add("pizza");
-        mItemNames.add("pizza");
-        mItemNames.add("pizza");
-        mItemNames.add("pizza");
-        mItemNames.add("pizza");
-        mItemNames.add("pizza");
-        mItemNames.add("pizza");
-        mItemNames.add("pizza");
-        mItemNames.add("pizza");
-        mItemNames.add("pizza");
-        mItemNames.add("pizza");
-        TopItemsAdapter tAdapter = new TopItemsAdapter(mItemNames, this.getContext());
-        itemsRecyclerView.setAdapter(tAdapter);
-        itemsRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        itemsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        frequentCustomersViewModel.getTopCustomers().observe(getViewLifecycleOwner(), new Observer<List<Customer>>() {
 
-        return root;
+            @Override
+            public void onChanged(List<Customer> customers) {
+                frequentCustomersAdapter.notifyDataSetChanged();
+            }
+        });
+
+        return view;
+    }
+
+
+    private void initRecyclerViews(){
+        //Menu Items
+       frequentCustomersAdapter = new FrequentCustomersAdapter(frequentCustomersViewModel, getActivity(), frequentCustomersViewModel.getTopCustomers().getValue());
+       RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerViewFrequentCustomers.setAdapter(frequentCustomersAdapter);
+        recyclerViewFrequentCustomers.setLayoutManager(layoutManager);
+
     }
 
 

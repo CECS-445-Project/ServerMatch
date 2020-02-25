@@ -3,6 +3,7 @@ package com.example.servermatch.cecs445.ui.addmenuitem;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,13 +15,11 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.models.MenuItem;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.ChipDrawable;
@@ -28,7 +27,6 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
@@ -55,6 +53,7 @@ public class AddMenuItemFragment extends Fragment {
     private boolean imageSelected;
     private Uri imguri;
     private StorageTask uploadTask;
+    private String downloadURL;
 
     String [] filters = {
             "Vegan",
@@ -85,35 +84,17 @@ public class AddMenuItemFragment extends Fragment {
         progressBar = root.findViewById((R.id.add_item_progress_bar));
         mStorageRef = FirebaseStorage.getInstance().getReference("Images");
         imageSelected = false;
-
         addMenuItemViewModel = new ViewModelProvider(this).get(AddMenuItemViewModel.class);
         addMenuItemViewModel.init();
-
 
         // TODO: add selected chips to list of strings
         btnAddNewItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String chip_msg = "Selected chips are: ";
-                int chipCount = chipGroup.getChildCount();
-                if(chipCount == 0) {
-                    chip_msg += "None.";
-                } else {
-                    int i = 0;
-                    while(i < chipCount) {
-                        Chip chip = (Chip) chipGroup.getChildAt(i);
-                        if(chip.isChecked()) {
-                            tags.add(chip.getText().toString());
-                            chip_msg += chip.getText().toString() + ", ";
-                        }
-                        i++;
-                    }
-                }
-                //Toast.makeText(getActivity(), chip_msg, Toast.LENGTH_SHORT).show();
-                Log.d(TAG, chip_msg);
                 addItem(v);
             }
         });
+
 
         btnAddPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,6 +103,7 @@ public class AddMenuItemFragment extends Fragment {
                 choosePhoto();
             }
         });
+
 
         chipGroup = root.findViewById(R.id.chip_group_filter);
         for(String filter : filters) {
@@ -158,36 +140,37 @@ public class AddMenuItemFragment extends Fragment {
         Log.d(TAG, "Image Selected from Gallery");
     }
 
+    //ToDO:
     private String getExtension(Uri uri) {
         ContentResolver cr = getContext().getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         return mimeTypeMap.getExtensionFromMimeType(cr.getType(uri));
     }
 
-    private void imageUploader() {
+    private void imageUploader(View v) {
         Log.d(TAG, "Image Upload IN PROGRESS");
         progressBar.setVisibility(getView().VISIBLE);
         btnAddNewItem.setEnabled(false);
-        StorageReference ref = mStorageRef.child(System.currentTimeMillis()+"."+getExtension(imguri));
-        ref.putFile(imguri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        String childName = System.currentTimeMillis()+"."+getExtension(imguri);
+        final StorageReference ref = mStorageRef.child(childName);
+
+//        uploads file to Firebase Cloud Storage
+        ref.putFile(imguri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // Get a URL to the uploaded content
-//                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                        Log.d(TAG, "Image upload SUCCESS");
-                        progressBar.setVisibility(getView().GONE);
+                    public void onSuccess(Uri uri) {
+                        downloadURL = uri.toString();
                         btnAddNewItem.setEnabled(true);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle unsuccessful uploads
-                        // ...
-                        Log.d(TAG, "Image upload FAILED");
+                        Log.d(TAG, "onSuccess: UPLOAD SUCCESS : "+ downloadURL);
+                        progressBar.setVisibility(getView().GONE);
                     }
                 });
+            }
+        });
+        Log.d(TAG, "imageUploader: ");
     }
 
     @Override
@@ -229,22 +212,40 @@ public class AddMenuItemFragment extends Fragment {
     }
 
     private boolean validateFilters() {
+        String chip_msg = "Selected chips are: ";
+        boolean checkedChips = false;
         int chipCount = chipGroup.getChildCount();
         if(chipCount == 0) {
+            chip_msg += "None.";
             return false;
         } else {
             int i = 0;
             while (i < chipCount) {
                 Chip chip = (Chip) chipGroup.getChildAt(i);
                 if (chip.isChecked()) {
-                    return true;
+                    if(!tags.contains(chip.getText().toString())) {
+                        tags.add(chip.getText().toString());
+                        Log.d(TAG, "Added " + chip.getText().toString());
+                        chip_msg += chip.getText().toString() + ", ";
+                    }
+                    checkedChips = true;
+                } else {
+                    if(tags.contains(chip.getText().toString())) {
+                        Log.d(TAG, "Removed " + chip.getText().toString());
+                        tags.remove(chip.getText().toString());
+                    }
                 }
                 i++;
             }
         }
-        Log.d(TAG, "No filters selected");
-        Toast.makeText(getContext(), "No filters selected", Toast.LENGTH_SHORT).show();
-        return false;
+        if(checkedChips) {
+            Log.d(TAG, chip_msg);
+            return true;
+        } else {
+            Log.d(TAG, "No filters selected");
+            Toast.makeText(getContext(), "No filters selected", Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 
     private boolean validateImage() {
@@ -261,18 +262,37 @@ public class AddMenuItemFragment extends Fragment {
         }
     }
 
-    //TODO: add new menu item here
     public void addItem(View v) {
         if(!validateName() | !validateCost() | !validateDesc() | !validateFilters() | !validateImage()) {
             return;
         }
-        imageUploader();
+
+        Log.d(TAG, "addItem: started ");
         String itemName = textInputItemName.getEditText().getText().toString();
         Double itemCost = Double.parseDouble(textInputItemCost.getEditText().getText().toString());
         String itemDescription = textInputItemDesc.getEditText().getText().toString();
-        MenuItem newItem = new MenuItem(itemName, itemDescription, itemCost, 2, tags);
-        addMenuItemViewModel.addMenuItem(newItem, getContext());
-        clearFields();
+        imageUploader(v);
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                MenuItem newItem = new MenuItem(itemName, itemDescription, itemCost, downloadURL, tags);
+                addMenuItemViewModel.addMenuItem(newItem, getContext());
+                clearFields();
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                try {
+                    Thread.sleep(4500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }.execute();
+
     }
 
     private void clearFields(){
