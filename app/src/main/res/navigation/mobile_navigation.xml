@@ -27,5 +27,15 @@
         android:id="@+id/nav_add_menu_item"
         android:name="com.example.servermatch.cecs445.ui.addmenuitem.AddMenuItemFragment"
         android:label="@string/menu_add_menu_item"
-        tools:layout="@layout/fragment_add_menu_item" />
+        tools:layout="@layout/fragment_add_menu_item"/>
+    <fragment
+        android:id="@+id/checkoutFragment"
+        android:name="com.example.servermatch.cecs445.ui.checkout.CheckoutFragment"
+        android:label="fragment_checkout2"
+        tools:layout="@layout/fragment_checkout" />
+    <fragment
+        android:id="@+id/descriptionFragment"
+        android:name="com.example.servermatch.cecs445.ui.description.DescriptionFragment"
+        android:label="fragment_menu_item_description"
+        tools:layout="@layout/fragment_menu_item_description" />
 </navigation>
