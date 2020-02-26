@@ -2,7 +2,6 @@ package com.example.servermatch.cecs445.ui.addcustomer;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.example.servermatch.cecs445.models.Customer;
 import com.example.servermatch.cecs445.repositories.CustomerRepo;
 
@@ -25,8 +24,8 @@ public class AddCustomerViewModel extends ViewModel {
 
     public void addCustomer(Customer newCustomer){
         cRepo.addCustomer(newCustomer);
-        List<Customer> currentCustomers = mCustomers.getValue();
-        currentCustomers.add(newCustomer); //adds newCustomer to local cache
+        //clears offline list to prevent duplicate data from firestore listener
+        List<Customer> currentCustomers = null;
         mCustomers.postValue(currentCustomers);
 
     }
