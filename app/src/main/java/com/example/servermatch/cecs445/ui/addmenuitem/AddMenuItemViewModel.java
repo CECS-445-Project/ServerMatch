@@ -5,10 +5,7 @@ import android.content.Context;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import com.example.servermatch.cecs445.models.Customer;
 import com.example.servermatch.cecs445.models.MenuItem;
-import com.example.servermatch.cecs445.repositories.CustomerRepo;
 import com.example.servermatch.cecs445.repositories.MenuItemRepo;
 
 import java.util.List;
@@ -30,8 +27,8 @@ public class AddMenuItemViewModel extends ViewModel {
 
     public void addMenuItem(MenuItem newItem, Context context){
         mRepo.addMenuItem(newItem, context);
-        List<MenuItem> currentItems = mMenuItem.getValue();
-        currentItems.add(newItem);
+        //clears offline list to prevent duplicate data from firestore listener
+        List<MenuItem> currentItems = null;
         mMenuItem.postValue(currentItems);
     }
     public LiveData<List<MenuItem>> getMenuItems() { return mMenuItem; }
