@@ -4,7 +4,6 @@
 package com.example.servermatch.cecs445.ui.frequentcustomers;
 
 import android.content.Context;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,9 +47,8 @@ public class FrequentCustomersAdapter extends RecyclerView.Adapter<FrequentCusto
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: clicked on: " + mFrequentCustomerNames.get(position));
-                //TODO: should send frequent customer document id ... to populate menu items to topMenuItemsAdapter.
                 String documentId = mFrequentCustomerNames.get(position).getDocumentId();
-               // Toast.makeText(mContext, mFrequentCustomerNames.get(position), Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -75,7 +73,7 @@ public class FrequentCustomersAdapter extends RecyclerView.Adapter<FrequentCusto
         }
 
         public void bindView(int position){
-            //mItemImage.setImageResource(R.drawable.pizza);
+
             String customerName = mFrequentCustomerNames.get(position).getFirstName() + " " +
                     mFrequentCustomerNames.get(position).getLastName();
             customersButton.setText(customerName);
