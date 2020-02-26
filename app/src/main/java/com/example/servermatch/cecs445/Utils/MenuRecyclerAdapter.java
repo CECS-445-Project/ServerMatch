@@ -3,7 +3,7 @@
  */
 package com.example.servermatch.cecs445.Utils;
 
-import android.app.Activity;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,29 +13,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuView;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.servermatch.cecs445.R;
-import com.example.servermatch.cecs445.models.Bill;
 import com.example.servermatch.cecs445.ui.description.DescriptionFragment;
 import com.example.servermatch.cecs445.ui.menu.BillViewModel;
-import com.example.servermatch.cecs445.ui.menu.MenuFragment;
 import com.example.servermatch.cecs445.ui.menu.MenuViewModel;
-import com.example.servermatch.cecs445.ui.menu.TestData;
 import com.example.servermatch.cecs445.models.MenuItem;
 import com.google.android.material.card.MaterialCardView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MenuRecyclerAdapter extends RecyclerView.Adapter {
@@ -55,16 +45,6 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter {
         mBillViewModel = billViewModel;
     }
 
-    public MenuRecyclerAdapter(MenuViewModel menuViewModel, BillViewModel billViewModel, Context context, List<MenuItem> menuItems){
-        mMenuViewModel = menuViewModel;
-        mContext = context;
-        mMenuItem = menuItems;
-        mBillViewModel = billViewModel;
-    }
-
-    public void setmMenuItem(List<MenuItem> mMenuItem) {
-        this.mMenuItem = mMenuItem;
-    }
 
     /**
      * Called when RecyclerView needs a new {@link ViewHolder} of the given type to represent
@@ -137,10 +117,8 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter {
             bundle.putString("itemUrl",mMenuItem.get(position).getImage());
             descriptionFragment.setArguments(bundle);
 
-            //FragmentTransaction transaction = mContext.getParentFragmentManager().beginTransaction();
             FragmentTransaction transaction = ((AppCompatActivity)thisContext).getSupportFragmentManager().beginTransaction();
             transaction.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_right,R.anim.slide_in_right,R.anim.slide_out_right);
-
 
             transaction.replace(R.id.nav_host_fragment,descriptionFragment);
             transaction.addToBackStack(null);
@@ -171,7 +149,6 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter {
         return mMenuItem.size();
     }
 
-    //private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
     private class ViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView mItemImage;
