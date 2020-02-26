@@ -1,8 +1,6 @@
 package com.example.servermatch.cecs445.repositories;
 
-
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
@@ -16,7 +14,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +39,6 @@ public class FrequentCustomerRepo {
         if(dataSet.isEmpty()) loadCustomers();
         MutableLiveData<List<Customer>> data = new MutableLiveData<>();
         data.setValue(dataSet);
-
         return data;
     }
 
