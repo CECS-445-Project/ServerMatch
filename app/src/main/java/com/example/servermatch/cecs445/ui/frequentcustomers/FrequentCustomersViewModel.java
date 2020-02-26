@@ -15,12 +15,13 @@ import com.example.servermatch.cecs445.repositories.FrequentCustomerRepo;
 
 
 import java.util.List;
-
+/*
+@author - Howard Chen
+ */
 public class FrequentCustomersViewModel extends ViewModel {
 
     private MutableLiveData<List<Customer>> mTopCustomers;
     private FrequentCustomerRepo fCRepo;
-
 
     public void init(){
         if(fCRepo != null){
@@ -48,8 +49,7 @@ public class FrequentCustomersViewModel extends ViewModel {
                 return null;
             }
         }.execute();
-//        List<Customer> currentTopCustomers = mTopCustomers.getValue();
-//        mTopCustomers.postValue(currentTopCustomers);
+
     }
 
 
