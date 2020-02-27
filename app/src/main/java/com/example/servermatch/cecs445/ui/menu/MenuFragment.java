@@ -92,21 +92,12 @@ public class MenuFragment extends Fragment {
             ArrayList<String> billItemQuantity = new ArrayList<>();
             ArrayList<String> billItemCost = new ArrayList<>();
 
-            // GetNames
+            // GetNames, GetQuantity, GetCost
             for(MenuItem m:currentList){
                 billItemNames.add(m.getItemName());
-            }
-
-            // GetQuantity
-            for(MenuItem m:currentList){
                 billItemQuantity.add(String.valueOf(m.getQuantity()));
-            }
-
-            //Get Cost
-            for(MenuItem m:currentList){
                 billItemCost.add(String.valueOf(m.getItemCost()));
             }
-
 
             bundle.putStringArrayList("billItemNames", billItemNames);
             bundle.putStringArrayList("billItemQuantity", billItemQuantity);

@@ -45,7 +45,6 @@ public class DescriptionFragment extends Fragment {
         Bundle bundle = getArguments();
         if(bundle != null){
 
-
             Picasso.get().load(bundle.get("itemUrl").toString()).fit().into(mImageMenuItem);
             mNameMenuItem.setText(bundle.get("itemName").toString());
             mCostMenuItem.setText("$" + String.format("%.2f",bundle.get("itemCost")));
