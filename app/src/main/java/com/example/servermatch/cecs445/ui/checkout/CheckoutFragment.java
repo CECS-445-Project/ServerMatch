@@ -42,7 +42,7 @@ public class CheckoutFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.fragment_checkout2,container,false);
+        view = inflater.inflate(R.layout.fragment_checkout,container,false);
         recyclerView = view.findViewById(R.id.recycler_view_checkout);
         totalCost = view.findViewById(R.id.checkout_total_cost);
         mEmail = view.findViewById(R.id.checkout_email);
@@ -51,7 +51,6 @@ public class CheckoutFragment extends Fragment {
         checkoutButtonListener();
         setUpBill();
         initRecyclerView();
-
 
         return view;
     }
@@ -97,16 +96,8 @@ public class CheckoutFragment extends Fragment {
                         Double.parseDouble(itemCost.get(i))));
             }
 
-//            bill.setMenuItems(menuItems);
-//
-//            bill.setTotalCost((double)bundle.get("billTotal"));
-
             bill = new Bill((double)bundle.get("billTotal"),menuItems);
             totalCost.setText("$" + String.format("%.2f",bundle.get("billTotal")));
         }
     }
 }
-
-//        Log.d(TAG, bundle.get("billItemNames").toString());
-//        Log.d(TAG, bundle.get("billItemQuantity").toString());
-//        Log.d(TAG, bundle.get("billItemCost").toString());
