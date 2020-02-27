@@ -1,4 +1,4 @@
-package com.example.servermatch.cecs445.ui.addrestaurant;
+package com.example.servermatch.cecs445.ui.setuprestaurant;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -7,10 +7,10 @@ import com.example.servermatch.cecs445.models.Restaurant;
 
 import java.util.List;
 
-public class AddRestaurantViewModel extends ViewModel {
+public class SetupRestaurantViewModel extends ViewModel {
     private MutableLiveData<List<Restaurant>> mRestaurant;
 
-    public void addRestaurant(Restaurant newRestaurant){
+    public void setupRestaurant(Restaurant newRestaurant){
         List<Restaurant> currentRestaurant = mRestaurant.getValue();
         currentRestaurant.add(newRestaurant);
         mRestaurant.postValue(currentRestaurant);
