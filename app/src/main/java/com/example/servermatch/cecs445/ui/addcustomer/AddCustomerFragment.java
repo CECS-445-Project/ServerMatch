@@ -60,26 +60,24 @@ public class AddCustomerFragment extends Fragment {
         btnAddCustomer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                validateInput(v);
                 //Todo: set up firebase here
-                String customerFname = addCustomerFname.getEditText().getText().toString();
-                String customerLname  = addCustomerLname.getEditText().getText().toString();
-                String customerEmail  = addCustomerEmail.getEditText().getText().toString().toLowerCase();
+                String customerFname = addCustomerFname.getEditText().getText().toString().trim();
+                String customerLname  = addCustomerLname.getEditText().getText().toString().trim();
+                String customerEmail  = addCustomerEmail.getEditText().getText().toString().toLowerCase().trim();
                 String customerPhone =  addCustomerPhone.getEditText().getText().toString();
 
+                validateInput(customerFname, customerLname, customerEmail, customerPhone);
                 Customer newCustomer = new Customer(customerFname, customerLname, customerEmail,customerPhone,
                         addCustomerReceiptText.isChecked(), addCustomerReceiptEmail.isChecked());
                 addCustomerViewModel.addCustomer(newCustomer);
-
             }
         });
 
         return root;
     }
 
-    private boolean validateFname() {
-        String FnameInput = addCustomerFname.getEditText().getText().toString().trim();
-        if(FnameInput.isEmpty()) {
+    private boolean validateFname(String firstName) {
+        if(firstName.isEmpty()) {
             addCustomerFname.setError("Field can't be empty");
             return false;
         } else {
@@ -88,9 +86,8 @@ public class AddCustomerFragment extends Fragment {
         }
     }
 
-    private boolean validateLname() {
-        String LnameInput = addCustomerLname.getEditText().getText().toString().trim();
-        if(LnameInput.isEmpty()) {
+    private boolean validateLname(String lastName) {
+        if(lastName.isEmpty()) {
             addCustomerLname.setError("Field can't be empty");
             return false;
         } else {
@@ -99,12 +96,11 @@ public class AddCustomerFragment extends Fragment {
         }
     }
 
-    private boolean validateEmail() {
-        String emailInput = addCustomerEmail.getEditText().getText().toString().trim();
-        if(emailInput.isEmpty()) {
+    private boolean validateEmail(String email) {
+        if(email.isEmpty()) {
             addCustomerEmail.setError("Field can't be empty");
             return false;
-        } else if(!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
+        } else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             addCustomerEmail.setError("Invalid email address");
             return false;
         } else {
@@ -113,13 +109,12 @@ public class AddCustomerFragment extends Fragment {
         }
     }
 
-    private boolean validatePhone() {
+    private boolean validatePhone(String phone) {
         String regexPhone = "^[0-9]+$";
-        String phoneInput = addCustomerPhone.getEditText().getText().toString().trim();
-        if (phoneInput.isEmpty()) {
+        if (phone.isEmpty()) {
             addCustomerPhone.setError("Field can't be empty");
             return false;
-        } else if (phoneInput.length() < 10 || !phoneInput.matches(regexPhone)) {
+        } else if (phone.length() < 10 || !phone.matches(regexPhone)) {
             addCustomerPhone.setError("Invalid phone number");
             return false;
         } else {
@@ -128,21 +123,14 @@ public class AddCustomerFragment extends Fragment {
         }
     }
 
-    public void validateInput(View v) {
-        if(!validateFname() | !validateLname() | !validateEmail() | !validatePhone()) {
+    public void validateInput(String firstName, String lastName, String email, String phone) {
+        if(!validateFname(firstName) | !validateLname(lastName) | !validateEmail(email) | !validatePhone(phone)) {
             return;
         }
 
-        Customer c1 = new Customer(
-                addCustomerFname.getEditText().getText().toString(),
-                addCustomerLname.getEditText().getText().toString(),
-                addCustomerEmail.getEditText().getText().toString(),
-                addCustomerEmail.getEditText().getText().toString(),
-                addCustomerReceiptText.isChecked(),
-                addCustomerReceiptEmail.isChecked()
-        );
-
-        Log.i("add_customer", c1.toString());
+        Customer c1 = new Customer(firstName, lastName, email, phone,
+                addCustomerReceiptText.isChecked(), addCustomerReceiptEmail.isChecked());
+        Log.d("add_customer", c1.toString());
         Toast.makeText(getContext(), "Customer Added", Toast.LENGTH_SHORT).show();
     }
 
