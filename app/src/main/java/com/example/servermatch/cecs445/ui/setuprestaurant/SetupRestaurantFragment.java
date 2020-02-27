@@ -27,12 +27,18 @@ public class SetupRestaurantFragment extends Fragment {
     public static final String EXTRA_RESTAURANT_NAME = "com.example.servermatch.cecs445.ui.setuprestaurant.EXTRA_RESTAURANT_NAME";
     public static final String EXTRA_RESTAURANT_EMAIL = "com.example.servermatch.cecs445.ui.setuprestaurant.EXTRA_RESTAURANT_EMAIL";
     public static final String EXTRA_RESTAURANT_PHONE = "com.example.servermatch.cecs445.ui.setuprestaurant.EXTRA_RESTAURANT_PHONE";
+    public static final String EXTRA_RESTAURANT_PASS = "com.example.servermatch.cecs445.ui.setuprestaurant.EXTRA_RESTAURANT_PHONE";
+
 
     private SetupRestaurantViewModel setupRestaurantViewModel;
     private TextInputLayout setupRestaurantName;
     private TextInputLayout setupRestaurantEmail;
     private TextInputLayout setupRestaurantPhone;
+    private TextInputLayout setupRestaurantPass;
+
     private Button btnSetupRestaurant;
+    private Button btnLoginRestaurant;
+
 
     public SetupRestaurantFragment() {
         //blank constructor
@@ -53,7 +59,11 @@ public class SetupRestaurantFragment extends Fragment {
         setupRestaurantName = root.findViewById(R.id.setup_restaurant_name);
         setupRestaurantEmail = root.findViewById(R.id.setup_restaurant_email);
         setupRestaurantPhone = root.findViewById(R.id.setup_restaurant_phone);
+        setupRestaurantPass = root.findViewById(R.id.setup_restaurant_pass);
+
         btnSetupRestaurant = root.findViewById(R.id.setup_restaurant_submit);
+        btnLoginRestaurant = root.findViewById(R.id.login_restaurant_submit);
+
 
         btnSetupRestaurant.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,11 +71,15 @@ public class SetupRestaurantFragment extends Fragment {
                 String restaurantName = setupRestaurantName.getEditText().getText().toString();
                 String restaurantEmail = setupRestaurantEmail.getEditText().getText().toString().toLowerCase();
                 String restaurantPhone = setupRestaurantPhone.getEditText().getText().toString();
+                String restaurantPass = setupRestaurantPass.getEditText().getText().toString();
+
 
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 intent.putExtra(EXTRA_RESTAURANT_NAME, restaurantName);
                 intent.putExtra(EXTRA_RESTAURANT_EMAIL, restaurantEmail);
                 intent.putExtra(EXTRA_RESTAURANT_PHONE, restaurantPhone);
+                intent.putExtra(EXTRA_RESTAURANT_PASS, restaurantPass);
+
                 startActivity(intent);
 
                 //TODO: Implement the validation using database
