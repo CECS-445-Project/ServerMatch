@@ -11,12 +11,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <!--
         <ImageView
             android:id="@+id/setup_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             android:src="@drawable/servermatch_startup" />
+        -->
+
+        <Button
+            android:id="@+id/login_restaurant_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginBottom="135dp"
+            android:paddingVertical="20dp"
+            android:backgroundTint="@color/colorAccent"
+            android:text="Login"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/setup_restaurant_button"
