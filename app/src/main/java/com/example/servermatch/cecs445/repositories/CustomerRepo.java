@@ -1,6 +1,7 @@
 package com.example.servermatch.cecs445.repositories;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -58,30 +59,43 @@ public class CustomerRepo {
         collectionListener("Customer");
     }
 
-    public void addCustomer(Customer newCustomer){
-        //stores new customer with email as document id.
-        customerRef.document(newCustomer.getEmail()).set(newCustomer)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
+    public boolean addCustomer(Customer newCustomer, Context context){
+        boolean newEmail = true;
+        String newCustomerEmail = newCustomer.getEmail();
+        //checks if email is in system already.
+        for(Customer customer: dataSet){
+            if(customer.getEmail().equals(newCustomerEmail)){
+                newEmail = false;
             }
-        });
-
+        }
+        if(newEmail = false) {
+            //stores new customer with email as document id.
+            customerRef.document(newCustomer.getEmail()).set(newCustomer)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(context, newCustomerEmail +" registered!", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "onFailure: "+ e.toString() );
+                }
+            });
+            return true;
+        }else{
+            Toast.makeText(context, newCustomerEmail +" is already registered!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 
-    public void checkOutCustomer(Context context, Bill bill, String checkoutTime) {
+    public boolean checkOutCustomer(Context context, Bill bill, String checkoutTime) {
 
         //increments visit
         String email  = bill.getCustomerID();
         incrementVisit(context, email);
-        storeBill(context, email, bill, checkoutTime);
-
+        return storeBill(context, email, bill, checkoutTime);
     }
 
     private void incrementVisit(Context context, String email){
@@ -103,7 +117,7 @@ public class CustomerRepo {
 
     }
 
-    private void storeBill(Context context, String email, Bill bill, String checkoutTime){
+    private boolean storeBill(Context context, String email, Bill bill, String checkoutTime){
 
         String collectionName;
         String toastMsg;
@@ -129,13 +143,19 @@ public class CustomerRepo {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(context, "Checkout Completed for " + email + "\n@" + checkoutTime + toastMsg, Toast.LENGTH_SHORT).show();
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.e(TAG, "onFailure: " + e.toString());
+
             }
         });
+
+        return true;
+
+
     }
 
     private boolean checkEmail(String email){
@@ -165,7 +185,9 @@ public class CustomerRepo {
                         if(!queryDocumentSnapshots.isEmpty()){
                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                             for(DocumentSnapshot documentSnapshot : list){
-                                dataSet.add(documentSnapshot.toObject(Customer.class));
+                                if(!dataSet.contains(documentSnapshot.toObject(Customer.class))) {
+                                    dataSet.add(documentSnapshot.toObject(Customer.class));
+                                }
                             }
                         }
 

@@ -62,6 +62,7 @@ public class MenuItemRepo {
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context, "Failed to add " + itemName +"\n Please check mobile connection!", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "onFailure: " + e.toString());
             }
         });
@@ -85,7 +86,9 @@ public class MenuItemRepo {
                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                             dataSet.clear();
                             for (DocumentSnapshot documentSnapshot : list) {
-                                dataSet.add(documentSnapshot.toObject(MenuItem.class));
+                                if(dataSet.contains(dataSet.add(documentSnapshot.toObject(MenuItem.class)))) {
+                                    dataSet.add(documentSnapshot.toObject(MenuItem.class));
+                                }
                             }
                             menuItemInitialized = true;
                         }
