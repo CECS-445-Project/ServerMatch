@@ -11,14 +11,42 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!--
+
         <ImageView
             android:id="@+id/setup_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             android:src="@drawable/servermatch_startup" />
-        -->
+
+        <!-- TODO:Style the input fields -->
+        <EditText
+            android:id="@+id/editText2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/login_restaurant_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginBottom="100dp"
+            android:background="#FFFFFF"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            android:paddingVertical="10dp"
+            android:hint="Email" />
+
+        <EditText
+            android:id="@+id/editText4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/login_restaurant_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginBottom="40dp"
+            android:background="#FFFFFF"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:paddingVertical="10dp"
+            android:hint="Password"/>
 
         <Button
             android:id="@+id/login_restaurant_button"
@@ -28,27 +56,48 @@
             android:layout_centerHorizontal="true"
             android:layout_marginHorizontal="32dp"
             android:layout_marginBottom="135dp"
-            android:paddingVertical="20dp"
             android:backgroundTint="@color/colorAccent"
-            android:text="Login"
-            android:textColor="@android:color/black"
-            android:textSize="16sp" />
-
-        <Button
-            android:id="@+id/setup_restaurant_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginHorizontal="32dp"
-            android:layout_marginBottom="50dp"
-            android:backgroundTint="@color/colorAccent"
-            android:elevation="10dp"
             android:paddingVertical="20dp"
-            android:text="@string/setup_restaurant_button"
+            android:text="@string/restaurant_login"
             android:textColor="@android:color/black"
             android:textSize="16sp"
             app:cornerRadius="32dp" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="100dp"
+            android:text="Don't have an account?"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="75dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Click here"
+                android:textColor="@color/colorAccent"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" to create one."
+                android:textColor="@android:color/white"
+                android:textSize="16sp"/>
+        </LinearLayout>
 
     </RelativeLayout>
 

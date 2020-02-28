@@ -8,6 +8,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="setup_restaurant_button">Set Up Restaurant</string>
+    <string name="restaurant_login">LOGIN</string>
     <string name="restaurant_name"></string>
     <string name="restaurant_email"></string>
     <string name="restaurant_phone"></string>
