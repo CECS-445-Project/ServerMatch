@@ -61,8 +61,8 @@ public class AddCustomerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //Todo: set up firebase here
-                String customerFname = addCustomerFname.getEditText().getText().toString().trim();
-                String customerLname  = addCustomerLname.getEditText().getText().toString().trim();
+                String customerFname = addCustomerFname.getEditText().getText().toString();
+                String customerLname  = addCustomerLname.getEditText().getText().toString();
                 String customerEmail  = addCustomerEmail.getEditText().getText().toString().toLowerCase().trim();
                 String customerPhone =  addCustomerPhone.getEditText().getText().toString();
 
