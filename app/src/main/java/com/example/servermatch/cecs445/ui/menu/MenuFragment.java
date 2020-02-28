@@ -4,6 +4,7 @@
 package com.example.servermatch.cecs445.ui.menu;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.Utils.BillRecyclerAdapter;
 import com.example.servermatch.cecs445.Utils.MenuRecyclerAdapter;
+import com.example.servermatch.cecs445.models.Bill;
 import com.example.servermatch.cecs445.models.MenuItem;
 import com.example.servermatch.cecs445.ui.checkout.CheckoutFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -25,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MenuFragment extends Fragment {
-
+    private static final String TAG = "MenuFragment";
     private MenuViewModel mMenuViewModel;
     private BillViewModel mBillViewModel;
     private MenuRecyclerAdapter mAdapter;
@@ -54,10 +56,10 @@ public class MenuFragment extends Fragment {
 
         // This works without the recycler view. Time to add that.
         checkoutButtonListener();
-
         viewModelObserver();
         billViewModelObserver();
         fabActionListener();
+        receiveCompletedBoolean();
         initRecyclerViews();
 
         ft = getParentFragmentManager().beginTransaction();
@@ -138,5 +140,18 @@ public class MenuFragment extends Fragment {
         recyclerViewBill.setAdapter(billRecyclerAdapter);
         RecyclerView.LayoutManager billLayoutManager = new LinearLayoutManager(getActivity());
         recyclerViewBill.setLayoutManager(billLayoutManager);
+    }
+
+    private void receiveCompletedBoolean(){
+        Bundle bundle = getArguments();
+
+        if(bundle != null) {
+            boolean completedCheckout= (boolean) bundle.get("CheckoutComplete");
+            Log.d(TAG, "receiveCompletedBoolean: " + completedCheckout);
+            if(completedCheckout) {
+                mBillViewModel.clearBillItems();
+                mMenuViewModel.clearMenuItems();
+            }
+        }
     }
 }

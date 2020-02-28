@@ -8,13 +8,18 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.servermatch.cecs445.models.Bill;
 import com.example.servermatch.cecs445.models.Customer;
+import com.example.servermatch.cecs445.models.MenuItem;
 import com.example.servermatch.cecs445.repositories.CustomerRepo;
+import com.example.servermatch.cecs445.repositories.MenuItemRepo;
+
 import java.util.List;
 
 public class CheckoutViewModel extends ViewModel {
 
     private MutableLiveData<List<Customer>> mCustomers;
+    private MutableLiveData<List<MenuItem>> mBillItems;
     private CustomerRepo cRepo;
+    private MenuItemRepo mRepo;
 
     public void init(){
         if(cRepo != null){
@@ -22,13 +27,15 @@ public class CheckoutViewModel extends ViewModel {
         }
         cRepo = CustomerRepo.getInstance();
         mCustomers = cRepo.getCustomers();
+        mRepo = MenuItemRepo.getInstance();
+        mBillItems = mRepo.getMenuItems();
 
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                List<Customer> currentTopCustomers = mCustomers.getValue();
-                mCustomers.postValue(currentTopCustomers);
+                List<Customer> currentCustomers = mCustomers.getValue();
+                mCustomers.postValue(currentCustomers);
             }
 
             @Override
@@ -45,9 +52,9 @@ public class CheckoutViewModel extends ViewModel {
 
     }
 
-    public void checkOutCustomer(Context context, Bill bill, String checkOutTime){
+    public boolean checkOutCustomer(Context context, Bill bill, String checkOutTime){
 
-        cRepo.checkOutCustomer(context, bill, checkOutTime);
+        return cRepo.checkOutCustomer(context, bill, checkOutTime);
 
     }
 

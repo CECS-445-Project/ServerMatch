@@ -51,7 +51,6 @@ public class MenuViewModel extends ViewModel {
             }
         }.execute();
 
-        // We are getting double items because the repo keeps adding items
         Log.d(TAG + ":End of init", "size of list" + mMenuItems.getValue().size() + "");
     }
 
@@ -75,6 +74,14 @@ public class MenuViewModel extends ViewModel {
             }
         }
         mMenuItems.postValue(currentMenuItems);
+    }
+
+    public void clearMenuItems(){
+        List<MenuItem> currentList = mMenuItems.getValue();
+        for (MenuItem menuItem : currentList){
+            menuItem.setmIntQuantity(0);
+        }
+        mMenuItems.postValue(currentList);
     }
 
     public LiveData<List<MenuItem>> getMenuItems(){

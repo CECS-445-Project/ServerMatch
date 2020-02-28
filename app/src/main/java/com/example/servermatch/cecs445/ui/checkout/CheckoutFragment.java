@@ -27,6 +27,7 @@ import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.Utils.CheckoutRecyclerAdapter;
 import com.example.servermatch.cecs445.models.Bill;
 import com.example.servermatch.cecs445.models.MenuItem;
+import com.example.servermatch.cecs445.ui.menu.BillViewModel;
 import com.example.servermatch.cecs445.ui.menu.MenuFragment;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -38,9 +39,10 @@ import java.util.List;
 public class CheckoutFragment extends Fragment {
 
     private CheckoutViewModel checkOutViewModel;
+    private BillViewModel billViewModel;
     private static String TAG = "CheckoutFragment";
     private View view;
-    private Bill bill;
+    Bill bill;
     private RecyclerView recyclerView;
     private TextView totalCost;
     private TextInputLayout mEmail;
@@ -57,7 +59,9 @@ public class CheckoutFragment extends Fragment {
         mEmail = view.findViewById(R.id.checkout_email);
         mCheckoutButton = view.findViewById(R.id.checkout_button);
         checkOutViewModel = new ViewModelProvider(this).get(CheckoutViewModel.class);
+        billViewModel = new ViewModelProvider(this).get(BillViewModel.class);
         checkOutViewModel.init();
+        billViewModel.init();
         checkoutButtonListener();
         setUpBill();
         initRecyclerView();
@@ -75,11 +79,15 @@ public class CheckoutFragment extends Fragment {
                 String checkoutTime = dtf.format(now);
                 String emailString = mEmail.getEditText().getText().toString().trim().toLowerCase();
                 bill.setCustomerID(emailString);
-                checkOutViewModel.checkOutCustomer(getContext(), bill, checkoutTime);
+                boolean successfulCheckout = checkOutViewModel.checkOutCustomer(getContext(), bill, checkoutTime);
                 Log.d(TAG, mEmail.getEditText().toString());
                 Log.d(TAG, bill.toString());
 
+                billViewModel.clearBillItems();
                 MenuFragment menuFragment = new MenuFragment();
+                Bundle args = new Bundle();
+                args.putBoolean("CheckoutComplete", successfulCheckout);
+                menuFragment.setArguments(args);
                 FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
                 transaction.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_right,R.anim.slide_in_right,R.anim.slide_out_right);
                 transaction.replace(R.id.nav_host_fragment, menuFragment);
