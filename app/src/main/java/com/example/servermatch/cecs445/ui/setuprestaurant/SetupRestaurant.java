@@ -14,15 +14,15 @@ import java.util.Set;
 
 public class SetupRestaurant extends AppCompatActivity {
 
-    Button btnSetupRestaurant;
+    Button btnLoginRestaurant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup_restaurant);
 
-        btnSetupRestaurant = findViewById(R.id.setup_restaurant_button);
-        btnSetupRestaurant.setOnClickListener(new View.OnClickListener() {
+        btnLoginRestaurant = findViewById(R.id.login_restaurant_button);
+        btnLoginRestaurant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //startActivity(new Intent(SetupRestaurant.this, MainActivity.class));
