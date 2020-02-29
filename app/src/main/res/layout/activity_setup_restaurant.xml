@@ -11,14 +11,51 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!--
         <ImageView
             android:id="@+id/setup_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             android:src="@drawable/servermatch_startup" />
-        -->
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/setup_restaurant_email"
+            android:layout_width="321dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="350dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
+            android:gravity="center"
+            android:background="@color/colorPrimaryLight"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Restaurant Email"
+                android:inputType="textEmailAddress"></com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/setup_restaurant_pass"
+            android:layout_width="321dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
+            android:layout_marginTop="425dp"
+            android:gravity="center"
+            android:background="@color/colorPrimaryLight"
+            app:counterEnabled="true"
+            app:counterMaxLength="10"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:maxLength="10"></com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/login_restaurant_button"
@@ -27,26 +64,35 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginHorizontal="32dp"
-            android:layout_marginBottom="135dp"
+            android:layout_marginBottom="55dp"
             android:paddingVertical="20dp"
             android:backgroundTint="@color/colorAccent"
             android:text="Login"
             android:textColor="@android:color/black"
             android:textSize="16sp" />
 
-        <Button
-            android:id="@+id/setup_restaurant_button"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginHorizontal="32dp"
-            android:layout_marginBottom="50dp"
-            android:paddingVertical="20dp"
-            android:backgroundTint="@color/colorAccent"
-            android:text="@string/setup_restaurant_button"
-            android:textColor="@android:color/black"
-            android:textSize="16sp" />
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="32dp"
+            android:text="Don't have an account?"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/setup_restaurant_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="15dp"
+            android:text="Click here to create one."
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@android:color/black" />
 
     </RelativeLayout>
 
