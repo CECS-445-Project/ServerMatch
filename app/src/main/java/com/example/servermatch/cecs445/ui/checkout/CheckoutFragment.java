@@ -8,12 +8,14 @@ package com.example.servermatch.cecs445.ui.checkout;
  */
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,6 +40,7 @@ public class CheckoutFragment extends Fragment {
     private CheckoutViewModel checkOutViewModel;
     private static String TAG = "CheckoutFragment";
     private View view;
+    private View layout;
     private Bill bill;
     private RecyclerView recyclerView;
     private TextView totalCost;
@@ -50,6 +53,7 @@ public class CheckoutFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_checkout,container,false);
+        layout = inflater.inflate(R.layout.custom_toast, view.findViewById(R.id.custom_toast_container));
         recyclerView = view.findViewById(R.id.recycler_view_checkout);
         totalCost = view.findViewById(R.id.checkout_total_cost);
         mEmail = view.findViewById(R.id.checkout_email);
@@ -66,9 +70,20 @@ public class CheckoutFragment extends Fragment {
     public void checkoutButtonListener(){
         mCheckoutButton.setOnClickListener(v -> {
             //get checkout time
+            if(mEmail.getText().toString().equals("")) {
+                TextView text = layout.findViewById(R.id.text);
+                text.setText("Please Enter Your Email...");
+
+                Toast toast = new Toast(getContext());
+                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(layout);
+                toast.show();
+            }
+            else {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
             LocalDateTime now = LocalDateTime.now();
-            String checkoutTime= dtf.format(now);
+            String checkoutTime = dtf.format(now);
 
             String emailString = mEmail.getText().toString().toLowerCase();
             bill.setCustomerID(emailString);
@@ -77,6 +92,7 @@ public class CheckoutFragment extends Fragment {
 
             Log.d(TAG, mEmail.getText().toString());
             Log.d(TAG, bill.toString());
+            }
         });
     }
 
