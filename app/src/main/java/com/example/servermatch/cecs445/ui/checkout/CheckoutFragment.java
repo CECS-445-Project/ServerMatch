@@ -72,7 +72,7 @@ public class CheckoutFragment extends Fragment {
             //get checkout time
             if(mEmail.getText().toString().equals("")) {
                 TextView text = layout.findViewById(R.id.text);
-                text.setText("Please Enter Your Email...");
+                text.setText("Please enter your email...");
 
                 Toast toast = new Toast(getContext());
                 toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
