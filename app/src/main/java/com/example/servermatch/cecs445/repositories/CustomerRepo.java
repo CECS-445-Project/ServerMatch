@@ -120,7 +120,6 @@ public class CustomerRepo {
     private boolean storeBill(Context context, String email, Bill bill, String checkoutTime){
 
         String collectionName;
-        String toastMsg;
         Map<String, Object> billInformation = new HashMap<>();
         billInformation.put("TransactionDateTime:", checkoutTime);
         List<MenuItem> billItems = bill.getBillItems();
@@ -132,17 +131,15 @@ public class CustomerRepo {
 
         if(checkEmail(email)) {
             collectionName = "Customer";
-            toastMsg = "as a register customer";
         }else{
             collectionName = "Guest";
-            toastMsg = "as a guest";
         }
 
         db.collection(collectionName).document(email).collection("Bills").document(checkoutTime)
                 .set(billInformation).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(context, "Checkout Completed for " + email + "\n@" + checkoutTime + toastMsg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Checkout Completed.", Toast.LENGTH_SHORT).show();
 
             }
         }).addOnFailureListener(new OnFailureListener() {
