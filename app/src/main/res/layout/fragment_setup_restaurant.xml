@@ -76,60 +76,89 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@android:color/black" />
 
-    <!--
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:onClick="selectRed"
-        android:src="@drawable/red_pfp" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
 
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:onClick="selectBlue"
-        android:src="@drawable/blue_pfp" />
+        <ImageButton
+            android:id="@+id/imageButton1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:state_pressed="true"
+            android:src="@drawable/red_pfp" />
 
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:onClick="selectYellow"
-        android:src="@drawable/yellow_pfp" />
-    -->
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:state_pressed="false"
+            android:src="@drawable/blue_pfp" />
+
+        <ImageButton
+            android:id="@+id/imageButton3"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:state_pressed="false"
+            android:src="@drawable/yellow_pfp" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/setup_restaurant_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_marginBottom="20dp"
         android:backgroundTint="@color/colorAccent"
-        android:paddingVertical="20dp"
         android:text="ADD RESTAURANT"
         android:textColor="@android:color/white"
         android:textSize="16sp" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginBottom="5dp"
-        android:gravity="center"
         android:text="Already have an account?"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@color/colorPrimaryDark" />
+        android:layout_gravity="center"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="16sp"/>
 
-    <TextView
-        android:id="@+id/login_restaurant_link"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginBottom="10dp"
-        android:gravity="center"
-        android:text="Click here to login."
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@color/colorPrimaryDark" />
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
 
-</>
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Click here"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" to create login."
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+</LinearLayout>

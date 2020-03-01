@@ -87,6 +87,7 @@ public class SetupRestaurantFragment extends Fragment {
                 //Restaurant newRestaurant = new Restaurant(restaurantName, restaurantEmail, restaurantPhone);
                 //setupRestaurantViewModel.setupRestaurant(newRestaurant);
             }
+
         });
 
         return root;
@@ -129,14 +130,14 @@ public class SetupRestaurantFragment extends Fragment {
         }
     }
 
-        public void validateInput(String name, String email, String phone) {
-            if(!validateName(name) | !validateEmail(email) | !validatePhone(phone)) {
-                return;
-            }
-
-            Restaurant r1 = new Restaurant(name, phone, email);
-            Log.d("setup_restaurant", r1.toString());
-            Toast.makeText(getContext(), "Restaurant Created", Toast.LENGTH_SHORT).show();
+    public void validateInput(String name, String email, String phone) {
+        if(!validateName(name) | !validateEmail(email) | !validatePhone(phone)) {
+            return;
         }
+
+        Restaurant r1 = new Restaurant(name, phone, email);
+        Log.d("setup_restaurant", r1.toString());
+        Toast.makeText(getContext(), "Restaurant Created", Toast.LENGTH_SHORT).show();
+    }
 
 }
