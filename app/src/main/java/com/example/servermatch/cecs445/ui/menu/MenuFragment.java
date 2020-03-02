@@ -19,8 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.Utils.BillRecyclerAdapter;
 import com.example.servermatch.cecs445.Utils.MenuRecyclerAdapter;
-import com.example.servermatch.cecs445.models.Bill;
 import com.example.servermatch.cecs445.models.MenuItem;
+import com.example.servermatch.cecs445.ui.filters.FiltersFragment;
 import com.example.servermatch.cecs445.ui.checkout.CheckoutFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
@@ -123,8 +123,12 @@ public class MenuFragment extends Fragment {
 
     private void fabActionListener(){
         mFab.setOnClickListener(v -> {
-            mMenuViewModel.removePizza();
-            recyclerView.smoothScrollToPosition(mMenuViewModel.getMenuItems().getValue().size()-1);
+//            mMenuViewModel.removePizza();
+//            recyclerView.smoothScrollToPosition(mMenuViewModel.getMenuItems().getValue().size()-1);
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            transaction.replace(R.id.nav_host_fragment,new FiltersFragment());
+            transaction.addToBackStack(null);
+            transaction.commit();
         });
     }
 
