@@ -39,10 +39,4 @@
         <item name="chipBackgroundColor">@color/bg_color_chip_state</item>
         <item name="android:textColor">@color/text_color_chip_state</item>
     </style>
-
-    <style name="CustomChipChoiceBETTER" parent="TextAppearance">
-        <item name="chipBackgroundColor">@color/bg_color_chip_state</item>
-        <item name="android:textColor">@color/text_color_chip_state</item>
-        <item name="android:textSize">50dp</item>
-    </style>
 </resources>
