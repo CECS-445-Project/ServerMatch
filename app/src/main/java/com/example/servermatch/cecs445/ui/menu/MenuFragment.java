@@ -141,6 +141,7 @@ public class MenuFragment extends Fragment {
 
             // Goes to Filter Fragment
             FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.slide_in_up,R.anim.slide_out_down, R.anim.slide_in_up,R.anim.slide_out_down);
             transaction.replace(R.id.nav_host_fragment, filtersFragment);
             transaction.addToBackStack(null);
             transaction.commit();

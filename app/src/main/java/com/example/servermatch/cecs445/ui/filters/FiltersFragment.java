@@ -1,3 +1,6 @@
+/**
+ * Andrew Delgado
+ */
 package com.example.servermatch.cecs445.ui.filters;
 
 import android.os.Bundle;
@@ -26,7 +29,7 @@ public class FiltersFragment extends Fragment {
     private ChipGroup mChipGroup;
     private List<String> filters;
     private Button mDone;
-    private List<String> tags;
+    private List<String> selectedTags;
 
     @Nullable
     @Override
@@ -66,7 +69,7 @@ public class FiltersFragment extends Fragment {
     private void doneButtonListener(){
         mDone.setOnClickListener(v->{
 
-            tags = new ArrayList<>();
+            selectedTags = new ArrayList<>();
             if(mChipGroup.getChildCount() > 0) {
 
                 int chipsClicked = mChipGroup.getChildCount();
@@ -74,10 +77,10 @@ public class FiltersFragment extends Fragment {
 
                 for (int i = 0; i < chipsClicked; i++) {
                     chip = (Chip) mChipGroup.getChildAt(i);
-                    if (chip.isChecked()) tags.add(chip.getText().toString());
+                    if (chip.isChecked()) selectedTags.add(chip.getText().toString());
                 }
             }
-            Log.d(TAG,tags.toString());
+            Log.d(TAG, selectedTags.toString());
         });
     }
 
