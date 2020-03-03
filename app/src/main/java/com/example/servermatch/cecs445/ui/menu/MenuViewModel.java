@@ -5,6 +5,7 @@ package com.example.servermatch.cecs445.ui.menu;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.Menu;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.servermatch.cecs445.models.MenuItem;
 import com.example.servermatch.cecs445.repositories.MenuItemRepo;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -22,12 +24,15 @@ public class MenuViewModel extends ViewModel {
     private MutableLiveData<List<MenuItem>> mMenuItems;
     private MenuItemRepo mRepo;
 
+    private List<MenuItem> ORIGINAL_LIST;
+
     public void init(){
         if(mMenuItems != null){
             return;
         }
         mRepo = MenuItemRepo.getInstance();
         mMenuItems = mRepo.getMenuItems();
+        ORIGINAL_LIST = MenuItemRepo.getInstance().getOriginalMenuItems();
 
         //sleep for firestore to catch up
         new AsyncTask<Void, Void, Void>() {
@@ -86,5 +91,33 @@ public class MenuViewModel extends ViewModel {
 
     public LiveData<List<MenuItem>> getMenuItems(){
         return mMenuItems;
+    }
+
+    public void setItems(ArrayList<String> tags) {
+
+        if (tags.size() == 0) {
+            mMenuItems.postValue(ORIGINAL_LIST);
+        }
+        else {
+            List<MenuItem> currentList = mMenuItems.getValue();
+            Iterator<MenuItem> iterator = currentList.iterator();
+
+            boolean found = false;
+
+            while (iterator.hasNext()) {
+                found = false;
+                MenuItem menuItem = iterator.next();
+                for (String s : tags) {
+                    if (menuItem.getTags().contains(s)) {
+                        found = true;
+                    }
+                }
+                if (!found) iterator.remove();
+            }
+
+            Log.d(TAG, currentList.toString());
+
+            mMenuItems.postValue(currentList);
+        }
     }
 }

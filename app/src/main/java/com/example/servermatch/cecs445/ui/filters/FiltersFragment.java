@@ -13,7 +13,13 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.example.servermatch.cecs445.R;
+import com.example.servermatch.cecs445.ui.menu.MenuFragment;
+import com.example.servermatch.cecs445.ui.menu.MenuViewModel;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipDrawable;
 import com.google.android.material.chip.ChipGroup;
@@ -29,7 +35,10 @@ public class FiltersFragment extends Fragment {
     private ChipGroup mChipGroup;
     private List<String> filters;
     private Button mDone;
-    private List<String> selectedTags;
+    private Boolean receivedTags = false;
+
+    private MenuViewModel mMenuViewModel;
+    //private List<String> selectedTags;
 
     @Nullable
     @Override
@@ -38,6 +47,8 @@ public class FiltersFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_filters, container,false);
         mChipGroup = view.findViewById(R.id.chip_group_filters);
         mDone = view.findViewById(R.id.filter_done);
+        mMenuViewModel = new ViewModelProvider(this.getActivity()).get(MenuViewModel.class);
+
 
         initChipGroup();
         doneButtonListener();
@@ -47,7 +58,7 @@ public class FiltersFragment extends Fragment {
 
     private void initChipGroup(){
 
-        if(getArguments() != null) {
+        if(getArguments() != null && !receivedTags) {
 
             Bundle bundle = getArguments();
 
@@ -64,41 +75,37 @@ public class FiltersFragment extends Fragment {
                 }
             }
         }
+        receivedTags = true;
     }
 
     private void doneButtonListener(){
         mDone.setOnClickListener(v->{
+            ArrayList<String> tags = getSelectedTags();
+            MenuFragment menuFragment = new MenuFragment();
+            Bundle bundle = new Bundle();
+            bundle.putStringArrayList("tags",tags);
+            menuFragment.setArguments(bundle);
 
-            selectedTags = new ArrayList<>();
-            if(mChipGroup.getChildCount() > 0) {
+            mMenuViewModel.setItems(tags);
 
-                int chipsClicked = mChipGroup.getChildCount();
-                Chip chip;
-
-                for (int i = 0; i < chipsClicked; i++) {
-                    chip = (Chip) mChipGroup.getChildAt(i);
-                    if (chip.isChecked()) selectedTags.add(chip.getText().toString());
-                }
-            }
-            Log.d(TAG, selectedTags.toString());
+            Log.d(TAG, tags.toString());
         });
     }
 
-//        private String [] filter = {
-//            "Vegan",
-//            "Vegetarian",
-//            "Dairy Free",
-//            "Gluten Free",
-//            "Soy Free",
-//            "Low-Carb",
-//            "High Protein",
-//            "Spicy",
-//            "Contains Eggs",
-//            "Contains Dairy",
-//            "Contains Nuts",
-//            "Contains Fish",
-//            "Contains Beef",
-//            "Contains Poultry",
-//            "Contains Pork"
-//    };
+    private ArrayList<String> getSelectedTags(){
+        ArrayList<String> selectedTags = new ArrayList<>();
+        if(mChipGroup.getChildCount() > 0) {
+
+            int chipsClicked = mChipGroup.getChildCount();
+            Chip chip;
+
+            for (int i = 0; i < chipsClicked; i++) {
+                chip = (Chip) mChipGroup.getChildAt(i);
+                if (chip.isChecked()) selectedTags.add(chip.getText().toString());
+            }
+        }
+        Log.d(TAG, selectedTags.toString());
+
+        return selectedTags;
+    }
 }

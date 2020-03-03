@@ -46,7 +46,7 @@ public class MenuFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_menu,container,false);
-        mMenuViewModel = new ViewModelProvider(this).get(MenuViewModel.class);
+        mMenuViewModel = new ViewModelProvider(this.getActivity()).get(MenuViewModel.class);
         mBillViewModel = new ViewModelProvider(this).get(BillViewModel.class);
         mMenuViewModel.init();
         mBillViewModel.init();
@@ -65,6 +65,11 @@ public class MenuFragment extends Fragment {
         initRecyclerViews();
 
         ft = getParentFragmentManager().beginTransaction();
+
+        if(getArguments() != null){
+            Bundle bundle = getArguments();
+            Log.d(TAG, bundle.getStringArrayList("tags").toString());
+        }
 
         return view;
     }
