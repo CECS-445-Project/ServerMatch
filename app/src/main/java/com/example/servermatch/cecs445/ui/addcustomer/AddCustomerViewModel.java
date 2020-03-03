@@ -1,8 +1,9 @@
 package com.example.servermatch.cecs445.ui.addcustomer;
 
+import android.content.Context;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.example.servermatch.cecs445.models.Customer;
 import com.example.servermatch.cecs445.repositories.CustomerRepo;
 
@@ -23,12 +24,8 @@ public class AddCustomerViewModel extends ViewModel {
         mCustomers.postValue(currentCustomers);
     }
 
-    public void addCustomer(Customer newCustomer){
-        cRepo.addCustomer(newCustomer);
-        List<Customer> currentCustomers = mCustomers.getValue();
-        currentCustomers.add(newCustomer); //adds newCustomer to local cache
-        mCustomers.postValue(currentCustomers);
-
+    public boolean addCustomer(Customer newCustomer, Context context){
+        return cRepo.addCustomer(newCustomer, context);
     }
     public MutableLiveData<List<Customer>> getmCustomers() {
         return mCustomers;
