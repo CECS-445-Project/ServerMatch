@@ -24,15 +24,12 @@ public class MenuViewModel extends ViewModel {
     private MutableLiveData<List<MenuItem>> mMenuItems;
     private MenuItemRepo mRepo;
 
-    private List<MenuItem> ORIGINAL_LIST;
-
     public void init(){
         if(mMenuItems != null){
             return;
         }
         mRepo = MenuItemRepo.getInstance();
         mMenuItems = mRepo.getMenuItems();
-        ORIGINAL_LIST = MenuItemRepo.getInstance().getOriginalMenuItems();
 
         //sleep for firestore to catch up
         new AsyncTask<Void, Void, Void>() {
@@ -59,6 +56,7 @@ public class MenuViewModel extends ViewModel {
         Log.d(TAG + ":End of init", "size of list" + mMenuItems.getValue().size() + "");
     }
 
+    //Probably Won't Need
     public void addNewValue(final MenuItem menuItem){
         List<MenuItem> currentMenuItems = mMenuItems.getValue();
         currentMenuItems.add(menuItem);
@@ -69,6 +67,7 @@ public class MenuViewModel extends ViewModel {
         Log.d(TAG + ":addNewValue", "size of list" + mMenuItems.getValue().toString() + "");
     }
 
+    // Probably won't need
     public void removePizza(){
         List<MenuItem> currentMenuItems = mMenuItems.getValue();
         for(Iterator<MenuItem> j = currentMenuItems.iterator(); j.hasNext();){
@@ -96,7 +95,10 @@ public class MenuViewModel extends ViewModel {
     public void setItems(ArrayList<String> tags) {
 
         if (tags.size() == 0) {
-            mMenuItems.postValue(ORIGINAL_LIST);
+            List<MenuItem> currentList = mMenuItems.getValue();
+            currentList.clear();
+            currentList.addAll(mRepo.getMenuItems().getValue());
+            mMenuItems.postValue(currentList);
         }
         else {
             List<MenuItem> currentList = mMenuItems.getValue();

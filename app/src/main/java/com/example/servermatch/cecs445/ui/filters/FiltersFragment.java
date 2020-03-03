@@ -81,14 +81,18 @@ public class FiltersFragment extends Fragment {
     private void doneButtonListener(){
         mDone.setOnClickListener(v->{
             ArrayList<String> tags = getSelectedTags();
-            MenuFragment menuFragment = new MenuFragment();
-            Bundle bundle = new Bundle();
-            bundle.putStringArrayList("tags",tags);
-            menuFragment.setArguments(bundle);
-
+//            MenuFragment menuFragment = new MenuFragment();
+//            Bundle bundle = new Bundle();
+//            bundle.putStringArrayList("tags",tags);
+//            menuFragment.setArguments(bundle);
             mMenuViewModel.setItems(tags);
-
             Log.d(TAG, tags.toString());
+
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.slide_in_up,R.anim.slide_out_down, R.anim.slide_in_up,R.anim.slide_out_down);
+            transaction.replace(R.id.nav_host_fragment, new MenuFragment());
+            transaction.addToBackStack(null);
+            transaction.commit();
         });
     }
 
