@@ -25,6 +25,8 @@ import com.google.android.material.chip.ChipDrawable;
 import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class FiltersFragment extends Fragment {
@@ -63,6 +65,7 @@ public class FiltersFragment extends Fragment {
             Bundle bundle = getArguments();
 
             filters = bundle.getStringArrayList("tags");
+            Collections.sort(filters);
 
             if (filters != null) {
                 for (String s : filters) {
@@ -81,10 +84,6 @@ public class FiltersFragment extends Fragment {
     private void doneButtonListener(){
         mDone.setOnClickListener(v->{
             ArrayList<String> tags = getSelectedTags();
-//            MenuFragment menuFragment = new MenuFragment();
-//            Bundle bundle = new Bundle();
-//            bundle.putStringArrayList("tags",tags);
-//            menuFragment.setArguments(bundle);
             mMenuViewModel.setItems(tags);
             Log.d(TAG, tags.toString());
 
