@@ -15,8 +15,6 @@ import com.example.servermatch.cecs445.repositories.FrequentCustomerRepo;
 import com.example.servermatch.cecs445.repositories.TopMenuItemRepo;
 import java.util.List;
 
-
-
 /*
 @author - Howard Chen
  */
@@ -40,7 +38,7 @@ public class FrequentCustomersViewModel extends ViewModel {
         tMIRepo = TopMenuItemRepo.getInstance();
         mTopCustomers = fCRepo.getCustomers();
         mEmail = new MutableLiveData<>();
-        mEmail.setValue("howardshowered@gmail.com");
+
 
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -48,7 +46,6 @@ public class FrequentCustomersViewModel extends ViewModel {
                 super.onPostExecute(aVoid);
                 List<Customer> currentTopCustomers = mTopCustomers.getValue();
                 mTopCustomers.postValue(currentTopCustomers);
-
 
             }
 
@@ -63,7 +60,7 @@ public class FrequentCustomersViewModel extends ViewModel {
                 return null;
             }
         }.execute();
-                mTopMenuItems = tMIRepo.getTopItems(mEmail.getValue());
+                mTopMenuItems = tMIRepo.getTopItems("howardshowered@gmail.com");
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected void onPostExecute(Void aVoid) {
@@ -97,7 +94,6 @@ public class FrequentCustomersViewModel extends ViewModel {
                 Log.d(TAG, "updateTopMenuItems: "+ currentMenuItems.toString());
                 mTopMenuItems.postValue(currentMenuItems);
 
-
             }
 
             @Override
@@ -114,7 +110,6 @@ public class FrequentCustomersViewModel extends ViewModel {
 
     }
 
-
     public LiveData<List<MenuItem>> getTopMenuItems() { return mTopMenuItems; }
 
     public LiveData<List<Customer>> getTopCustomers() { return mTopCustomers; }
@@ -123,5 +118,6 @@ public class FrequentCustomersViewModel extends ViewModel {
 
     public void setTopCustomerEmail(String email){
         mEmail.setValue(email);
+        updateTopMenuItems(email);
     }
 }
