@@ -43,7 +43,7 @@ public class TopMenuItemRepo {
     }
 
     public ArrayList<MenuItem> loadMenuItems(String email){
-
+        dataSet.clear();
         collRef.document(email).collection("MenuItems")
         .orderBy("mIntQuantity", Query.Direction.DESCENDING ).limit(5).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
