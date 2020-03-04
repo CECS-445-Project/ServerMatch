@@ -8,10 +8,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.models.MenuItem;
 import java.util.List;
@@ -45,6 +49,13 @@ public class TopItemsAdapter extends RecyclerView.Adapter<TopItemsAdapter.ViewHo
         Log.d(TAG, "onBindViewHolder: called.");
         ((TopItemsAdapter.ViewHolder)holder).bindView(position);
 
+        RequestOptions defaultOptions = new RequestOptions()
+                .error(R.drawable.ic_launcher_background);
+        Glide.with(mContext)
+                .setDefaultRequestOptions(defaultOptions)
+                .load(mItems.get(position).getImage())
+                .into(((TopItemsAdapter.ViewHolder)holder).foodImageView);
+
     }
 
     @Override
@@ -54,7 +65,7 @@ public class TopItemsAdapter extends RecyclerView.Adapter<TopItemsAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        //ImageView foodImageView;
+        ImageView foodImageView;
         LinearLayout parentLayout;
         TextView textViewItemName;
         TextView textViewItemDesc;
@@ -62,8 +73,8 @@ public class TopItemsAdapter extends RecyclerView.Adapter<TopItemsAdapter.ViewHo
 
         public ViewHolder(View itemView){
             super(itemView);
-            //TODO: glide image for top items
-            //foodImageView = itemView.findViewById(R.id.iv_pizza);
+
+            foodImageView = itemView.findViewById(R.id.iv_food_image);
             parentLayout = itemView.findViewById(R.id.parent_layout_top_items);
             textViewItemName = itemView.findViewById(R.id.tv_menu_item_name);
             textViewItemDesc = itemView.findViewById(R.id.tv_menu_item_description);
