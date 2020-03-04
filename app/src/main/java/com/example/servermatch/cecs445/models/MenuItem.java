@@ -29,6 +29,13 @@ public class MenuItem {
         this.tags = tags;
     }
 
+    public MenuItem(String mItemName, String mItemDesc, Double mItemCost, String mImage, int quantity) {
+        this.itemName = mItemName;
+        this.itemDesc = mItemDesc;
+        this.itemCost = mItemCost;
+        this.image = mImage;
+        this.mIntQuantity = quantity;
+    }
     @Exclude
     public String getDocumentId() {
         return documentId;
