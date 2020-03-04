@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.Utils.BillRecyclerAdapter;
 import com.example.servermatch.cecs445.Utils.MenuRecyclerAdapter;
-import com.example.servermatch.cecs445.models.Bill;
 import com.example.servermatch.cecs445.models.MenuItem;
 import com.example.servermatch.cecs445.ui.checkout.CheckoutFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -89,6 +88,8 @@ public class MenuFragment extends Fragment {
             ArrayList<String> billItemNames = new ArrayList<>();
             ArrayList<String> billItemQuantity = new ArrayList<>();
             ArrayList<String> billItemCost = new ArrayList<>();
+            ArrayList<String> billItemImage = new ArrayList<>();
+            ArrayList<String> billItemDesc = new ArrayList<>();
 
             // GetNames
             for(MenuItem m:currentList){
@@ -105,10 +106,22 @@ public class MenuFragment extends Fragment {
                 billItemCost.add(String.valueOf(m.getItemCost()));
             }
 
+            //Get Image
+            for(MenuItem m:currentList) {
+                billItemImage.add(String.valueOf(m.getImage()));
+            }
+
+            //Get Desc
+                for(MenuItem m:currentList) {
+                    billItemDesc.add(String.valueOf(m.getItemDesc()));
+                }
 
             bundle.putStringArrayList("billItemNames", billItemNames);
             bundle.putStringArrayList("billItemQuantity", billItemQuantity);
             bundle.putStringArrayList("billItemCost", billItemCost);
+            bundle.putStringArrayList("billItemImage", billItemImage);
+            bundle.putStringArrayList("billItemDesc", billItemDesc);
+
             bundle.putDouble("billTotal", totalBill);
             checkoutFragment.setArguments(bundle);
 
