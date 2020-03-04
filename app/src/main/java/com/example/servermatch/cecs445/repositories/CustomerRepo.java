@@ -37,7 +37,6 @@ public class CustomerRepo {
             db.collection("Customer");
     private  final CollectionReference billRef =
             db.collection("Bill");
-    private boolean incrementedVisit;
 
     public static CustomerRepo getInstance(){
         if(instance == null){
@@ -50,7 +49,6 @@ public class CustomerRepo {
         if(dataSet.isEmpty()) loadCustomers();
         MutableLiveData<List<Customer>> data = new MutableLiveData<>();
         data.setValue(dataSet);
-
         return data;
     }
 
@@ -68,7 +66,7 @@ public class CustomerRepo {
                 newEmail = false;
             }
         }
-        if(newEmail = false) {
+        if(newEmail = true) {
             //stores new customer with email as document id.
             customerRef.document(newCustomer.getEmail()).set(newCustomer)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -105,13 +103,12 @@ public class CustomerRepo {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                incrementedVisit = true;
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.e(TAG, "onFailure: " + e.toString() );
-                incrementedVisit = false;
             }
         });
 
@@ -124,9 +121,9 @@ public class CustomerRepo {
         billInformation.put("TransactionDateTime:", checkoutTime);
         List<MenuItem> billItems = bill.getBillItems();
         for (MenuItem menuItem : billItems) {
-            String menuItemName = menuItem.getItemName();
+            String menuItemId =  menuItem.getItemName();
             Integer menuItemQty = menuItem.getmIntQuantity();
-            billInformation.put(menuItemName, menuItemQty);
+            billInformation.put(menuItemId, menuItemQty);
         }
 
         if(checkEmail(email)) {
@@ -149,6 +146,26 @@ public class CustomerRepo {
 
             }
         });
+        //add to MenuItems List
+        for(MenuItem menuItem : billItems) {
+            db.collection(collectionName).document(email).collection("MenuItems")
+                    .document(menuItem.getItemName())
+                    .update("mIntQuantity", FieldValue.increment(menuItem.getmIntQuantity()))
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    db.collection(collectionName).document(email)
+                            .collection("MenuItems").document(menuItem.getItemName())
+                            .set(menuItem);
+                    Log.e(TAG, "onFailure: " + e.toString() );
+                }
+            });
+        }
 
         return true;
 
@@ -200,5 +217,6 @@ public class CustomerRepo {
             }
         });
     }
+
 
 }
