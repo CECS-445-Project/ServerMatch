@@ -60,7 +60,7 @@ public class FrequentCustomersViewModel extends ViewModel {
                 return null;
             }
         }.execute();
-                mTopMenuItems = tMIRepo.getTopItems("howardshowered@gmail.com");
+                mTopMenuItems = tMIRepo.getTopItems("initial@gmail.com");
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected void onPostExecute(Void aVoid) {
