@@ -4,19 +4,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.servermatch.cecs445.MainActivity;
 import com.example.servermatch.cecs445.R;
 
 import java.util.Set;
 
-public class SetupRestaurant extends AppCompatActivity /*implements View.OnClickListener*/ {
+public class SetupRestaurant extends AppCompatActivity {
 
-    Button btnLoginRestaurant;
+    private Button btnLoginRestaurant;
+    private TextView mCreateAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,26 +29,25 @@ public class SetupRestaurant extends AppCompatActivity /*implements View.OnClick
         setContentView(R.layout.activity_setup_restaurant);
 
         btnLoginRestaurant = findViewById(R.id.login_restaurant_button);
+
+        mCreateAccount = findViewById(R.id.setup_click_here);
+
         btnLoginRestaurant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(SetupRestaurant.this, MainActivity.class));
-                openRestaurantSetup();
+                startActivity(new Intent(SetupRestaurant.this, MainActivity.class));
             }
         });
 
-        /*
-        ImageButton imageButton1 = findViewById(R.id.imageButton1);
-        ImageButton imageButton2 = findViewById(R.id.imageButton2);
-        ImageButton imageButton3 = findViewById(R.id.imageButton3);
-
-        imageButton1.setOnClickListener(this);
-        imageButton2.setOnClickListener(this);
-        imageButton3.setOnClickListener(this);
-        */
-
+        goToSetupAccount();
     }
 
+    public void goToSetupAccount(){
+        mCreateAccount.setOnClickListener(v -> {
+            // setup switching between activity and fragment
+            openRestaurantSetup();
+        });
+    }
 
     public void openRestaurantSetup() {
         SetupRestaurantFragment restaurantFragment = SetupRestaurantFragment.newInstance();
@@ -51,22 +55,7 @@ public class SetupRestaurant extends AppCompatActivity /*implements View.OnClick
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.addToBackStack(null);
         transaction.add(R.id.setup_restaurant_container, restaurantFragment, "SETUP RESTAURANT FRAGMENT").commit();
+        Log.d("login_click_here", "Navigated to setup restaurant from login");
     }
 
-    /*
-    @Override
-    public void onClick(View v) {
-        switch(v.getId()) {
-            case R.id.imageButton1:
-                Toast.makeText(this, "Red Image Selected", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.imageButton2:
-                Toast.makeText(this, "Blue Image Selected", Toast.LENGTH_SHORT).show();
-                break ;
-            case R.id.imageButton3:
-                Toast.makeText(this, "Yellow Image Selected", Toast.LENGTH_SHORT).show();
-                break;
-        }
-    }
-    */
 }
