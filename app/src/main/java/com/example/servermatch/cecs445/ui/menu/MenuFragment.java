@@ -40,7 +40,7 @@ public class MenuFragment extends Fragment {
     private Button checkoutButton;
     private double totalBill;
     private FragmentTransaction ft;
-    private static final List<MenuItem> ALL_ITEMS = MenuItemRepo.getInstance().getMenuItems().getValue();
+    //private static final List<MenuItem> ALL_ITEMS = MenuItemRepo.getInstance().getMenuItems().getValue();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -156,7 +156,7 @@ public class MenuFragment extends Fragment {
     private ArrayList<String> getTags(){
         ArrayList<String> tags = new ArrayList<>();
 
-        List<MenuItem> all_menu_items = ALL_ITEMS;
+        List<MenuItem> all_menu_items = MenuItemRepo.getInstance().getMenuItems().getValue();;
 
         if(all_menu_items != null) {
             for (MenuItem m : all_menu_items) {
