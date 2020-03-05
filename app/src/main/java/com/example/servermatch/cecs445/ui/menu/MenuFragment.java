@@ -66,11 +66,6 @@ public class MenuFragment extends Fragment {
 
         ft = getParentFragmentManager().beginTransaction();
 
-        if(getArguments() != null){
-            Bundle bundle = getArguments();
-            Log.d(TAG, bundle.getStringArrayList("tags").toString());
-        }
-
         return view;
     }
 
