@@ -125,8 +125,6 @@ public class MenuFragment extends Fragment {
 
     private void fabActionListener(){
         mFab.setOnClickListener(v -> {
-//            mMenuViewModel.removePizza();
-//            recyclerView.smoothScrollToPosition(mMenuViewModel.getMenuItems().getValue().size()-1);
 
             ArrayList<String> tags = getTags();
 

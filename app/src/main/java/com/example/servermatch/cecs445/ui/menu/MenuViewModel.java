@@ -56,30 +56,6 @@ public class MenuViewModel extends ViewModel {
         Log.d(TAG + ":End of init", "size of list" + mMenuItems.getValue().size() + "");
     }
 
-    //Probably Won't Need
-    public void addNewValue(final MenuItem menuItem){
-        List<MenuItem> currentMenuItems = mMenuItems.getValue();
-        currentMenuItems.add(menuItem);
-        mMenuItems.postValue(currentMenuItems);
-
-        // For Debugging
-        Log.d(TAG + ":addNewValue", "size of list" + mMenuItems.getValue().size() + "");
-        Log.d(TAG + ":addNewValue", "size of list" + mMenuItems.getValue().toString() + "");
-    }
-
-    // Probably won't need
-    public void removePizza(){
-        List<MenuItem> currentMenuItems = mMenuItems.getValue();
-        for(Iterator<MenuItem> j = currentMenuItems.iterator(); j.hasNext();){
-
-            MenuItem temp = j.next();
-            if(temp.getItemName().contains("Pizza")){
-                j.remove();
-            }
-        }
-        mMenuItems.postValue(currentMenuItems);
-    }
-
     public void clearMenuItems(){
         List<MenuItem> currentList = mMenuItems.getValue();
         for (MenuItem menuItem : currentList){
