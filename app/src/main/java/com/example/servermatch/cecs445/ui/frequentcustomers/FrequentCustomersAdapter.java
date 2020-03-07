@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.models.Customer;
+
 import java.util.List;
 
 public class FrequentCustomersAdapter extends RecyclerView.Adapter<FrequentCustomersAdapter.ViewHolder>{
@@ -22,6 +23,7 @@ public class FrequentCustomersAdapter extends RecyclerView.Adapter<FrequentCusto
     private List<Customer> mFrequentCustomerNames;
     private Context mContext;
     private FrequentCustomersViewModel mFrequentCustomersViewModel;
+    private static String currentEmail;
 
 
     public FrequentCustomersAdapter(FrequentCustomersViewModel mFrequentCustomersViewModel, Context context, List<Customer> mFrequentCustomerNames){
@@ -47,8 +49,8 @@ public class FrequentCustomersAdapter extends RecyclerView.Adapter<FrequentCusto
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: clicked on: " + mFrequentCustomerNames.get(position));
-                String documentId = mFrequentCustomerNames.get(position).getDocumentId();
-
+                currentEmail = mFrequentCustomerNames.get(position).getEmail();
+                mFrequentCustomersViewModel.setTopCustomerEmail(currentEmail);
             }
         });
 
@@ -60,8 +62,6 @@ public class FrequentCustomersAdapter extends RecyclerView.Adapter<FrequentCusto
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        // Stores the itemView in a public final member variable that can be used
-        // to access the context from any ViewHolder instance.
 
         Button customersButton;
         RelativeLayout parentLayout;
@@ -79,5 +79,9 @@ public class FrequentCustomersAdapter extends RecyclerView.Adapter<FrequentCusto
             customersButton.setText(customerName);
         }
 
+    }
+
+    public static String getCurrentEmail(){
+        return currentEmail;
     }
 }

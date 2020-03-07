@@ -58,6 +58,7 @@ public class MenuItemRepo {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Toast.makeText(context, itemName +" Added!", Toast.LENGTH_SHORT).show();
+
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override

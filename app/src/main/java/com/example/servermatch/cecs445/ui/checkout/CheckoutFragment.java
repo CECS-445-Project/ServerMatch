@@ -6,6 +6,7 @@ package com.example.servermatch.cecs445.ui.checkout;
 /*
 @author -  Andrew Delgado and Howard Chen
  */
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
@@ -69,6 +71,7 @@ public class CheckoutFragment extends Fragment {
         return view;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void checkoutButtonListener(){
         mCheckoutButton.setOnClickListener(v -> {
             boolean validEmail = validateEmail();
@@ -117,18 +120,21 @@ public class CheckoutFragment extends Fragment {
             ArrayList<String> itemNames;
             ArrayList<String> itemQuantity;
             ArrayList<String> itemCost;
+            ArrayList<String> itemImg;
+            ArrayList<String> itemDesc;
 
             List<MenuItem> menuItems = new ArrayList<>();
 
             itemNames = (ArrayList) bundle.get("billItemNames");
             itemQuantity = (ArrayList) bundle.get("billItemQuantity");
             itemCost = (ArrayList) bundle.get("billItemCost");
+            itemImg =  (ArrayList) bundle.get("billItemImage");
+            itemDesc = (ArrayList) bundle.get("billItemDesc");
 
             for (int i = 0; i < itemNames.size(); i++) {
                 menuItems.add(new MenuItem(
-                        itemNames.get(i),
-                        Integer.parseInt(itemQuantity.get(i)),
-                        Double.parseDouble(itemCost.get(i))));
+                        itemNames.get(i), itemDesc.get(i), Double.parseDouble(itemCost.get(i)),
+                        itemImg.get(i), Integer.parseInt(itemQuantity.get(i))));
             }
 
             bill = new Bill((double)bundle.get("billTotal"),menuItems);

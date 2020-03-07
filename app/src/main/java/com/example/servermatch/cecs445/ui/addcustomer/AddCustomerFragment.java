@@ -153,10 +153,10 @@ public class AddCustomerFragment extends Fragment {
     }
 
     private void clearFields(){
-
+                addCustomerFname.getEditText().setText("");
                 addCustomerLname.getEditText().setText("");
                 addCustomerEmail.getEditText().setText("");
-                addCustomerEmail.getEditText().setText("");
+                addCustomerPhone.getEditText().setText("");
                 addCustomerReceiptText.setChecked(false);
                 addCustomerReceiptEmail.setChecked(false);
     }
