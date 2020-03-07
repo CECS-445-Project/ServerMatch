@@ -1,7 +1,10 @@
 package com.example.servermatch.cecs445;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.servermatch.cecs445.ui.setuprestaurant.SetupRestaurant;
+import com.example.servermatch.cecs445.ui.setuprestaurant.SetupRestaurantFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -21,11 +24,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    private TextView navHeaderRestaurantName;
+    private TextView navHeaderRestaurantEmail;
+    private TextView navHeaderRestaurantPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +54,20 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        //headerView to set Text for restaurant nav header
+        View headerView = navigationView.getHeaderView(0);
+        navHeaderRestaurantName = headerView.findViewById(R.id.restaurant_name);
+        navHeaderRestaurantEmail = headerView.findViewById(R.id.restaurant_email);
+        navHeaderRestaurantPhone = headerView.findViewById(R.id.restaurant_phone);
+
+        Intent intent = getIntent();
+        String setup_restaurant_name = intent.getStringExtra(SetupRestaurantFragment.EXTRA_RESTAURANT_NAME);
+        String setup_restaurant_email = intent.getStringExtra(SetupRestaurantFragment.EXTRA_RESTAURANT_EMAIL);
+        String setup_restaurant_phone = intent.getStringExtra(SetupRestaurantFragment.EXTRA_RESTAURANT_PHONE);
+        navHeaderRestaurantName.setText(setup_restaurant_name);
+        navHeaderRestaurantEmail.setText(setup_restaurant_email);
+        navHeaderRestaurantPhone.setText(setup_restaurant_phone);
     }
 
     @Override
