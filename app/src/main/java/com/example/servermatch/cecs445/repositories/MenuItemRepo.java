@@ -108,4 +108,8 @@ public class MenuItemRepo {
     }
 
 
+    public List<MenuItem> getOriginalMenuItems() {
+        List<MenuItem> originalItems = new ArrayList<>(dataSet);
+        return originalItems;
+    }
 }
