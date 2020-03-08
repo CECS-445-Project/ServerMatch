@@ -19,8 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.Utils.BillRecyclerAdapter;
 import com.example.servermatch.cecs445.Utils.MenuRecyclerAdapter;
-import com.example.servermatch.cecs445.models.Bill;
 import com.example.servermatch.cecs445.models.MenuItem;
+import com.example.servermatch.cecs445.repositories.MenuItemRepo;
+import com.example.servermatch.cecs445.ui.filters.FiltersFragment;
 import com.example.servermatch.cecs445.ui.checkout.CheckoutFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
@@ -39,12 +40,13 @@ public class MenuFragment extends Fragment {
     private Button checkoutButton;
     private double totalBill;
     private FragmentTransaction ft;
+    //private static final List<MenuItem> ALL_ITEMS = MenuItemRepo.getInstance().getMenuItems().getValue();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_menu,container,false);
-        mMenuViewModel = new ViewModelProvider(this).get(MenuViewModel.class);
+        mMenuViewModel = new ViewModelProvider(this.getActivity()).get(MenuViewModel.class);
         mBillViewModel = new ViewModelProvider(this).get(BillViewModel.class);
         mMenuViewModel.init();
         mBillViewModel.init();
@@ -89,6 +91,8 @@ public class MenuFragment extends Fragment {
             ArrayList<String> billItemNames = new ArrayList<>();
             ArrayList<String> billItemQuantity = new ArrayList<>();
             ArrayList<String> billItemCost = new ArrayList<>();
+            ArrayList<String> billItemImage = new ArrayList<>();
+            ArrayList<String> billItemDesc = new ArrayList<>();
 
             // GetNames
             for(MenuItem m:currentList){
@@ -105,10 +109,22 @@ public class MenuFragment extends Fragment {
                 billItemCost.add(String.valueOf(m.getItemCost()));
             }
 
+            //Get Image
+            for(MenuItem m:currentList) {
+                billItemImage.add(String.valueOf(m.getImage()));
+            }
+
+            //Get Desc
+                for(MenuItem m:currentList) {
+                    billItemDesc.add(String.valueOf(m.getItemDesc()));
+                }
 
             bundle.putStringArrayList("billItemNames", billItemNames);
             bundle.putStringArrayList("billItemQuantity", billItemQuantity);
             bundle.putStringArrayList("billItemCost", billItemCost);
+            bundle.putStringArrayList("billItemImage", billItemImage);
+            bundle.putStringArrayList("billItemDesc", billItemDesc);
+
             bundle.putDouble("billTotal", totalBill);
             checkoutFragment.setArguments(bundle);
 
@@ -123,9 +139,41 @@ public class MenuFragment extends Fragment {
 
     private void fabActionListener(){
         mFab.setOnClickListener(v -> {
-            mMenuViewModel.removePizza();
-            recyclerView.smoothScrollToPosition(mMenuViewModel.getMenuItems().getValue().size()-1);
+
+            ArrayList<String> tags = getTags();
+
+            //Logs out tags
+            Log.d(TAG, tags.toString());
+
+            //Creates Bundle
+            FiltersFragment filtersFragment = new FiltersFragment();
+            Bundle bundle = new Bundle();
+            bundle.putStringArrayList("tags",tags);
+            filtersFragment.setArguments(bundle);
+
+            // Goes to Filter Fragment
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.slide_in_up,R.anim.slide_out_down, R.anim.slide_in_up,R.anim.slide_out_down);
+            transaction.replace(R.id.nav_host_fragment, filtersFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
         });
+    }
+
+    private ArrayList<String> getTags(){
+        ArrayList<String> tags = new ArrayList<>();
+
+        List<MenuItem> all_menu_items = MenuItemRepo.getInstance().getMenuItems().getValue();;
+
+        if(all_menu_items != null) {
+            for (MenuItem m : all_menu_items) {
+                for(String t:m.getTags()){
+                    if(!tags.contains(t)) tags.add(t);
+                }
+            }
+        }
+
+        return tags;
     }
 
     private void initRecyclerViews(){
