@@ -23,9 +23,9 @@ import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.models.Restaurant;
 import com.google.android.material.textfield.TextInputLayout;
 
-import static com.example.servermatch.cecs445.R.drawable.blue_pfp;
-import static com.example.servermatch.cecs445.R.drawable.red_pfp;
-import static com.example.servermatch.cecs445.R.drawable.yellow_pfp;
+import static com.example.servermatch.cecs445.R.drawable.chilis_drawable;
+import static com.example.servermatch.cecs445.R.drawable.gladstones_drawable;
+import static com.example.servermatch.cecs445.R.drawable.theattic_drawable;
 
 public class SetupRestaurantFragment extends Fragment {
 
@@ -97,15 +97,15 @@ public class SetupRestaurantFragment extends Fragment {
             public void onClick(View v) {
                 switch (v.getId()){
                     case R.id.imageButton1:
-                        setupRestaurantIcon = red_pfp;
+                        setupRestaurantIcon = gladstones_drawable;
                         Log.d("selected_one", "Selected first profile icon.");
                         break;
                     case R.id.imageButton2:
-                        setupRestaurantIcon = blue_pfp;
+                        setupRestaurantIcon = theattic_drawable;
                         Log.d("selected_two", "Selected second profile icon.");
                         break;
                     case R.id.imageButton3:
-                        setupRestaurantIcon = yellow_pfp;
+                        setupRestaurantIcon = chilis_drawable;
                         Log.d("selected_three", "Selected third profile icon.");
                         break;
                     default:

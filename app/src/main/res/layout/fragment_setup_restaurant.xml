@@ -95,7 +95,7 @@
             android:scaleType="fitCenter"
             android:clickable="true"
             android:focusable="true"
-            android:src="@drawable/red_pfp" />
+            android:src="@drawable/gladstones_drawable" />
 
         <ImageButton
             android:id="@+id/imageButton2"
@@ -107,7 +107,7 @@
             android:scaleType="fitCenter"
             android:clickable="true"
             android:focusable="true"
-            android:src="@drawable/blue_pfp" />
+            android:src="@drawable/theattic_drawable" />
 
         <ImageButton
             android:id="@+id/imageButton3"
@@ -119,7 +119,7 @@
             android:scaleType="fitCenter"
             android:clickable="true"
             android:focusable="true"
-            android:src="@drawable/yellow_pfp" />
+            android:src="@drawable/chilis_drawable" />
 
     </LinearLayout>
 
