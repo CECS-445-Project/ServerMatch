@@ -1,6 +1,7 @@
 package com.example.servermatch.cecs445.ui.setuprestaurant;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -8,6 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -39,6 +44,13 @@ public class SetupRestaurantFragment extends Fragment {
     private Button btnSetupRestaurant;
     private Button btnLoginRestaurant;
 
+    private ImageButton imageButton1;
+    private ImageButton imageButton2;
+    private ImageButton imageButton3;
+
+    private ImageView imageView;
+    private TextView mLoginAccount;
+
 
     public SetupRestaurantFragment() {
         //blank constructor
@@ -64,6 +76,11 @@ public class SetupRestaurantFragment extends Fragment {
         btnSetupRestaurant = root.findViewById(R.id.setup_restaurant_submit);
         btnLoginRestaurant = root.findViewById(R.id.login_restaurant_submit);
 
+        imageButton1 = root.findViewById((R.id.imageButton1));
+        imageButton2 = root.findViewById((R.id.imageButton2));
+        imageButton3 = root.findViewById((R.id.imageButton3));
+
+        mLoginAccount = root.findViewById(R.id.login_click_here);
 
         btnSetupRestaurant.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,22 +90,55 @@ public class SetupRestaurantFragment extends Fragment {
                 String restaurantPhone = setupRestaurantPhone.getEditText().getText().toString();
                 String restaurantPass = setupRestaurantPass.getEditText().getText().toString();
 
+                Intent mainIntent = new Intent(getActivity(), MainActivity.class);
+                mainIntent.putExtra(EXTRA_RESTAURANT_NAME, restaurantName);
+                mainIntent.putExtra(EXTRA_RESTAURANT_EMAIL, restaurantEmail);
+                mainIntent.putExtra(EXTRA_RESTAURANT_PHONE, restaurantPhone);
+                mainIntent.putExtra(EXTRA_RESTAURANT_PASS, restaurantPass);
 
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                intent.putExtra(EXTRA_RESTAURANT_NAME, restaurantName);
-                intent.putExtra(EXTRA_RESTAURANT_EMAIL, restaurantEmail);
-                intent.putExtra(EXTRA_RESTAURANT_PHONE, restaurantPhone);
-                intent.putExtra(EXTRA_RESTAURANT_PASS, restaurantPass);
-
-                startActivity(intent);
+                startActivity(mainIntent);
 
                 //TODO: Implement the validation using database
                 //validateInput(restaurantName, restaurantEmail, restaurantPhone);
                 //Restaurant newRestaurant = new Restaurant(restaurantName, restaurantEmail, restaurantPhone);
                 //setupRestaurantViewModel.setupRestaurant(newRestaurant);
             }
-
         });
+
+        mLoginAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent loginIntent = new Intent(getActivity(), SetupRestaurant.class);
+                startActivity(loginIntent);
+                Log.d("setup_click_here", "Navigated to login from setup restaurant");
+            }
+        });
+
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()){
+                    case R.id.imageButton1:
+                        //imageView.setImageDrawable(imageButton1.getBackground());
+                        Log.d("selected_one", "Selected first profile icon.");
+                        break;
+                    case R.id.imageButton2:
+                        //imageView.setImageDrawable(imageButton2.getBackground());
+                        Log.d("selected_two", "Selected second profile icon.");
+                        break;
+                    case R.id.imageButton3:
+                        //imageView.setImageDrawable(imageButton3.getBackground());
+                        Log.d("selected_three", "Selected third profile icon.");
+                        break;
+                    default:
+                        throw new IllegalStateException("Unexpected value: " + v.getId());
+                }
+            }
+        };
+
+        imageButton1.setOnClickListener(listener);
+        imageButton2.setOnClickListener(listener);
+        imageButton3.setOnClickListener(listener);
 
         return root;
     }
@@ -138,6 +188,20 @@ public class SetupRestaurantFragment extends Fragment {
         Restaurant r1 = new Restaurant(name, phone, email);
         Log.d("setup_restaurant", r1.toString());
         Toast.makeText(getContext(), "Restaurant Created", Toast.LENGTH_SHORT).show();
+    }
+
+    public void goToLoginAccount(){
+        mLoginAccount.setOnClickListener(v -> {
+            // setup switching between fragment
+            openRestaurantLogin();
+        });
+    }
+
+    public void openRestaurantLogin() {
+        Intent intent = new Intent(getActivity(), SetupRestaurant.class);
+        startActivity(intent);
+        Log.d("setup_click_here", "Navigated to login from setup restaurant");
+
     }
 
 }

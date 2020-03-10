@@ -4,6 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.servermatch.cecs445.Utils.DialogLogout;
+import com.example.servermatch.cecs445.ui.addcustomer.AddCustomerFragment;
+import com.example.servermatch.cecs445.ui.addmenuitem.AddMenuItemFragment;
+import com.example.servermatch.cecs445.ui.frequentcustomers.FrequentCustomersFragment;
+import com.example.servermatch.cecs445.ui.menu.MenuFragment;
 import com.example.servermatch.cecs445.ui.setuprestaurant.SetupRestaurant;
 import com.example.servermatch.cecs445.ui.setuprestaurant.SetupRestaurantFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -17,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
@@ -101,17 +106,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        //transaction.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_right,R.anim.slide_in_right,R.anim.slide_out_right);
         if(id == R.id.nav_menu) {
             Log.d("navMenu", "Menu");
+            MenuFragment menuFragment = new MenuFragment();
+            transaction.replace(R.id.nav_host_fragment, menuFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
         }
         if(id == R.id.nav_frequent_customers) {
             Log.d("navMenu", "Frequent Customers");
+            FrequentCustomersFragment frequentCustomersFragment = new FrequentCustomersFragment();
+            transaction.replace(R.id.nav_host_fragment, frequentCustomersFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
         }
         if(id == R.id.nav_add_customer) {
             Log.d("navMenu", "Add Customer");
+            AddCustomerFragment addCustomerFragment = new AddCustomerFragment();
+            transaction.replace(R.id.nav_host_fragment, addCustomerFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
         }
         if(id == R.id.nav_add_menu_item) {
             Log.d("navMenu", "Add Menu Item");
+            AddMenuItemFragment addMenuItemFragment = new AddMenuItemFragment();
+            transaction.replace(R.id.nav_host_fragment, addMenuItemFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
         }
         if(id == R.id.nav_logout) {
             Log.d("navMenu", "Logout");

@@ -39,13 +39,7 @@ public class AddCustomerFragment extends Fragment {
         addCustomerViewModel = new ViewModelProvider(this).get(AddCustomerViewModel.class);
         addCustomerViewModel.init();
 
-        //need to fix observer feature.
-//        addCustomerViewModel.getmCustomers().observe(getActivity(), new Observer<List<Customer>>() {
-//            @Override
-//            public void onChanged(List<Customer> customers) {
-//
-//            }
-//        });
+        addCustomerViewModelObserver();
 
         View root = inflater.inflate(R.layout.fragment_add_customer, container, false);
 
@@ -61,7 +55,6 @@ public class AddCustomerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 validateInput(v);
-                //Todo: set up firebase here
                 String customerFname = addCustomerFname.getEditText().getText().toString();
                 String customerLname  = addCustomerLname.getEditText().getText().toString();
                 String customerEmail  = addCustomerEmail.getEditText().getText().toString().toLowerCase();
@@ -69,7 +62,13 @@ public class AddCustomerFragment extends Fragment {
 
                 Customer newCustomer = new Customer(customerFname, customerLname, customerEmail,customerPhone,
                         addCustomerReceiptText.isChecked(), addCustomerReceiptEmail.isChecked());
-                addCustomerViewModel.addCustomer(newCustomer);
+                boolean addCustomerCompleted = addCustomerViewModel.addCustomer(newCustomer, getContext());
+
+                if(addCustomerCompleted){
+                    clearFields();
+                }else{
+                    Toast.makeText(getContext(), "Please re-enter a valid email!", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -143,7 +142,22 @@ public class AddCustomerFragment extends Fragment {
         );
 
         Log.i("add_customer", c1.toString());
-        Toast.makeText(getContext(), "Customer Added", Toast.LENGTH_SHORT).show();
+
     }
 
+
+    private void addCustomerViewModelObserver(){
+        addCustomerViewModel.getmCustomers().observe(getViewLifecycleOwner(), menuItems -> {
+
+        });
+    }
+
+    private void clearFields(){
+                addCustomerFname.getEditText().setText("");
+                addCustomerLname.getEditText().setText("");
+                addCustomerEmail.getEditText().setText("");
+                addCustomerPhone.getEditText().setText("");
+                addCustomerReceiptText.setChecked(false);
+                addCustomerReceiptEmail.setChecked(false);
+    }
 }

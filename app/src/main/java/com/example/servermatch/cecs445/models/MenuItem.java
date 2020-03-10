@@ -1,23 +1,20 @@
 /**
- * @author Andrew Delgado
+ * @author Andrew Delgado & Howard Chen
  */
 package com.example.servermatch.cecs445.models;
 
-import com.example.servermatch.cecs445.R;
 import com.google.firebase.firestore.Exclude;
 
 import java.util.List;
 
 public class MenuItem {
+
     private String documentId;
     private String itemName;
     private String itemDesc;
     private Double itemCost;
     private String image;
-    private Integer mQuantity;
-
-
-    private int mIntQuantity;
+  @Exclude private int mIntQuantity;
 
     private List<String> tags;
 
@@ -28,13 +25,23 @@ public class MenuItem {
         this.itemDesc = mItemDesc;
         this.itemCost = mItemCost;
         this.image = mImage;
-        this.mQuantity = 0;
+        this.mIntQuantity = 0;
         this.tags = tags;
+    }
+
+    public MenuItem(String mItemName, String mItemDesc, Double mItemCost, String mImage, int quantity) {
+        this.itemName = mItemName;
+        this.itemDesc = mItemDesc;
+        this.itemCost = mItemCost;
+        this.image = mImage;
+        this.mIntQuantity = quantity;
     }
     @Exclude
     public String getDocumentId() {
         return documentId;
     }
+
+    public void setDocumentId(String documentId) { this.documentId = documentId; }
 
     public MenuItem(String name, int quantity, double cost) {
         itemName = name;
@@ -77,8 +84,8 @@ public class MenuItem {
         this.image = image;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.mQuantity = quantity;
+    public void setmIntQuantity(int mIntQuantity) {
+        this.mIntQuantity = mIntQuantity;
     }
 
     public List<String> getTags() {
@@ -89,9 +96,9 @@ public class MenuItem {
         this.tags = tags;
     }
 
-    public void incrementQuantity(){++mQuantity;}
-    public void decrementQuantity(){--mQuantity;}
-    public int getQuantity(){return mQuantity;}
+    public void incrementQuantity(){++mIntQuantity;}
+    public void decrementQuantity(){--mIntQuantity;}
+    public int getQuantity(){return mIntQuantity;}
 
     @Override
     public String toString() {
@@ -101,7 +108,7 @@ public class MenuItem {
                 ", itemDesc='" + itemDesc + '\'' +
                 ", itemCost=" + itemCost +
                 ", image='" + image + '\'' +
-                ", mQuantity=" + mQuantity +
+                ", mQuantity=" + mIntQuantity +
                 ", mIntQuantity=" + mIntQuantity +
                 ", tags=" + tags +
                 '}';

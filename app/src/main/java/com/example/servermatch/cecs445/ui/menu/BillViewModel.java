@@ -28,7 +28,6 @@ public class BillViewModel extends ViewModel {
         }
         mMenuBillItems = new MutableLiveData<>();
         mMenuBillItems.setValue(new ArrayList<MenuItem>());
-        // We are getting double items because the repo keeps adding items
         //Log.d(TAG + ":End of init", "size of list" + mMenuBillItems.getValue().size() + "");
     }
 
@@ -51,6 +50,14 @@ public class BillViewModel extends ViewModel {
         if(currentBillMenuItems.contains(menuItem)){
             menuItem.decrementQuantity();
             if(menuItem.getQuantity() == 0) currentBillMenuItems.remove(menuItem);
+        }
+        mMenuBillItems.postValue(currentBillMenuItems);
+    }
+
+    public void clearBillItems(){
+        List<MenuItem> currentBillMenuItems = mMenuBillItems.getValue();
+        for(MenuItem billItem : currentBillMenuItems){
+            billItem.setmIntQuantity(0);
         }
         mMenuBillItems.postValue(currentBillMenuItems);
     }

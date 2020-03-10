@@ -15,7 +15,7 @@ public class Customer {
     private String phoneNum;
     private boolean receiptText;
     private boolean receiptEmail;
-    private Integer visits;//number of Visits. going to somehow connect to each bill paid by customer.
+    private Integer visits;//number of Visits per customer
 
     public Customer(String firstName, String lastName, String email, String phoneNum, boolean receiptText, boolean receiptEmail) {
         this.firstName = firstName;
