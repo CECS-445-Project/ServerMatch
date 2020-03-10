@@ -10,11 +10,17 @@ Server Match makes maintaining a list of menu items easier than ever with featur
 ### Login & Setup Restaurant Captures
 | Login | Setup Restaurant |
 |--------------| ------------------------|
-|![Login Screenshot](readme_img/login.PNG) | ![SetUp Screenshot](readme_img/setupRestaurant.PNG) |
+|![Login Screen](readme_img/login.PNG) | ![SetUp Screen](readme_img/setupRestaurant.PNG) |
 
 ### Menu & Menu Items
+| Menu | Menu Item (Long Click) | Add Menu Item | Filter Menu |
+|--------------| ------------------------|  ------------------- |  ------------------- |
+|![Menu Screen](readme_img/menu.PNG) | ![Menu Item](readme_img/menuItem.PNG) | ![Add Menu Item](readme_img/addMenuItem.PNG) | ![Filter Menu](readme_img/filters.PNG) | 
 
 ### Customers
+| Frequent Customers | Customer (On Click) | Add Customer |
+|--------------| ------------------------|  ------------------- |
+|![Customers Screen](readme_img/frequentCustomerList.PNG) | ![Customer Screen](readme_img/onclickFrequentCustomer.PNG) | ![Add Customer](readme_img/addCustomer.PNG) |
 
 ### Navigation
 
