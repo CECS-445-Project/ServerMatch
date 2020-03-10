@@ -5,9 +5,10 @@ Server Match is an app that caters specifically to servers, by offering easy to 
 
 Server Match makes maintaining a list of menu items easier than ever with features like simple menu addition options, quick cart and menu updates, and a variety of bubble tags to filter through the menu. Its portability as a mobile-app also makes it an ideal option for small businesses with limited physical space or funds.
 
+
 ## Usage & Features
-### Login & Setup Restaurant
-| Login Screen | Setup Restaurant Screen |
+### Login & Setup Restaurant Captures
+| Login | Setup Restaurant |
 |--------------| ------------------------|
 |![Login Screenshot](readme_img/login.PNG) | ![SetUp Screenshot](readme_img/setupRestaurant.PNG) |
 
