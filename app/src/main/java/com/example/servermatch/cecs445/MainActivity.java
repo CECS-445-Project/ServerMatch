@@ -16,6 +16,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
@@ -96,11 +97,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 || super.onSupportNavigateUp();
     }
 
+    //TODO: Try to add functionality for changing fragments that can use a dialog box
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
+        if(id == R.id.nav_menu) {
+            Log.d("navMenu", "Menu");
+        }
+        if(id == R.id.nav_frequent_customers) {
+            Log.d("navMenu", "Frequent Customers");
+        }
+        if(id == R.id.nav_add_customer) {
+            Log.d("navMenu", "Add Customer");
+        }
+        if(id == R.id.nav_add_menu_item) {
+            Log.d("navMenu", "Add Menu Item");
+        }
         if(id == R.id.nav_logout) {
-            Log.d("testLogout", "Logout");
+            Log.d("navMenu", "Logout");
             DialogLogout dialog = new DialogLogout();
             dialog.show(getSupportFragmentManager(), "DialogLogout");
         }

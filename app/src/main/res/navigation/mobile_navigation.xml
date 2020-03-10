@@ -27,7 +27,13 @@
         android:id="@+id/nav_add_menu_item"
         android:name="com.example.servermatch.cecs445.ui.addmenuitem.AddMenuItemFragment"
         android:label="@string/menu_add_menu_item"
-        tools:layout="@layout/fragment_add_menu_item"/>
+        tools:layout="@layout/fragment_add_menu_item" />
+
+    <activity
+        android:id="@+id/nav_logout"
+        android:name="com.example.servermatch.cecs445.ui.setuprestaurant.SetupRestaurant"
+        android:label="@string/menu_logout"
+        tools:layout="@layout/activity_setup_restaurant" />
 
     <fragment
         android:id="@+id/checkoutFragment"
