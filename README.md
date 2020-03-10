@@ -5,6 +5,14 @@ Server Match is an app that caters specifically to servers, by offering easy to 
 
 Server Match makes maintaining a list of menu items easier than ever with features like simple menu addition options, quick cart and menu updates, and a variety of bubble tags to filter through the menu. Its portability as a mobile-app also makes it an ideal option for small businesses with limited physical space or funds.
 
+## Software Architecture
+### MVVM Architecture
+We chose a Model-view-viewmodel(MVVM) software architecture since google has a built in observer methods for any data changes. With these reactions to changes happening in real time  it makes my restaurant POS system accurate. 
+
+Here are some component definitions of this pattern found:
+The View — that informs the ViewModel about the user’s actions
+The ViewModel — exposes streams of data relevant to the View
+The DataModel — abstracts the data source. The ViewModel works with the DataModel to get and save the data.
 
 ## Usage & Features
 ### Login & Setup Restaurant Captures
@@ -26,7 +34,4 @@ Server Match makes maintaining a list of menu items easier than ever with featur
 
 ### Accessibility
 
-
-
-## Credits
 
