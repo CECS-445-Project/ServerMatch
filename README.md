@@ -7,7 +7,7 @@ Server Match makes maintaining a list of menu items easier than ever with featur
 
 ## Usage & Features
 ### Login & Setup Restaurant
-![Login Screenshot](/readme_img/login.png)
+![Login Screenshot](readme_img/login.PNG)
 
 ### Menu & Menu Items
 
