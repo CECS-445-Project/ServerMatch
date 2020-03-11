@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +24,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.models.MenuItem;
 import com.example.servermatch.cecs445.ui.menu.BillViewModel;
+import com.example.servermatch.cecs445.ui.menu.MenuFragment;
 
 import java.util.List;
 
@@ -61,9 +64,19 @@ public class TopItemsAdapter extends RecyclerView.Adapter<TopItemsAdapter.ViewHo
         ((TopItemsAdapter.ViewHolder)holder).bindView(position);
 
         ((ViewHolder)holder).parentLayout.setOnClickListener(v -> {
+
+
+            mItems.get(position).setmIntQuantity(0);
             Log.d(TAG,"top item clicked" + mItems.get(position).toString());
             mBillViewModel.addNewValue(mItems.get(position));
 
+
+            FragmentTransaction transaction = ((AppCompatActivity)mContext).getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_right,R.anim.slide_in_right,R.anim.slide_out_right);
+
+            transaction.replace(R.id.nav_host_fragment,new MenuFragment());
+            transaction.addToBackStack(null);
+            transaction.commit();
 
         });
 
