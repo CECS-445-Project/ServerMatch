@@ -18,7 +18,7 @@ The DataModel — abstracts the data source. The ViewModel works with the DataMo
 
 &nbsp;
 
-## Usage & Features
+## Screens
 ### Login & Setup Restaurant Captures
 | ![Login](readme_img/login.PNG) | ![Setup Restaurant](readme_img/setupRestaurant.PNG)
 |--------------| ------------------------| 
