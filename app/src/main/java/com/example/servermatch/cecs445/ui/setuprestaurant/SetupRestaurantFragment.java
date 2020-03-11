@@ -23,9 +23,9 @@ import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.models.Restaurant;
 import com.google.android.material.textfield.TextInputLayout;
 
-import static com.example.servermatch.cecs445.R.drawable.chilis_drawable;
-import static com.example.servermatch.cecs445.R.drawable.gladstones_drawable;
-import static com.example.servermatch.cecs445.R.drawable.theattic_drawable;
+import static com.example.servermatch.cecs445.R.drawable.image1;
+import static com.example.servermatch.cecs445.R.drawable.image2;
+import static com.example.servermatch.cecs445.R.drawable.image3;
 
 public class SetupRestaurantFragment extends Fragment {
 
@@ -79,15 +79,6 @@ public class SetupRestaurantFragment extends Fragment {
 
         mLoginAccount = root.findViewById(R.id.login_click_here);
 
-        /*
-        imageButton1 = root.findViewById((R.id.imageButton1));
-        imageID = image1ButtonListener();
-        imageButton2 = root.findViewById((R.id.imageButton2));
-        imageID = image2ButtonListener();
-        imageButton3 = root.findViewById((R.id.imageButton3));
-        imageID = image3ButtonListener();
-        */
-
         imageButton1 = root.findViewById(R.id.imageButton1);
         imageButton2 = root.findViewById(R.id.imageButton2);
         imageButton3 = root.findViewById(R.id.imageButton3);
@@ -97,15 +88,15 @@ public class SetupRestaurantFragment extends Fragment {
             public void onClick(View v) {
                 switch (v.getId()){
                     case R.id.imageButton1:
-                        setupRestaurantIcon = gladstones_drawable;
+                        setupRestaurantIcon = image1;
                         Log.d("selected_one", "Selected first profile icon.");
                         break;
                     case R.id.imageButton2:
-                        setupRestaurantIcon = theattic_drawable;
+                        setupRestaurantIcon = image2;
                         Log.d("selected_two", "Selected second profile icon.");
                         break;
                     case R.id.imageButton3:
-                        setupRestaurantIcon = chilis_drawable;
+                        setupRestaurantIcon = image3;
                         Log.d("selected_three", "Selected third profile icon.");
                         break;
                     default:
