@@ -29,14 +29,14 @@ The DataModel — abstracts the data source. The ViewModel works with the DataMo
 ### Menu & Menu Items
 |![Menu Screen](readme_img/menu.PNG) | ![Menu Item](readme_img/menuItem.PNG) | ![Add Menu Item](readme_img/addMenuItem.PNG) | ![Filter Menu](readme_img/filters.PNG) | 
 |--------------| ------------------------|  ------------------- |  ------------------- |
-| Menu | Menu Item (Long Click) | Add Menu Item | Filter Menu |
+| Menu | Menu Item | Add Menu Item | Filter Menu |
 
 &nbsp;
 
 ### Customers
 |![Customers Screen](readme_img/frequentCustomerList.PNG) | ![Customer Screen](readme_img/onclickFrequentCustomer.PNG) | ![Add Customer](readme_img/addCustomer.PNG) |
 |--------------| ------------------------|  ------------------- |
-| Frequent Customers | Customer (On Click) | Add Customer |
+| Frequent Customers | Customer | Add Customer |
 
 &nbsp;
 
