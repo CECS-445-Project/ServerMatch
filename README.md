@@ -42,7 +42,7 @@ The DataModel — abstracts the data source. The ViewModel works with the DataMo
 
 ### Navigation
 | ![Nav Bar](readme_img/navigation.PNG) |
-|--------------| ------------------------|  ------------------- |
+|--------------|
 | Navigation Bar |
 
 &nbsp;
