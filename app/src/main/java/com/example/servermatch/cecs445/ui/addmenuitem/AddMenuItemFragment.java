@@ -1,25 +1,34 @@
 package com.example.servermatch.cecs445.ui.addmenuitem;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.models.MenuItem;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.ChipDrawable;
@@ -31,7 +40,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
@@ -43,17 +54,22 @@ public class AddMenuItemFragment extends Fragment {
     private TextInputLayout textInputItemDesc;
     private MaterialButton btnAddNewItem;
     private MaterialButton btnAddPhoto;
-    private ProgressBar progressBar;
+    private ProgressDialog progressDialog;
     private static final String TAG = "AddMenuItemFragment";
     private ChipGroup chipGroup;
     private List<String> tags = new ArrayList<String>();
     private AddMenuItemViewModel addMenuItemViewModel;
     private static final int PICK_IMAGE_REQUEST = 1;
+    private static final int CAMERA_REQUEST = 100;
     private StorageReference mStorageRef;
     private boolean imageSelected;
     private Uri imguri;
     private StorageTask uploadTask;
     private String downloadURL;
+    private boolean usedCamera;
+    private byte[] dataBAOS;
+    private static final int STORAGE_PERMISSION_CODE = 10;
+    private static final int CAMERA_PERMISSION_CODE = 20;
 
     String [] filters = {
             "Vegan",
@@ -81,13 +97,13 @@ public class AddMenuItemFragment extends Fragment {
         textInputItemDesc = root.findViewById(R.id.text_input_item_desc);
         btnAddNewItem = root.findViewById((R.id.add_item_button));
         btnAddPhoto = root.findViewById((R.id.add_photo_button));
-        progressBar = root.findViewById((R.id.add_item_progress_bar));
+        progressDialog = new ProgressDialog(getContext());
         mStorageRef = FirebaseStorage.getInstance().getReference("Images");
         imageSelected = false;
         addMenuItemViewModel = new ViewModelProvider(this).get(AddMenuItemViewModel.class);
         addMenuItemViewModel.init();
+        usedCamera = false;
 
-        // TODO: add selected chips to list of strings
         btnAddNewItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,7 +116,7 @@ public class AddMenuItemFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Add Photo Button Pressed");
-                choosePhoto();
+                openDialog();
             }
         });
 
@@ -118,17 +134,66 @@ public class AddMenuItemFragment extends Fragment {
         return root;
     }
 
-    private boolean validateName() {
-        String nameInput = textInputItemName.getEditText().getText().toString().trim();
-
-        if(nameInput.isEmpty()) {
-            textInputItemName.setError("Field can't be empty");
-            Log.d(TAG, "Item name is empty");
-            return false;
-        } else {
-            textInputItemName.setError(null);
-            return true;
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == CAMERA_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getContext(), "Permission GRANTED", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Permission DENIED", Toast.LENGTH_SHORT).show();
+            }
+        } else if(requestCode == STORAGE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getContext(), "Permission GRANTED", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Permission DENIED", Toast.LENGTH_SHORT).show();
+            }
         }
+    }
+
+    private void openDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
+        builder.setTitle("Image Upload");
+        builder.setMessage("How would you like to upload your image?");
+        builder.setPositiveButton("Camera", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d(TAG, "openDialog: Open Camera Pressed");
+                if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                    openCamera();
+                } else {
+                    Log.d(TAG, "Camera Permission Requested");
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+                }
+            }
+        });
+        builder.setNegativeButton("Gallery", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d(TAG, "openDialog: Open Gallery Pressed");
+                if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    choosePhoto();
+                } else {
+                    Log.d(TAG, "Storage Permission Requested");
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);;
+                }
+            }
+        });
+        builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d(TAG, "openDialog: Pressed Cancel");
+            }
+        });
+        builder.create().show();
+    }
+
+    private void openCamera() {
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+        imageSelected = true;
+        usedCamera = true;
+        Log.d(TAG, "openCamera: Camera Photo Taken");
     }
 
     private void choosePhoto() {
@@ -140,7 +205,6 @@ public class AddMenuItemFragment extends Fragment {
         Log.d(TAG, "Image Selected from Gallery");
     }
 
-    //ToDO:
     private String getExtension(Uri uri) {
         ContentResolver cr = getContext().getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
@@ -149,28 +213,47 @@ public class AddMenuItemFragment extends Fragment {
 
     private void imageUploader(View v) {
         Log.d(TAG, "Image Upload IN PROGRESS");
-        progressBar.setVisibility(getView().VISIBLE);
+        progressDialog.setMessage("Uploading Image ...");
+        progressDialog.show();
         btnAddNewItem.setEnabled(false);
-        String childName = System.currentTimeMillis()+"."+getExtension(imguri);
-        final StorageReference ref = mStorageRef.child(childName);
+        if(usedCamera) {
+            StorageReference imagesRef = mStorageRef.child(new Date().getTime() + ".jpg");
+            UploadTask uploadTask = imagesRef.putBytes(dataBAOS);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d(TAG, "imageUploader: onFailure: Direct camera upload failed");
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            downloadURL = uri.toString();
+                            Log.d(TAG, "imageUploader: onSuccess: Direct camera upload success " + downloadURL);
+                        }
+                    });
+                }
+            });
+        } else {
+            String childName = System.currentTimeMillis() + "." + getExtension(imguri);
+            final StorageReference ref = mStorageRef.child(childName);
 
-//        uploads file to Firebase Cloud Storage
-        ref.putFile(imguri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        downloadURL = uri.toString();
-                        btnAddNewItem.setEnabled(true);
-                        Log.d(TAG, "onSuccess: UPLOAD SUCCESS : "+ downloadURL);
-                        progressBar.setVisibility(getView().GONE);
-                    }
-                });
-            }
-        });
-        Log.d(TAG, "imageUploader: ");
+            // uploads file to Firebase Cloud Storage
+            ref.putFile(imguri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            downloadURL = uri.toString();
+                            Log.d(TAG, "onSuccess: UPLOAD SUCCESS : "+ downloadURL);
+                        }
+                    });
+                }
+            });
+        }
     }
 
     @Override
@@ -178,6 +261,26 @@ public class AddMenuItemFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imguri = data.getData();
+        }
+        if(requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG,100, baos);
+            dataBAOS = baos.toByteArray();
+        }
+    }
+
+    private boolean validateName() {
+        String nameInput = textInputItemName.getEditText().getText().toString().trim();
+
+        if(nameInput.isEmpty()) {
+            textInputItemName.setError("Field can't be empty");
+            Log.d(TAG, "Item name is empty");
+            return false;
+        } else {
+            textInputItemName.setError(null);
+            return true;
         }
     }
 
@@ -279,6 +382,8 @@ public class AddMenuItemFragment extends Fragment {
                 MenuItem newItem = new MenuItem(itemName, itemDescription, itemCost, downloadURL, tags);
                 addMenuItemViewModel.addMenuItem(newItem, getContext());
                 clearFields();
+                progressDialog.dismiss();
+                btnAddNewItem.setEnabled(true);
             }
 
             @Override
@@ -301,5 +406,7 @@ public class AddMenuItemFragment extends Fragment {
         textInputItemCost.getEditText().setText("");
         chipGroup.clearCheck();
         imageSelected = false;
+        usedCamera = false;
+        dataBAOS = null;
     }
 }
