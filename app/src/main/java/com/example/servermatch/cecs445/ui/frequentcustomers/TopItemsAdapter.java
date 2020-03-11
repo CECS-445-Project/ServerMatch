@@ -62,8 +62,9 @@ public class TopItemsAdapter extends RecyclerView.Adapter<TopItemsAdapter.ViewHo
 
         ((ViewHolder)holder).parentLayout.setOnClickListener(v -> {
             Log.d(TAG,"top item clicked" + mItems.get(position).toString());
-
             mBillViewModel.addNewValue(mItems.get(position));
+
+
         });
 
         RequestOptions defaultOptions = new RequestOptions()

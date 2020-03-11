@@ -31,6 +31,7 @@ import com.example.servermatch.cecs445.models.Bill;
 import com.example.servermatch.cecs445.models.MenuItem;
 import com.example.servermatch.cecs445.ui.menu.BillViewModel;
 import com.example.servermatch.cecs445.ui.menu.MenuFragment;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.time.LocalDateTime;
@@ -67,8 +68,20 @@ public class CheckoutFragment extends Fragment {
         checkoutButtonListener();
         setUpBill();
         initRecyclerView();
+        checkForEmail();
 
         return view;
+    }
+
+    private void checkForEmail(){
+        // TODO: Add the users email to the bundle from the TopItemsAdapter -> MenuFragment -> CheckoutFragment
+        Bundle bundle = getArguments();
+
+        if(bundle.get("Email") != null) {
+            TextInputEditText edit = view.findViewById(R.id.checkout_edit_email);
+            mEmail.setHintAnimationEnabled(false);
+            edit.setText(bundle.get("Email").toString());
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
