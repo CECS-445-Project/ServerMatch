@@ -44,7 +44,7 @@ public class CheckoutFragment extends Fragment {
     private BillViewModel billViewModel;
     private static String TAG = "CheckoutFragment";
     private View view;
-    Bill bill;
+    private Bill bill;
     private RecyclerView recyclerView;
     private TextView totalCost;
     private TextInputLayout mEmail;
