@@ -15,12 +15,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.models.Customer;
+import com.example.servermatch.cecs445.models.MenuItem;
 import java.util.List;
+
 
 public class FrequentCustomersFragment extends Fragment {
 
     private FrequentCustomersViewModel frequentCustomersViewModel;
     private FrequentCustomersAdapter frequentCustomersAdapter;
+    private TopItemsAdapter topItemsAdapter;
     private RecyclerView recyclerViewFrequentCustomers;
     private RecyclerView recyclerViewTopItems;
     private static final String TAG = "FrequentCustomersFragment";
@@ -34,7 +37,6 @@ public class FrequentCustomersFragment extends Fragment {
         frequentCustomersViewModel = new ViewModelProvider(this)
                 .get(FrequentCustomersViewModel.class);
         frequentCustomersViewModel.init();
-
         recyclerViewFrequentCustomers =  view.findViewById(R.id.recycle_view_customers);
         recyclerViewTopItems =  view.findViewById(R.id.recycle_view_top_items);
         initRecyclerViews();
@@ -47,16 +49,39 @@ public class FrequentCustomersFragment extends Fragment {
             }
         });
 
+        frequentCustomersViewModel.getCustomerEmail().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                topItemsAdapter.notifyDataSetChanged();
+            }
+
+        });
+
+        frequentCustomersViewModel.getTopMenuItems().observe(getViewLifecycleOwner(), new Observer<List<MenuItem>>() {
+            @Override
+            public void onChanged(List<MenuItem> menuItems) {
+                topItemsAdapter.notifyDataSetChanged();
+            }
+
+        });
+
+
         return view;
     }
 
 
     private void initRecyclerViews(){
-        //Menu Items
+        //Frequent Customers
        frequentCustomersAdapter = new FrequentCustomersAdapter(frequentCustomersViewModel, getActivity(), frequentCustomersViewModel.getTopCustomers().getValue());
-       RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerViewFrequentCustomers.setAdapter(frequentCustomersAdapter);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerViewFrequentCustomers.setLayoutManager(layoutManager);
+
+//        TopMenuItems
+        topItemsAdapter = new TopItemsAdapter(frequentCustomersViewModel, getActivity(), frequentCustomersViewModel.getTopMenuItems().getValue());
+        RecyclerView.LayoutManager topItemsLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerViewTopItems.setLayoutManager(topItemsLayoutManager);
+        recyclerViewTopItems.setAdapter(topItemsAdapter);
 
     }
 

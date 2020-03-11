@@ -4,7 +4,6 @@
 package com.example.servermatch.cecs445.ui.frequentcustomers;
 
 import android.content.Context;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.models.Customer;
+
 import java.util.List;
 
 public class FrequentCustomersAdapter extends RecyclerView.Adapter<FrequentCustomersAdapter.ViewHolder>{
@@ -23,6 +23,7 @@ public class FrequentCustomersAdapter extends RecyclerView.Adapter<FrequentCusto
     private List<Customer> mFrequentCustomerNames;
     private Context mContext;
     private FrequentCustomersViewModel mFrequentCustomersViewModel;
+    private static String currentEmail;
 
 
     public FrequentCustomersAdapter(FrequentCustomersViewModel mFrequentCustomersViewModel, Context context, List<Customer> mFrequentCustomerNames){
@@ -48,9 +49,8 @@ public class FrequentCustomersAdapter extends RecyclerView.Adapter<FrequentCusto
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: clicked on: " + mFrequentCustomerNames.get(position));
-                //TODO: should send frequent customer document id ... to populate menu items to topMenuItemsAdapter.
-                String documentId = mFrequentCustomerNames.get(position).getDocumentId();
-               // Toast.makeText(mContext, mFrequentCustomerNames.get(position), Toast.LENGTH_SHORT).show();
+                currentEmail = mFrequentCustomerNames.get(position).getEmail();
+                mFrequentCustomersViewModel.setTopCustomerEmail(currentEmail);
             }
         });
 
@@ -62,8 +62,6 @@ public class FrequentCustomersAdapter extends RecyclerView.Adapter<FrequentCusto
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        // Stores the itemView in a public final member variable that can be used
-        // to access the context from any ViewHolder instance.
 
         Button customersButton;
         RelativeLayout parentLayout;
@@ -75,11 +73,15 @@ public class FrequentCustomersAdapter extends RecyclerView.Adapter<FrequentCusto
         }
 
         public void bindView(int position){
-            //mItemImage.setImageResource(R.drawable.pizza);
+
             String customerName = mFrequentCustomerNames.get(position).getFirstName() + " " +
                     mFrequentCustomerNames.get(position).getLastName();
             customersButton.setText(customerName);
         }
 
+    }
+
+    public static String getCurrentEmail(){
+        return currentEmail;
     }
 }
