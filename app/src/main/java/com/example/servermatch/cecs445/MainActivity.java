@@ -102,45 +102,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 || super.onSupportNavigateUp();
     }
 
-    //TODO: Try to add functionality for changing fragments that can use a dialog box
+    /* Function for an onClick of the items in the navigation drawer */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        //transaction.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_right,R.anim.slide_in_right,R.anim.slide_out_right);
+        transaction.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_right,R.anim.slide_in_right,R.anim.slide_out_right);
         if(id == R.id.nav_menu) {
             Log.d("navMenu", "Menu");
             MenuFragment menuFragment = new MenuFragment();
             transaction.replace(R.id.nav_host_fragment, menuFragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
         }
         if(id == R.id.nav_frequent_customers) {
             Log.d("navMenu", "Frequent Customers");
             FrequentCustomersFragment frequentCustomersFragment = new FrequentCustomersFragment();
             transaction.replace(R.id.nav_host_fragment, frequentCustomersFragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
         }
         if(id == R.id.nav_add_customer) {
             Log.d("navMenu", "Add Customer");
             AddCustomerFragment addCustomerFragment = new AddCustomerFragment();
             transaction.replace(R.id.nav_host_fragment, addCustomerFragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
         }
         if(id == R.id.nav_add_menu_item) {
             Log.d("navMenu", "Add Menu Item");
             AddMenuItemFragment addMenuItemFragment = new AddMenuItemFragment();
             transaction.replace(R.id.nav_host_fragment, addMenuItemFragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
         }
         if(id == R.id.nav_logout) {
             Log.d("navMenu", "Logout");
             DialogLogout dialog = new DialogLogout();
             dialog.show(getSupportFragmentManager(), "DialogLogout");
         }
+        transaction.addToBackStack(null);
+        transaction.commit();
         mDrawer.closeDrawer(GravityCompat.START);
         return true;
     }
