@@ -98,9 +98,6 @@ public class CheckoutFragment extends Fragment {
             mEmail.setHintAnimationEnabled(false);
             edit.setText(frequentCustomersViewModel.getCustomerEmail().getValue());
         }
-//            TextInputEditText edit = view.findViewById(R.id.checkout_edit_email);
-//            mEmail.setHintAnimationEnabled(false);
-//            edit.setText("dogs");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
