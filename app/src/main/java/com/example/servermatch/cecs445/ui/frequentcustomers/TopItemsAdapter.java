@@ -3,6 +3,7 @@
  */
 package com.example.servermatch.cecs445.ui.frequentcustomers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,12 +13,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.models.MenuItem;
+import com.example.servermatch.cecs445.ui.menu.BillViewModel;
+import com.example.servermatch.cecs445.ui.menu.MenuFragment;
+
 import java.util.List;
 
 public class TopItemsAdapter extends RecyclerView.Adapter<TopItemsAdapter.ViewHolder>{
@@ -27,14 +36,20 @@ public class TopItemsAdapter extends RecyclerView.Adapter<TopItemsAdapter.ViewHo
     private String email;
     private Context mContext;
     private FrequentCustomersViewModel mFrequentCustomersViewModel;
+    private BillViewModel mBillViewModel;
 
-    public TopItemsAdapter(FrequentCustomersViewModel mFrequentCustomersViewModel,
-                            Context mContext, List<MenuItem> mItems) {
+    public TopItemsAdapter(FrequentCustomersFragment frequentCustomersFragment, FrequentCustomersViewModel mFrequentCustomersViewModel, Context mContext, List<MenuItem> mItems) {
         this.mFrequentCustomersViewModel = mFrequentCustomersViewModel;
         this.mContext = mContext;
         this.mItems = mItems;
     }
 
+    public TopItemsAdapter(BillViewModel billViewModel, FrequentCustomersViewModel mFrequentCustomersViewModel, Context mContext, List<MenuItem> mItems) {
+        mBillViewModel = billViewModel;
+        this.mFrequentCustomersViewModel = mFrequentCustomersViewModel;
+        this.mContext = mContext;
+        this.mItems = mItems;
+    }
 
     @NonNull
     @Override
@@ -46,8 +61,27 @@ public class TopItemsAdapter extends RecyclerView.Adapter<TopItemsAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        Log.d(TAG, "onBindViewHolder: called.");
+        //Log.d(TAG, "onBindViewHolder: called.");
         ((TopItemsAdapter.ViewHolder)holder).bindView(position);
+
+        ((ViewHolder)holder).parentLayout.setOnClickListener(v -> {
+
+            LiveData<String> currentCustomersEmail = mFrequentCustomersViewModel.getCustomerEmail();
+            Log.d(TAG, currentCustomersEmail.getValue());
+
+            mItems.get(position).setmIntQuantity(0);
+            Log.d(TAG,"top item clicked" + mItems.get(position).toString());
+            mBillViewModel.addNewValue(mItems.get(position));
+
+
+            FragmentTransaction transaction = ((AppCompatActivity)mContext).getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_right,R.anim.slide_in_right,R.anim.slide_out_right);
+
+            transaction.replace(R.id.nav_host_fragment,new MenuFragment());
+            transaction.addToBackStack(null);
+            transaction.commit();
+
+        });
 
         RequestOptions defaultOptions = new RequestOptions()
                 .error(R.drawable.ic_launcher_background);
@@ -84,7 +118,7 @@ public class TopItemsAdapter extends RecyclerView.Adapter<TopItemsAdapter.ViewHo
         }
 
         public void bindView(int position){
-            Log.d(TAG, "bindView: "+ mItems.get(position).getItemName());
+            //Log.d(TAG, "bindView: "+ mItems.get(position).getItemName());
             textViewItemName.setText(mItems.get(position).getItemName());
             textViewItemDesc.setText(mItems.get(position).getItemDesc());
             textViewItemPrice.setText(mItems.get(position).getItemCost().toString());

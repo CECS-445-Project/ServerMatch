@@ -47,7 +47,7 @@ public class MenuFragment extends Fragment {
 
         view = inflater.inflate(R.layout.fragment_menu,container,false);
         mMenuViewModel = new ViewModelProvider(this.getActivity()).get(MenuViewModel.class);
-        mBillViewModel = new ViewModelProvider(this).get(BillViewModel.class);
+        mBillViewModel = new ViewModelProvider(this.getActivity()).get(BillViewModel.class);
         mMenuViewModel.init();
         mBillViewModel.init();
 

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="#FFF"
-    android:orientation="vertical">
+    android:background="#FFFFFF"
+    android:clickable="true"
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,14 +19,14 @@
             android:id="@+id/text_input_item_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:errorEnabled="true"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="10dp"
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/new_item_name_text_field"
-                android:inputType= "textCapWords"/>
+                android:inputType="textCapWords" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -37,16 +39,16 @@
                 android:id="@+id/text_input_item_cost"
                 android:layout_width="185dp"
                 android:layout_height="wrap_content"
-                app:errorEnabled="true"
-                android:layout_marginBottom="10dp">
+                android:layout_marginBottom="10dp"
+                app:errorEnabled="true">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/new_item_cost_text_field"
-                android:inputType="numberDecimal"/>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/new_item_cost_text_field"
+                    android:inputType="numberDecimal" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/add_photo_button"
@@ -57,7 +59,7 @@
                 android:text="@string/new_item_add_photo_button"
                 android:textColor="@color/primary_text"
                 app:icon="@drawable/ic_photo_black_24dp"
-                app:iconTint="@color/primary_text"/>
+                app:iconTint="@color/primary_text" />
 
         </LinearLayout>
 
@@ -65,12 +67,13 @@
             android:id="@+id/text_input_item_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             app:counterEnabled="true"
             app:counterMaxLength="200"
-            app:errorEnabled="true"
-            android:layout_marginBottom="10dp">
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_input_item_desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/new_item_description_text_field"
@@ -90,8 +93,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/add_filter_tags"
-            android:paddingVertical="10dp">
+            android:paddingVertical="10dp"
+            android:text="@string/add_filter_tags">
 
         </TextView>
 
@@ -100,7 +103,7 @@
             android:layout_width="match_parent"
             android:layout_height="221dp">
 
-            <com.google.android.material.chip.ChipGroup
+            <com.google.android.material.chip.ChipGroup xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/chip_group_filter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -112,7 +115,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="bottom|end"
+            android:gravity="bottom|right"
             android:orientation="vertical">
 
             <com.google.android.material.button.MaterialButton
@@ -125,15 +128,14 @@
 
             </com.google.android.material.button.MaterialButton>
 
-        <ProgressBar
-            android:id="@+id/add_item_progress_bar"
-            style="@style/Widget.AppCompat.ProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:indeterminate="true"
-            android:visibility="gone">
-        </ProgressBar>
-    </LinearLayout>
+            <ProgressBar
+                android:id="@+id/add_item_progress_bar"
+                style="@style/Widget.AppCompat.ProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:indeterminate="true"
+                android:visibility="gone"></ProgressBar>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

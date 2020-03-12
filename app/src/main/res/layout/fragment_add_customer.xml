@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="#FFF"
-    android:orientation="vertical">
+    android:background="#FFFFFF"
+    android:clickable="true"
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/add_customer_fname"
@@ -13,12 +15,12 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         app:errorEnabled="true">
+
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/add_customer_fname"
-            android:inputType="textCapWords">
-        </com.google.android.material.textfield.TextInputEditText>
+            android:inputType="textCapWords"></com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -27,12 +29,12 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         app:errorEnabled="true">
+
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/add_customer_lname"
-            android:inputType="textCapWords">
-        </com.google.android.material.textfield.TextInputEditText>
+            android:inputType="textCapWords"></com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -41,12 +43,12 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         app:errorEnabled="true">
+
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/add_customer_email"
-            android:inputType="textEmailAddress">
-        </com.google.android.material.textfield.TextInputEditText>
+            android:inputType="textEmailAddress"></com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -57,13 +59,13 @@
         app:counterEnabled="true"
         app:counterMaxLength="10"
         app:errorEnabled="true">
+
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/add_customer_phone"
-            android:maxLength="10"
-            android:inputType="phone">
-        </com.google.android.material.textfield.TextInputEditText>
+            android:inputType="phone"
+            android:maxLength="10"></com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
 
     <CheckBox
