@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -259,7 +260,7 @@ public class AddMenuItemFragment extends Fragment {
         Log.d(TAG, "Image Upload IN PROGRESS");
         progressDialog.setMessage("Uploading Image ...");
         progressDialog.show();
-        btnAddNewItem.setEnabled(false);
+        btnConfirmImageView.setEnabled(false);
         if(usedCamera) {
             StorageReference imagesRef = mStorageRef.child(new Date().getTime() + ".jpg");
             UploadTask uploadTask = imagesRef.putBytes(dataBAOS);
@@ -320,10 +321,17 @@ public class AddMenuItemFragment extends Fragment {
         }
         if(requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            // for some reason the picture comes out in landscape view
+            // so we just rotate it
+            Matrix matrix = new Matrix();
+            matrix.postRotate(90);
+            Bitmap tempBitmap = (Bitmap) data.getExtras().get("data");
+            Bitmap bitmap = Bitmap.createBitmap(tempBitmap, 0, 0, tempBitmap.getWidth(), tempBitmap.getHeight(), matrix, true);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG,100, baos);
             dataBAOS = baos.toByteArray();
+            // ToDo: change it so that we can retrieve the FULL SIZE image
+            imageView.setImageBitmap(bitmap); // this is only the thumbnail unfortunately
         }
     }
 
@@ -467,7 +475,7 @@ public class AddMenuItemFragment extends Fragment {
                 addMenuItemViewModel.addMenuItem(newItem, getContext());
                 clearFields();
                 progressDialog.dismiss();
-                btnAddNewItem.setEnabled(true);
+                btnConfirmImageView.setEnabled(true);
                 imageViewFrameLayout.setVisibility(getView().GONE);
             }
 
