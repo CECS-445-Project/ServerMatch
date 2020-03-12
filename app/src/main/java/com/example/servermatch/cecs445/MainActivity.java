@@ -1,6 +1,7 @@
 package com.example.servermatch.cecs445;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 
 import com.example.servermatch.cecs445.ui.setuprestaurant.SetupRestaurant;
@@ -8,6 +9,7 @@ import com.example.servermatch.cecs445.ui.setuprestaurant.SetupRestaurantFragmen
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.navigation.NavController;
@@ -25,8 +27,11 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import static com.example.servermatch.cecs445.ui.setuprestaurant.SetupRestaurantFragment.*;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView navHeaderRestaurantName;
     private TextView navHeaderRestaurantEmail;
     private TextView navHeaderRestaurantPhone;
+    private ImageView navHeaderRestaurantIcon;
+    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,14 +67,18 @@ public class MainActivity extends AppCompatActivity {
         navHeaderRestaurantName = headerView.findViewById(R.id.restaurant_name);
         navHeaderRestaurantEmail = headerView.findViewById(R.id.restaurant_email);
         navHeaderRestaurantPhone = headerView.findViewById(R.id.restaurant_phone);
+        navHeaderRestaurantIcon = headerView.findViewById(R.id.restaurant_icon);
 
         Intent intent = getIntent();
-        String setup_restaurant_name = intent.getStringExtra(SetupRestaurantFragment.EXTRA_RESTAURANT_NAME);
-        String setup_restaurant_email = intent.getStringExtra(SetupRestaurantFragment.EXTRA_RESTAURANT_EMAIL);
-        String setup_restaurant_phone = intent.getStringExtra(SetupRestaurantFragment.EXTRA_RESTAURANT_PHONE);
+        String setup_restaurant_name = intent.getStringExtra(EXTRA_RESTAURANT_NAME);
+        String setup_restaurant_email = intent.getStringExtra(EXTRA_RESTAURANT_EMAIL);
+        String setup_restaurant_phone = intent.getStringExtra(EXTRA_RESTAURANT_PHONE);
+        Integer setup_restaurant_icon = intent.getIntExtra(EXTRA_RESTAURANT_ICON, R.mipmap.ic_launcher); // default
+
         navHeaderRestaurantName.setText(setup_restaurant_name);
         navHeaderRestaurantEmail.setText(setup_restaurant_email);
         navHeaderRestaurantPhone.setText(setup_restaurant_phone);
+        navHeaderRestaurantIcon.setImageResource(setup_restaurant_icon);
     }
 
     @Override
