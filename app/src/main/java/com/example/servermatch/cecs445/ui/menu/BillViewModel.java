@@ -31,12 +31,24 @@ public class BillViewModel extends ViewModel {
         //Log.d(TAG + ":End of init", "size of list" + mMenuBillItems.getValue().size() + "");
     }
 
+
     public void addNewValue(final MenuItem menuItem){
         List<MenuItem> currentBillMenuItems = mMenuBillItems.getValue();
-        if(currentBillMenuItems.contains(menuItem)) menuItem.incrementQuantity();
-        else {
+
+        assert currentBillMenuItems != null;
+        if(currentBillMenuItems.size() == 0){
             menuItem.incrementQuantity();
             currentBillMenuItems.add(menuItem);
+        }
+        else{
+            for (MenuItem currentBillMenuItem : currentBillMenuItems) {
+                if (currentBillMenuItem.getItemName().equals(menuItem.getItemName()))
+                    currentBillMenuItem.incrementQuantity();
+                else {
+                    menuItem.incrementQuantity();
+                    currentBillMenuItems.add(menuItem);
+                }
+            }
         }
         mMenuBillItems.postValue(currentBillMenuItems);
 
@@ -54,12 +66,15 @@ public class BillViewModel extends ViewModel {
         mMenuBillItems.postValue(currentBillMenuItems);
     }
 
-    // Edit this so it removes the items from the list.
     public void clearBillItems(){
         List<MenuItem> currentBillMenuItems = mMenuBillItems.getValue();
-        for(MenuItem billItem : currentBillMenuItems){
-            billItem.setmIntQuantity(0);
+        Iterator it = currentBillMenuItems.iterator();
+
+        while(it.hasNext()){
+            ((MenuItem)it.next()).setmIntQuantity(0);
+            it.remove();
         }
+
         mMenuBillItems.postValue(currentBillMenuItems);
     }
 

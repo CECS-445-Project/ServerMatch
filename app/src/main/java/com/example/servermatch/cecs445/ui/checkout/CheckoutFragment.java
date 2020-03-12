@@ -93,7 +93,7 @@ public class CheckoutFragment extends Fragment {
 
     private void checkForEmail2(){
 
-        if (frequentCustomersViewModel.getCustomerEmail() != null){
+        if (frequentCustomersViewModel.getCustomerEmail() != null & frequentCustomersViewModel.getCustomerEmail().getValue() != null){
 
             if(!frequentCustomersViewModel.getCustomerEmail().getValue().equals("no email")) {
                 TextInputEditText edit = view.findViewById(R.id.checkout_edit_email);
