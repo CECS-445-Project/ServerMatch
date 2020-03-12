@@ -17,6 +17,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -45,6 +47,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.squareup.picasso.Picasso;
+
 import static android.app.Activity.RESULT_OK;
 
 public class AddMenuItemFragment extends Fragment {
@@ -54,7 +58,11 @@ public class AddMenuItemFragment extends Fragment {
     private TextInputLayout textInputItemDesc;
     private MaterialButton btnAddNewItem;
     private MaterialButton btnAddPhoto;
+    private MaterialButton btnConfirmImageView;
+    private MaterialButton btnCancelImageView;
     private ProgressDialog progressDialog;
+    private FrameLayout imageViewFrameLayout;
+    private ImageView imageView;
     private static final String TAG = "AddMenuItemFragment";
     private ChipGroup chipGroup; // filters that will be applied to MenuItem
     private List<String> tags = new ArrayList<String>();
@@ -107,6 +115,10 @@ public class AddMenuItemFragment extends Fragment {
         textInputItemDesc = root.findViewById(R.id.text_input_item_desc);
         btnAddNewItem = root.findViewById((R.id.add_item_button));
         btnAddPhoto = root.findViewById((R.id.add_photo_button));
+        btnConfirmImageView = root.findViewById((R.id.confirm_image_view));
+        btnCancelImageView = root.findViewById((R.id.cancel_image_view));
+        imageViewFrameLayout = root.findViewById(R.id.image_holder);
+        imageView = root.findViewById(R.id.add_menu_item_image);
         progressDialog = new ProgressDialog(getContext());
         mStorageRef = FirebaseStorage.getInstance().getReference("Images");
         imageSelected = false;
@@ -117,7 +129,11 @@ public class AddMenuItemFragment extends Fragment {
         btnAddNewItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addItem(v);
+//                addItem(v);
+                if(!validateName() | !validateCost() | !validateDesc() | !validateFilters() | !validateImage()) {
+                    return;
+                }
+                imageViewFrameLayout.setVisibility(v.VISIBLE);
             }
         });
 
@@ -126,6 +142,20 @@ public class AddMenuItemFragment extends Fragment {
             public void onClick(View v) {
                 Log.d(TAG, "Add Photo Button Pressed");
                 openDialog();
+            }
+        });
+
+        btnConfirmImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addItem(v);
+            }
+        });
+
+        btnCancelImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageViewFrameLayout.setVisibility(v.GONE);
             }
         });
 
@@ -286,6 +316,7 @@ public class AddMenuItemFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imguri = data.getData();
+            Picasso.get().load(data.getData()).into(imageView);
         }
         if(requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
@@ -437,6 +468,7 @@ public class AddMenuItemFragment extends Fragment {
                 clearFields();
                 progressDialog.dismiss();
                 btnAddNewItem.setEnabled(true);
+                imageViewFrameLayout.setVisibility(getView().GONE);
             }
 
             @Override
@@ -465,5 +497,6 @@ public class AddMenuItemFragment extends Fragment {
         imageSelected = false;
         usedCamera = false;
         dataBAOS = null;
+        imageView = null;
     }
 }
