@@ -92,25 +92,21 @@ public class SetupRestaurantFragment extends Fragment {
 
         mLoginAccount = root.findViewById(R.id.login_click_here);
 
-        imageButton1 = root.findViewById(R.id.imageButton1);
-        imageButton2 = root.findViewById(R.id.imageButton2);
-        imageButton3 = root.findViewById(R.id.imageButton3);
-
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()){
                     case R.id.imageButton1:
                         setupRestaurantIcon = image1;
-                        Log.d("selected_one", "Selected first profile icon.");
+                        Log.d("selected_img", "Selected first profile icon.");
                         break;
                     case R.id.imageButton2:
                         setupRestaurantIcon = image2;
-                        Log.d("selected_two", "Selected second profile icon.");
+                        Log.d("selected_img", "Selected second profile icon.");
                         break;
                     case R.id.imageButton3:
                         setupRestaurantIcon = image3;
-                        Log.d("selected_three", "Selected third profile icon.");
+                        Log.d("selected_img", "Selected third profile icon.");
                         break;
                     default:
                         throw new IllegalStateException("Unexpected value: " + v.getId());
