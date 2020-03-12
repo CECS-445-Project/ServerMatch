@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +24,7 @@ public class SetupRestaurant extends AppCompatActivity {
 
     private Button btnLoginRestaurant;
     private TextView mCreateAccount;
+    SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +32,21 @@ public class SetupRestaurant extends AppCompatActivity {
         setContentView(R.layout.activity_setup_restaurant);
 
         btnLoginRestaurant = findViewById(R.id.login_restaurant_button);
-
         mCreateAccount = findViewById(R.id.setup_click_here);
+
+        //SharedPreferences to save login information
+        prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        boolean loggedIn = prefs.getBoolean("loggedIn", false);
+        if(loggedIn) {
+            startActivity(new Intent(SetupRestaurant.this, MainActivity.class));
+        }
 
         btnLoginRestaurant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putBoolean("loggedIn", true);
+                editor.apply();
                 startActivity(new Intent(SetupRestaurant.this, MainActivity.class));
             }
         });

@@ -1,6 +1,8 @@
 package com.example.servermatch.cecs445.ui.setuprestaurant;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,12 +13,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
 
 import com.example.servermatch.cecs445.MainActivity;
 import com.example.servermatch.cecs445.R;
@@ -48,10 +54,13 @@ public class SetupRestaurantFragment extends Fragment {
     private ImageButton imageButton1;
     private ImageButton imageButton2;
     private ImageButton imageButton3;
+
     private ImageView imageView;
     private Integer imageID;
 
     private TextView mLoginAccount;
+    SharedPreferences prefs;
+
 
     public SetupRestaurantFragment() {
         //blank constructor
@@ -77,11 +86,11 @@ public class SetupRestaurantFragment extends Fragment {
         btnSetupRestaurant = root.findViewById(R.id.setup_restaurant_submit);
         btnLoginRestaurant = root.findViewById(R.id.login_restaurant_submit);
 
-        mLoginAccount = root.findViewById(R.id.login_click_here);
+        imageButton1 = root.findViewById((R.id.imageButton1));
+        imageButton2 = root.findViewById((R.id.imageButton2));
+        imageButton3 = root.findViewById((R.id.imageButton3));
 
-        imageButton1 = root.findViewById(R.id.imageButton1);
-        imageButton2 = root.findViewById(R.id.imageButton2);
-        imageButton3 = root.findViewById(R.id.imageButton3);
+        mLoginAccount = root.findViewById(R.id.login_click_here);
 
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
@@ -89,15 +98,15 @@ public class SetupRestaurantFragment extends Fragment {
                 switch (v.getId()){
                     case R.id.imageButton1:
                         setupRestaurantIcon = image1;
-                        Log.d("selected_one", "Selected first profile icon.");
+                        Log.d("selected_img", "Selected first profile icon.");
                         break;
                     case R.id.imageButton2:
                         setupRestaurantIcon = image2;
-                        Log.d("selected_two", "Selected second profile icon.");
+                        Log.d("selected_img", "Selected second profile icon.");
                         break;
                     case R.id.imageButton3:
                         setupRestaurantIcon = image3;
-                        Log.d("selected_three", "Selected third profile icon.");
+                        Log.d("selected_img", "Selected third profile icon.");
                         break;
                     default:
                         throw new IllegalStateException("Unexpected value: " + v.getId());
@@ -124,6 +133,12 @@ public class SetupRestaurantFragment extends Fragment {
                 intent.putExtra(EXTRA_RESTAURANT_PHONE, restaurantPhone);
                 intent.putExtra(EXTRA_RESTAURANT_PASS, restaurantPass);
                 intent.putExtra(EXTRA_RESTAURANT_ICON, restaurantIcon);
+
+                //SharedPreferences to save login and restaurant information
+                prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putBoolean("loggedIn", true);
+                editor.apply();
 
                 startActivity(intent);
 
@@ -191,6 +206,20 @@ public class SetupRestaurantFragment extends Fragment {
         Restaurant r1 = new Restaurant(name, phone, email);
         Log.d("setup_restaurant", r1.toString());
         Toast.makeText(getContext(), "Restaurant Created", Toast.LENGTH_SHORT).show();
+    }
+
+    public void goToLoginAccount(){
+        mLoginAccount.setOnClickListener(v -> {
+            // setup switching between fragment
+            openRestaurantLogin();
+        });
+    }
+
+    public void openRestaurantLogin() {
+        Intent intent = new Intent(getActivity(), SetupRestaurant.class);
+        startActivity(intent);
+        Log.d("setup_click_here", "Navigated to login from setup restaurant");
+
     }
 
 }
