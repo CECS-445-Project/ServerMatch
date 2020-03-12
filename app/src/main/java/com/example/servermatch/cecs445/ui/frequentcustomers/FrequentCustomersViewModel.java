@@ -117,7 +117,7 @@ public class FrequentCustomersViewModel extends ViewModel {
     public LiveData<String> getCustomerEmail() { return mEmail; }
 
     public void setTopCustomerEmail(String email){
-        mEmail.setValue(email);
+        mEmail.postValue(email);
         updateTopMenuItems(email);
     }
 }
