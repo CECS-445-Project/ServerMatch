@@ -94,9 +94,12 @@ public class CheckoutFragment extends Fragment {
     private void checkForEmail2(){
 
         if (frequentCustomersViewModel.getCustomerEmail() != null){
-            TextInputEditText edit = view.findViewById(R.id.checkout_edit_email);
-            mEmail.setHintAnimationEnabled(false);
-            edit.setText(frequentCustomersViewModel.getCustomerEmail().getValue());
+
+            if(!frequentCustomersViewModel.getCustomerEmail().getValue().equals("no email")) {
+                TextInputEditText edit = view.findViewById(R.id.checkout_edit_email);
+                mEmail.setHintAnimationEnabled(false);
+                edit.setText(frequentCustomersViewModel.getCustomerEmail().getValue());
+            }
         }
     }
 
@@ -116,6 +119,10 @@ public class CheckoutFragment extends Fragment {
                 Log.d(TAG, bill.toString());
 
                 billViewModel.clearBillItems();
+
+                //This did not break it.
+                frequentCustomersViewModel.setTopCustomerEmail("no email");
+
                 MenuFragment menuFragment = new MenuFragment();
                 Bundle args = new Bundle();
                 args.putBoolean("CheckoutComplete", successfulCheckout);

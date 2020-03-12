@@ -54,6 +54,7 @@ public class BillViewModel extends ViewModel {
         mMenuBillItems.postValue(currentBillMenuItems);
     }
 
+    // Edit this so it removes the items from the list.
     public void clearBillItems(){
         List<MenuItem> currentBillMenuItems = mMenuBillItems.getValue();
         for(MenuItem billItem : currentBillMenuItems){
