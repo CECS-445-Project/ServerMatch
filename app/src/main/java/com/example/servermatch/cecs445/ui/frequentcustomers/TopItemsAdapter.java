@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
@@ -65,6 +66,8 @@ public class TopItemsAdapter extends RecyclerView.Adapter<TopItemsAdapter.ViewHo
 
         ((ViewHolder)holder).parentLayout.setOnClickListener(v -> {
 
+            LiveData<String> currentCustomersEmail = mFrequentCustomersViewModel.getCustomerEmail();
+            Log.d(TAG, currentCustomersEmail.getValue());
 
             mItems.get(position).setmIntQuantity(0);
             Log.d(TAG,"top item clicked" + mItems.get(position).toString());

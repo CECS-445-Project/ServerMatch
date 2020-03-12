@@ -40,7 +40,7 @@ public class FrequentCustomersFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_frequent_customers, container, false);
-        frequentCustomersViewModel = new ViewModelProvider(this)
+        frequentCustomersViewModel = new ViewModelProvider(this.getActivity())
                 .get(FrequentCustomersViewModel.class);
         frequentCustomersViewModel.init();
         recyclerViewFrequentCustomers =  view.findViewById(R.id.recycle_view_customers);
@@ -85,7 +85,7 @@ public class FrequentCustomersFragment extends Fragment {
         recyclerViewFrequentCustomers.setLayoutManager(layoutManager);
 
 //        TopMenuItems
-        topItemsAdapter = new TopItemsAdapter(new ViewModelProvider(this.getActivity()).get(BillViewModel.class) , frequentCustomersViewModel, getActivity(), frequentCustomersViewModel.getTopMenuItems().getValue());
+        topItemsAdapter = new TopItemsAdapter(new ViewModelProvider(this.getActivity()).get(BillViewModel.class), frequentCustomersViewModel, getActivity(), frequentCustomersViewModel.getTopMenuItems().getValue());
         RecyclerView.LayoutManager topItemsLayoutManager = new LinearLayoutManager(getActivity());
         recyclerViewTopItems.setLayoutManager(topItemsLayoutManager);
         recyclerViewTopItems.setAdapter(topItemsAdapter);

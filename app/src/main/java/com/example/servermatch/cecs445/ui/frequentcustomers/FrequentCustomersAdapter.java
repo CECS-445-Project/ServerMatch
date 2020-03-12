@@ -80,8 +80,4 @@ public class FrequentCustomersAdapter extends RecyclerView.Adapter<FrequentCusto
         }
 
     }
-
-    public static String getCurrentEmail(){
-        return currentEmail;
-    }
 }

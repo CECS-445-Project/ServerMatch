@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +30,8 @@ import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.Utils.CheckoutRecyclerAdapter;
 import com.example.servermatch.cecs445.models.Bill;
 import com.example.servermatch.cecs445.models.MenuItem;
+import com.example.servermatch.cecs445.ui.frequentcustomers.FrequentCustomersFragment;
+import com.example.servermatch.cecs445.ui.frequentcustomers.FrequentCustomersViewModel;
 import com.example.servermatch.cecs445.ui.menu.BillViewModel;
 import com.example.servermatch.cecs445.ui.menu.MenuFragment;
 import com.google.android.material.textfield.TextInputEditText;
@@ -43,6 +46,7 @@ public class CheckoutFragment extends Fragment {
 
     private CheckoutViewModel checkOutViewModel;
     private BillViewModel billViewModel;
+    private FrequentCustomersViewModel frequentCustomersViewModel;
     private static String TAG = "CheckoutFragment";
     private View view;
     private Bill bill;
@@ -63,12 +67,15 @@ public class CheckoutFragment extends Fragment {
         mCheckoutButton = view.findViewById(R.id.checkout_button);
         checkOutViewModel = new ViewModelProvider(this).get(CheckoutViewModel.class);
         billViewModel = new ViewModelProvider(this).get(BillViewModel.class);
+        frequentCustomersViewModel = new ViewModelProvider(this.getActivity()).get(FrequentCustomersViewModel.class);
+        frequentCustomersViewModel.init();
+
         checkOutViewModel.init();
         billViewModel.init();
         checkoutButtonListener();
         setUpBill();
         initRecyclerView();
-        checkForEmail();
+        checkForEmail2();
 
         return view;
     }
@@ -82,6 +89,18 @@ public class CheckoutFragment extends Fragment {
             mEmail.setHintAnimationEnabled(false);
             edit.setText(bundle.get("Email").toString());
         }
+    }
+
+    private void checkForEmail2(){
+
+        if (frequentCustomersViewModel.getCustomerEmail() != null){
+            TextInputEditText edit = view.findViewById(R.id.checkout_edit_email);
+            mEmail.setHintAnimationEnabled(false);
+            edit.setText(frequentCustomersViewModel.getCustomerEmail().getValue());
+        }
+//            TextInputEditText edit = view.findViewById(R.id.checkout_edit_email);
+//            mEmail.setHintAnimationEnabled(false);
+//            edit.setText("dogs");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
