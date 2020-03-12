@@ -56,19 +56,22 @@ public class AddMenuItemFragment extends Fragment {
     private MaterialButton btnAddPhoto;
     private ProgressDialog progressDialog;
     private static final String TAG = "AddMenuItemFragment";
-    private ChipGroup chipGroup;
+    private ChipGroup chipGroup; // filters that will be applied to MenuItem
     private List<String> tags = new ArrayList<String>();
     private AddMenuItemViewModel addMenuItemViewModel;
-    private static final int PICK_IMAGE_REQUEST = 1;
-    private static final int CAMERA_REQUEST = 100;
-    private StorageReference mStorageRef;
+    private static final int PICK_IMAGE_REQUEST = 1; // arbitrary request code for opening gallery
+    private static final int CAMERA_REQUEST = 100; // arbitrary request code for opening camera
+    private StorageReference mStorageRef; // reference to FirebaseStorage
+    // boolean to determine if image was selected from gallery or camera
     private boolean imageSelected;
-    private Uri imguri;
-    private StorageTask uploadTask;
-    private String downloadURL;
-    private boolean usedCamera;
-    private byte[] dataBAOS;
+    private Uri imguri; // reference to gallery image
+    private StorageTask uploadTask; // controllable Task that has a synchronized state machine
+    private String downloadURL; // url provided to MenuItem for displaying on menu
+    private boolean usedCamera; // boolean to determine if image was created from camera
+    private byte[] dataBAOS; // byte array if image was created from camera
+    // arbitrary request code for requesting permission to read external storage
     private static final int STORAGE_PERMISSION_CODE = 10;
+    // arbitrary request code for requesting permission to access camera
     private static final int CAMERA_PERMISSION_CODE = 20;
 
     String [] filters = {
@@ -89,6 +92,13 @@ public class AddMenuItemFragment extends Fragment {
             "Contains Pork"
     };
 
+    /**
+     * Creates view for Add Menu Item.
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_add_menu_item, container, false);
@@ -111,7 +121,6 @@ public class AddMenuItemFragment extends Fragment {
             }
         });
 
-
         btnAddPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,7 +128,6 @@ public class AddMenuItemFragment extends Fragment {
                 openDialog();
             }
         });
-
 
         chipGroup = root.findViewById(R.id.chip_group_filter);
         for(String filter : filters) {
@@ -134,23 +142,12 @@ public class AddMenuItemFragment extends Fragment {
         return root;
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == CAMERA_PERMISSION_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(getContext(), "Permission GRANTED", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getContext(), "Permission DENIED", Toast.LENGTH_SHORT).show();
-            }
-        } else if(requestCode == STORAGE_PERMISSION_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(getContext(), "Permission GRANTED", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getContext(), "Permission DENIED", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
+    /**
+     * Opens AlertDialog with three choices: cancel, gallery, and camera. If user presses gallery,
+     * call choosePhoto(). If user presses camera, call openCamera(). Before either of these
+     * functions are called, we check if the user allows for reading external storage or taking
+     * pictures/videos.
+     */
     private void openDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
         builder.setTitle("Image Upload");
@@ -188,6 +185,9 @@ public class AddMenuItemFragment extends Fragment {
         builder.create().show();
     }
 
+    /**
+     * Create new Intent for activity of getting photo from Camera.
+     */
     private void openCamera() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(cameraIntent, CAMERA_REQUEST);
@@ -196,21 +196,35 @@ public class AddMenuItemFragment extends Fragment {
         Log.d(TAG, "openCamera: Camera Photo Taken");
     }
 
+    /**
+     * Create new Intent for activity of getting photo from Gallery.
+     */
     private void choosePhoto() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+        Intent galleryIntent = new Intent();
+        galleryIntent.setType("image/*");
+        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(galleryIntent, "Select Picture"), PICK_IMAGE_REQUEST);
         imageSelected = true;
         Log.d(TAG, "Image Selected from Gallery");
     }
 
+    /**
+     * Method only used if user chooses to upload from Gallery.
+     * @param uri imguri will be used to determine extension type
+     * @return string for file name in Firebase
+     */
     private String getExtension(Uri uri) {
         ContentResolver cr = getContext().getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         return mimeTypeMap.getExtensionFromMimeType(cr.getType(uri));
     }
 
+    /**
+     * Uploads image to Firebase. Determines if the user used the gallery or camera, different
+     * procedure will be used for uploading. ProgressDialog will pop up that obscures screen.
+     * Add Item is disabled to prevent multiple uploads. Set the downloadURL to the Firebase URL.
+     * @param v current view
+     */
     private void imageUploader(View v) {
         Log.d(TAG, "Image Upload IN PROGRESS");
         progressDialog.setMessage("Uploading Image ...");
@@ -241,7 +255,12 @@ public class AddMenuItemFragment extends Fragment {
             final StorageReference ref = mStorageRef.child(childName);
 
             // uploads file to Firebase Cloud Storage
-            ref.putFile(imguri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            ref.putFile(imguri).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d(TAG, "imageUploader: onFailure: Gallery upload failed");
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -256,6 +275,12 @@ public class AddMenuItemFragment extends Fragment {
         }
     }
 
+    /**
+     * Overrides the onActivityResult. Determine which code was requested based on Intent.
+     * @param requestCode int defined at the top of the class, helps differentiate Intents.
+     * @param resultCode int result code from Activity.
+     * @param data Intent that is an abstract description of an operation to be performed.
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -271,6 +296,10 @@ public class AddMenuItemFragment extends Fragment {
         }
     }
 
+    /**
+     * Determine if the user has entered a name for their new MenuItem
+     * @return boolean true or false
+     */
     private boolean validateName() {
         String nameInput = textInputItemName.getEditText().getText().toString().trim();
 
@@ -284,6 +313,10 @@ public class AddMenuItemFragment extends Fragment {
         }
     }
 
+    /**
+     * Determine if the user has entered a cost for their new MenuItem
+     * @return boolean true or false
+     */
     private boolean validateCost() {
         String costInput = textInputItemCost.getEditText().getText().toString().trim();
 
@@ -297,6 +330,10 @@ public class AddMenuItemFragment extends Fragment {
         }
     }
 
+    /**
+     * Determine if the user has entered a description for their new MenuItem.
+     * @return boolean true or false
+     */
     private boolean validateDesc() {
         String descInput = textInputItemDesc.getEditText().getText().toString().trim();
 
@@ -314,6 +351,10 @@ public class AddMenuItemFragment extends Fragment {
         }
     }
 
+    /**
+     * Determine if the user has selected at least one filter for their new MenuItem.
+     * @return boolean true or false
+     */
     private boolean validateFilters() {
         String chip_msg = "Selected chips are: ";
         boolean checkedChips = false;
@@ -351,8 +392,12 @@ public class AddMenuItemFragment extends Fragment {
         }
     }
 
+    /**
+     * Determine if the user has selected an image, either from the gallery or with a camera.
+     * @return boolean true or false
+     */
     private boolean validateImage() {
-        if(imageSelected == false) {
+        if(!imageSelected) {
             Log.d(TAG, "Add Item Button Pressed - No Image Selected");
             Toast.makeText(getContext(), "No Image Selected", Toast.LENGTH_SHORT).show();
             return false;
@@ -365,6 +410,14 @@ public class AddMenuItemFragment extends Fragment {
         }
     }
 
+    /**
+     * The user is ready to upload their MenuItem to Firebase. We validate ALL fields: name, cost,
+     * description, and if an image was selected. If all fields were completed, we upload the
+     * image first to Firebase Storage, then the MenuItem to Firebase Database. If at least one
+     * field was not filled in, we do not allow the user to proceed, instead we display a Toast
+     * message to let them know that there's something missing.
+     * @param v the current view
+     */
     public void addItem(View v) {
         if(!validateName() | !validateCost() | !validateDesc() | !validateFilters() | !validateImage()) {
             return;
@@ -400,6 +453,10 @@ public class AddMenuItemFragment extends Fragment {
 
     }
 
+    /***
+     * After uploading a new MenuItem to Firebase, we set text fields, chip group,
+     * if an image was selected, if we used the camera, and a byte array to reset.
+     */
     private void clearFields(){
         textInputItemName.getEditText().setText("");
         textInputItemDesc.getEditText().setText("");
