@@ -12,6 +12,7 @@ import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -44,6 +46,9 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -82,6 +87,10 @@ public class AddMenuItemFragment extends Fragment {
     private static final int STORAGE_PERMISSION_CODE = 10;
     // arbitrary request code for requesting permission to access camera
     private static final int CAMERA_PERMISSION_CODE = 20;
+    // arbitrary request code for requesting permission to write to storage
+    private static final int WRITE_STORAGE_PERMISSION_CODE = 30;
+    private static final int CAMERA_AND_WRITE_PERMISSION_CODE = 40;
+    private String pictureFilePath;
 
     String [] filters = {
             "Vegan",
@@ -130,7 +139,6 @@ public class AddMenuItemFragment extends Fragment {
         btnAddNewItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                addItem(v);
                 if(!validateName() | !validateCost() | !validateDesc() | !validateFilters() | !validateImage()) {
                     return;
                 }
@@ -181,33 +189,51 @@ public class AddMenuItemFragment extends Fragment {
      */
     private void openDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
-        builder.setTitle("Image Upload");
-        builder.setMessage("How would you like to upload your image?");
-        builder.setPositiveButton("Camera", new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.alert_dialog_title_menu_item);
+        builder.setMessage(R.string.alert_dialog_message_menu_item);
+        builder.setPositiveButton(R.string.alert_dialog_message_pos_button_menu_item, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Log.d(TAG, "openDialog: Open Camera Pressed");
-                if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                if((ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
+                        &&
+                        (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
                     openCamera();
                 } else {
-                    Log.d(TAG, "Camera Permission Requested");
-                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+                    if((ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
+                            &&
+                            (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)) {
+                        Log.d(TAG, "Camera and Storage Permission Requested");
+                        requestPermissions(new String[]{Manifest.permission.CAMERA,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                CAMERA_AND_WRITE_PERMISSION_CODE);
+                    } else if((ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
+                            &&
+                            (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
+                        Log.d(TAG, "Camera Permission Requested");
+                        requestPermissions(new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+                    } else if((ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
+                            &&
+                            (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)) {
+                        Log.d(TAG, "Write to Storage Permission Requested");
+                        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_STORAGE_PERMISSION_CODE);
+                    }
                 }
             }
         });
-        builder.setNegativeButton("Gallery", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.alert_dialog_message_neg_button_menu_item, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Log.d(TAG, "openDialog: Open Gallery Pressed");
-                if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     choosePhoto();
                 } else {
                     Log.d(TAG, "Storage Permission Requested");
-                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);;
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
                 }
             }
         });
-        builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNeutralButton(R.string.alert_dialog_message_neutral_button_menu_item, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Log.d(TAG, "openDialog: Pressed Cancel");
@@ -221,10 +247,39 @@ public class AddMenuItemFragment extends Fragment {
      */
     private void openCamera() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(cameraIntent, CAMERA_REQUEST);
-        imageSelected = true;
-        usedCamera = true;
-        Log.d(TAG, "openCamera: Camera Photo Taken");
+        if(cameraIntent.resolveActivity(getContext().getPackageManager()) != null) {
+            File imageFile = null;
+            try {
+                imageFile = createImageFile();
+            } catch (IOException ex) {
+                Log.d(TAG, "openCamera: " + ex.toString());
+            }
+            if (imageFile != null) {
+                Uri photoUri = FileProvider.getUriForFile(getContext(),
+                        "com.example.servermatch.cecs445.fileprovider",
+                        imageFile);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                imageSelected = true;
+                usedCamera = true;
+                Log.d(TAG, "openCamera: Camera Photo Taken");
+            }
+        }
+    }
+
+    /**
+     * Creates a jpeg file that will be stored in a private directory if user chooses to upload
+     * their image by taking a photo with their camera.
+     * @return File that will be used for storing a direct camera upload
+     * @throws IOException if we can't store to directory
+     */
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String pictureFile = "JPEG_" + timeStamp + "_";
+        File storageDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(pictureFile, ".jpg", storageDir);
+        pictureFilePath = image.getAbsolutePath();
+        return image;
     }
 
     /**
@@ -237,6 +292,41 @@ public class AddMenuItemFragment extends Fragment {
         startActivityForResult(Intent.createChooser(galleryIntent, "Select Picture"), PICK_IMAGE_REQUEST);
         imageSelected = true;
         Log.d(TAG, "Image Selected from Gallery");
+    }
+
+    /**
+     * Overrides the onActivityResult. Determine which code was requested based on Intent.
+     * @param requestCode int defined at the top of the class, helps differentiate Intents.
+     * @param resultCode int result code from Activity.
+     * @param data Intent that is an abstract description of an operation to be performed.
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            imguri = data.getData();
+            Picasso.get().load(data.getData()).into(imageView);
+        }
+        if(requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
+            File imgFile = new File(pictureFilePath);
+            if(imgFile.exists()) {
+                imageView.setImageURI(Uri.fromFile(imgFile));
+                Log.d(TAG, "onActivityResult: " + Uri.fromFile(imgFile).toString());
+            }
+            // for some reason the uploads come out rotated, fix orientation before upload
+            Matrix matrix = new Matrix();
+            matrix.postRotate(90);
+            Bitmap tempBitmap = null;
+            try {
+                tempBitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), Uri.fromFile(imgFile));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Bitmap bitmap = Bitmap.createBitmap(tempBitmap, 0, 0, tempBitmap.getWidth(), tempBitmap.getHeight(), matrix, true);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG,100, baos);
+            dataBAOS = baos.toByteArray();
+        }
     }
 
     /**
@@ -303,35 +393,6 @@ public class AddMenuItemFragment extends Fragment {
                     });
                 }
             });
-        }
-    }
-
-    /**
-     * Overrides the onActivityResult. Determine which code was requested based on Intent.
-     * @param requestCode int defined at the top of the class, helps differentiate Intents.
-     * @param resultCode int result code from Activity.
-     * @param data Intent that is an abstract description of an operation to be performed.
-     */
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            imguri = data.getData();
-            Picasso.get().load(data.getData()).into(imageView);
-        }
-        if(requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            // for some reason the picture comes out in landscape view
-            // so we just rotate it
-            Matrix matrix = new Matrix();
-            matrix.postRotate(90);
-            Bitmap tempBitmap = (Bitmap) data.getExtras().get("data");
-            Bitmap bitmap = Bitmap.createBitmap(tempBitmap, 0, 0, tempBitmap.getWidth(), tempBitmap.getHeight(), matrix, true);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG,100, baos);
-            dataBAOS = baos.toByteArray();
-            // ToDo: change it so that we can retrieve the FULL SIZE image
-            imageView.setImageBitmap(bitmap); // this is only the thumbnail unfortunately
         }
     }
 
