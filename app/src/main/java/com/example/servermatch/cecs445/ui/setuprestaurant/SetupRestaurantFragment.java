@@ -29,19 +29,24 @@ import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.models.Restaurant;
 import com.google.android.material.textfield.TextInputLayout;
 
+import static com.example.servermatch.cecs445.R.drawable.image1;
+import static com.example.servermatch.cecs445.R.drawable.image2;
+import static com.example.servermatch.cecs445.R.drawable.image3;
+
 public class SetupRestaurantFragment extends Fragment {
 
     public static final String EXTRA_RESTAURANT_NAME = "com.example.servermatch.cecs445.ui.setuprestaurant.EXTRA_RESTAURANT_NAME";
     public static final String EXTRA_RESTAURANT_EMAIL = "com.example.servermatch.cecs445.ui.setuprestaurant.EXTRA_RESTAURANT_EMAIL";
     public static final String EXTRA_RESTAURANT_PHONE = "com.example.servermatch.cecs445.ui.setuprestaurant.EXTRA_RESTAURANT_PHONE";
     public static final String EXTRA_RESTAURANT_PASS = "com.example.servermatch.cecs445.ui.setuprestaurant.EXTRA_RESTAURANT_PASS";
-
+    public static final String EXTRA_RESTAURANT_ICON = "com.example.servermatch.cecs445.ui.setuprestaurant.EXTRA_RESTAURANT_ICON";
 
     private SetupRestaurantViewModel setupRestaurantViewModel;
     private TextInputLayout setupRestaurantName;
     private TextInputLayout setupRestaurantEmail;
     private TextInputLayout setupRestaurantPhone;
     private TextInputLayout setupRestaurantPass;
+    private Integer setupRestaurantIcon;
 
     private Button btnSetupRestaurant;
     private Button btnLoginRestaurant;
@@ -51,6 +56,8 @@ public class SetupRestaurantFragment extends Fragment {
     private ImageButton imageButton3;
 
     private ImageView imageView;
+    private Integer imageID;
+
     private TextView mLoginAccount;
     SharedPreferences prefs;
 
@@ -85,6 +92,36 @@ public class SetupRestaurantFragment extends Fragment {
 
         mLoginAccount = root.findViewById(R.id.login_click_here);
 
+        imageButton1 = root.findViewById(R.id.imageButton1);
+        imageButton2 = root.findViewById(R.id.imageButton2);
+        imageButton3 = root.findViewById(R.id.imageButton3);
+
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()){
+                    case R.id.imageButton1:
+                        setupRestaurantIcon = image1;
+                        Log.d("selected_one", "Selected first profile icon.");
+                        break;
+                    case R.id.imageButton2:
+                        setupRestaurantIcon = image2;
+                        Log.d("selected_two", "Selected second profile icon.");
+                        break;
+                    case R.id.imageButton3:
+                        setupRestaurantIcon = image3;
+                        Log.d("selected_three", "Selected third profile icon.");
+                        break;
+                    default:
+                        throw new IllegalStateException("Unexpected value: " + v.getId());
+                }
+            }
+        };
+
+        imageButton1.setOnClickListener(listener);
+        imageButton2.setOnClickListener(listener);
+        imageButton3.setOnClickListener(listener);
+
         btnSetupRestaurant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,12 +129,14 @@ public class SetupRestaurantFragment extends Fragment {
                 String restaurantEmail = setupRestaurantEmail.getEditText().getText().toString().toLowerCase();
                 String restaurantPhone = setupRestaurantPhone.getEditText().getText().toString();
                 String restaurantPass = setupRestaurantPass.getEditText().getText().toString();
+                Integer restaurantIcon = setupRestaurantIcon;
 
-                Intent mainIntent = new Intent(getActivity(), MainActivity.class);
-                mainIntent.putExtra(EXTRA_RESTAURANT_NAME, restaurantName);
-                mainIntent.putExtra(EXTRA_RESTAURANT_EMAIL, restaurantEmail);
-                mainIntent.putExtra(EXTRA_RESTAURANT_PHONE, restaurantPhone);
-                mainIntent.putExtra(EXTRA_RESTAURANT_PASS, restaurantPass);
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                intent.putExtra(EXTRA_RESTAURANT_NAME, restaurantName);
+                intent.putExtra(EXTRA_RESTAURANT_EMAIL, restaurantEmail);
+                intent.putExtra(EXTRA_RESTAURANT_PHONE, restaurantPhone);
+                intent.putExtra(EXTRA_RESTAURANT_PASS, restaurantPass);
+                intent.putExtra(EXTRA_RESTAURANT_ICON, restaurantIcon);
 
                 //SharedPreferences to save login and restaurant information
                 prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
@@ -105,7 +144,7 @@ public class SetupRestaurantFragment extends Fragment {
                 editor.putBoolean("loggedIn", true);
                 editor.apply();
 
-                startActivity(mainIntent);
+                startActivity(intent);
 
                 //TODO: Implement the validation using database
                 //validateInput(restaurantName, restaurantEmail, restaurantPhone);
@@ -122,32 +161,6 @@ public class SetupRestaurantFragment extends Fragment {
                 Log.d("setup_click_here", "Navigated to login from setup restaurant");
             }
         });
-
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()){
-                    case R.id.imageButton1:
-                        //imageView.setImageDrawable(imageButton1.getBackground());
-                        Log.d("selected_one", "Selected first profile icon.");
-                        break;
-                    case R.id.imageButton2:
-                        //imageView.setImageDrawable(imageButton2.getBackground());
-                        Log.d("selected_two", "Selected second profile icon.");
-                        break;
-                    case R.id.imageButton3:
-                        //imageView.setImageDrawable(imageButton3.getBackground());
-                        Log.d("selected_three", "Selected third profile icon.");
-                        break;
-                    default:
-                        throw new IllegalStateException("Unexpected value: " + v.getId());
-                }
-            }
-        };
-
-        imageButton1.setOnClickListener(listener);
-        imageButton2.setOnClickListener(listener);
-        imageButton3.setOnClickListener(listener);
 
         return root;
     }

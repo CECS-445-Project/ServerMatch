@@ -3,6 +3,7 @@ package com.example.servermatch.cecs445;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
 
 import com.example.servermatch.cecs445.Utils.DialogLogout;
@@ -40,8 +41,11 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import static com.example.servermatch.cecs445.ui.setuprestaurant.SetupRestaurantFragment.*;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -53,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView navHeaderRestaurantEmail;
     private TextView navHeaderRestaurantPhone;
     SharedPreferences prefs;
+    private ImageView navHeaderRestaurantIcon;
+    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navHeaderRestaurantName = headerView.findViewById(R.id.restaurant_name);
         navHeaderRestaurantEmail = headerView.findViewById(R.id.restaurant_email);
         navHeaderRestaurantPhone = headerView.findViewById(R.id.restaurant_phone);
+        navHeaderRestaurantIcon = headerView.findViewById(R.id.restaurant_icon);
 
         setNavHeaderStrings();
     }
@@ -108,17 +115,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             String setup_restaurant_name = intent.getStringExtra(SetupRestaurantFragment.EXTRA_RESTAURANT_NAME);
             String setup_restaurant_email = intent.getStringExtra(SetupRestaurantFragment.EXTRA_RESTAURANT_EMAIL);
             String setup_restaurant_phone = intent.getStringExtra(SetupRestaurantFragment.EXTRA_RESTAURANT_PHONE);
+            Integer setup_restaurant_icon = intent.getIntExtra(EXTRA_RESTAURANT_ICON, R.mipmap.ic_launcher); // default
 
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean("setupNavHeader", false);
             editor.putString("restaurantName", setup_restaurant_name);
             editor.putString("restaurantEmail", setup_restaurant_email);
             editor.putString("restaurantPhone", setup_restaurant_phone);
+            editor.putInt("restaurantIcon", setup_restaurant_icon);
             editor.apply();
         }
         navHeaderRestaurantName.setText(prefs.getString("restaurantName", "null"));
         navHeaderRestaurantEmail.setText(prefs.getString("restaurantEmail", "null"));
         navHeaderRestaurantPhone.setText(prefs.getString("restaurantPhone", "null"));
+        navHeaderRestaurantIcon.setImageResource(prefs.getInt("restaurantIcon", 0));
     }
 
     /* Function for an onClick of the items in the navigation drawer */
