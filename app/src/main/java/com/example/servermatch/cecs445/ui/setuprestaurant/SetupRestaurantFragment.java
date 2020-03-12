@@ -1,6 +1,8 @@
 package com.example.servermatch.cecs445.ui.setuprestaurant;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,7 +34,7 @@ public class SetupRestaurantFragment extends Fragment {
     public static final String EXTRA_RESTAURANT_NAME = "com.example.servermatch.cecs445.ui.setuprestaurant.EXTRA_RESTAURANT_NAME";
     public static final String EXTRA_RESTAURANT_EMAIL = "com.example.servermatch.cecs445.ui.setuprestaurant.EXTRA_RESTAURANT_EMAIL";
     public static final String EXTRA_RESTAURANT_PHONE = "com.example.servermatch.cecs445.ui.setuprestaurant.EXTRA_RESTAURANT_PHONE";
-    public static final String EXTRA_RESTAURANT_PASS = "com.example.servermatch.cecs445.ui.setuprestaurant.EXTRA_RESTAURANT_PHONE";
+    public static final String EXTRA_RESTAURANT_PASS = "com.example.servermatch.cecs445.ui.setuprestaurant.EXTRA_RESTAURANT_PASS";
 
 
     private SetupRestaurantViewModel setupRestaurantViewModel;
@@ -50,6 +52,7 @@ public class SetupRestaurantFragment extends Fragment {
 
     private ImageView imageView;
     private TextView mLoginAccount;
+    SharedPreferences prefs;
 
 
     public SetupRestaurantFragment() {
@@ -95,6 +98,12 @@ public class SetupRestaurantFragment extends Fragment {
                 mainIntent.putExtra(EXTRA_RESTAURANT_EMAIL, restaurantEmail);
                 mainIntent.putExtra(EXTRA_RESTAURANT_PHONE, restaurantPhone);
                 mainIntent.putExtra(EXTRA_RESTAURANT_PASS, restaurantPass);
+
+                //SharedPreferences to save login and restaurant information
+                prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putBoolean("loggedIn", true);
+                editor.apply();
 
                 startActivity(mainIntent);
 

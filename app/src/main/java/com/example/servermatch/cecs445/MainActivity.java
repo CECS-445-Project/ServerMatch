@@ -1,6 +1,8 @@
 package com.example.servermatch.cecs445;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.example.servermatch.cecs445.Utils.DialogLogout;
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView navHeaderRestaurantName;
     private TextView navHeaderRestaurantEmail;
     private TextView navHeaderRestaurantPhone;
+    SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,13 +82,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navHeaderRestaurantEmail = headerView.findViewById(R.id.restaurant_email);
         navHeaderRestaurantPhone = headerView.findViewById(R.id.restaurant_phone);
 
-        Intent intent = getIntent();
-        String setup_restaurant_name = intent.getStringExtra(SetupRestaurantFragment.EXTRA_RESTAURANT_NAME);
-        String setup_restaurant_email = intent.getStringExtra(SetupRestaurantFragment.EXTRA_RESTAURANT_EMAIL);
-        String setup_restaurant_phone = intent.getStringExtra(SetupRestaurantFragment.EXTRA_RESTAURANT_PHONE);
-        navHeaderRestaurantName.setText(setup_restaurant_name);
-        navHeaderRestaurantEmail.setText(setup_restaurant_email);
-        navHeaderRestaurantPhone.setText(setup_restaurant_phone);
+        setNavHeaderStrings();
     }
 
     @Override
@@ -100,6 +97,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    /* Sets the restaurant name, email, and phone for the navigation header */
+    public void setNavHeaderStrings() {
+        prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        boolean setupNavHeader = prefs.getBoolean("setupNavHeader", true);
+        if(setupNavHeader) {
+            Intent intent = getIntent();
+            String setup_restaurant_name = intent.getStringExtra(SetupRestaurantFragment.EXTRA_RESTAURANT_NAME);
+            String setup_restaurant_email = intent.getStringExtra(SetupRestaurantFragment.EXTRA_RESTAURANT_EMAIL);
+            String setup_restaurant_phone = intent.getStringExtra(SetupRestaurantFragment.EXTRA_RESTAURANT_PHONE);
+
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("setupNavHeader", false);
+            editor.putString("restaurantName", setup_restaurant_name);
+            editor.putString("restaurantEmail", setup_restaurant_email);
+            editor.putString("restaurantPhone", setup_restaurant_phone);
+            editor.apply();
+        }
+        navHeaderRestaurantName.setText(prefs.getString("restaurantName", "null"));
+        navHeaderRestaurantEmail.setText(prefs.getString("restaurantEmail", "null"));
+        navHeaderRestaurantPhone.setText(prefs.getString("restaurantPhone", "null"));
     }
 
     /* Function for an onClick of the items in the navigation drawer */

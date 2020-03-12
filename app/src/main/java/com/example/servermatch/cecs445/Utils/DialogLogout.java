@@ -1,7 +1,9 @@
 //Creator: Juan Pasillas
 package com.example.servermatch.cecs445.Utils;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -21,12 +23,15 @@ import org.w3c.dom.Text;
 
 import javax.annotation.Nullable;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class DialogLogout extends DialogFragment {
 
     private static final String TAG = "DialogLogout";
 
     private TextView mActionCancel;
     private TextView mActionLogout;
+    SharedPreferences prefs;
 
     @Nullable
     @Override
@@ -41,8 +46,12 @@ public class DialogLogout extends DialogFragment {
             @Override
             public void onClick(View v) {
                 Log.d("testLogout", "DialogLogout: LOGOUT");
-                Intent intent = new Intent(getActivity(), SetupRestaurant.class);
-                startActivity(intent);
+                prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putBoolean("loggedIn", false);
+                editor.putBoolean("setupNavHeader", true);
+                editor.apply();
+                startActivity(new Intent(getActivity(), SetupRestaurant.class));
                 getDialog().dismiss();
             }
         });
