@@ -34,7 +34,7 @@ public class BillViewModel extends ViewModel {
 
     public void addNewValue(final MenuItem menuItem){
         List<MenuItem> currentBillMenuItems = mMenuBillItems.getValue();
-        Boolean found = false;
+        boolean found = false;
 
         assert currentBillMenuItems != null;
         if(currentBillMenuItems.size() == 0){
