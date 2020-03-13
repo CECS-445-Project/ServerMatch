@@ -34,6 +34,7 @@ public class BillViewModel extends ViewModel {
 
     public void addNewValue(final MenuItem menuItem){
         List<MenuItem> currentBillMenuItems = mMenuBillItems.getValue();
+        Boolean found = false;
 
         assert currentBillMenuItems != null;
         if(currentBillMenuItems.size() == 0){
@@ -43,11 +44,15 @@ public class BillViewModel extends ViewModel {
         else{
             for (MenuItem currentBillMenuItem : currentBillMenuItems) {
                 if (currentBillMenuItem.getItemName().equals(menuItem.getItemName()))
-                    currentBillMenuItem.incrementQuantity();
-                else {
-                    menuItem.incrementQuantity();
-                    currentBillMenuItems.add(menuItem);
-                }
+                    {
+                        currentBillMenuItem.incrementQuantity();
+                        found = true;
+                        break;
+                    }
+            }
+            if(!found) {
+                menuItem.incrementQuantity();
+                currentBillMenuItems.add(menuItem);
             }
         }
         mMenuBillItems.postValue(currentBillMenuItems);
