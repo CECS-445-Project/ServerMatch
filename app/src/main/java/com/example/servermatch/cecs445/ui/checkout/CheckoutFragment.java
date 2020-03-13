@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,8 +30,11 @@ import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.Utils.CheckoutRecyclerAdapter;
 import com.example.servermatch.cecs445.models.Bill;
 import com.example.servermatch.cecs445.models.MenuItem;
+import com.example.servermatch.cecs445.ui.frequentcustomers.FrequentCustomersFragment;
+import com.example.servermatch.cecs445.ui.frequentcustomers.FrequentCustomersViewModel;
 import com.example.servermatch.cecs445.ui.menu.BillViewModel;
 import com.example.servermatch.cecs445.ui.menu.MenuFragment;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.time.LocalDateTime;
@@ -42,9 +46,10 @@ public class CheckoutFragment extends Fragment {
 
     private CheckoutViewModel checkOutViewModel;
     private BillViewModel billViewModel;
+    private FrequentCustomersViewModel frequentCustomersViewModel;
     private static String TAG = "CheckoutFragment";
     private View view;
-    Bill bill;
+    private Bill bill;
     private RecyclerView recyclerView;
     private TextView totalCost;
     private TextInputLayout mEmail;
@@ -62,13 +67,40 @@ public class CheckoutFragment extends Fragment {
         mCheckoutButton = view.findViewById(R.id.checkout_button);
         checkOutViewModel = new ViewModelProvider(this).get(CheckoutViewModel.class);
         billViewModel = new ViewModelProvider(this).get(BillViewModel.class);
+        frequentCustomersViewModel = new ViewModelProvider(this.getActivity()).get(FrequentCustomersViewModel.class);
+        frequentCustomersViewModel.init();
+
         checkOutViewModel.init();
         billViewModel.init();
         checkoutButtonListener();
         setUpBill();
         initRecyclerView();
+        checkForEmail2();
 
         return view;
+    }
+
+    private void checkForEmail(){
+        // TODO: Add the users email to the bundle from the TopItemsAdapter -> MenuFragment -> CheckoutFragment
+        Bundle bundle = getArguments();
+
+        if(bundle.get("Email") != null) {
+            TextInputEditText edit = view.findViewById(R.id.checkout_edit_email);
+            mEmail.setHintAnimationEnabled(false);
+            edit.setText(bundle.get("Email").toString());
+        }
+    }
+
+    private void checkForEmail2(){
+
+        if (frequentCustomersViewModel.getCustomerEmail() != null & frequentCustomersViewModel.getCustomerEmail().getValue() != null){
+
+            if(!frequentCustomersViewModel.getCustomerEmail().getValue().equals("no email")) {
+                TextInputEditText edit = view.findViewById(R.id.checkout_edit_email);
+                mEmail.setHintAnimationEnabled(false);
+                edit.setText(frequentCustomersViewModel.getCustomerEmail().getValue());
+            }
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -87,6 +119,10 @@ public class CheckoutFragment extends Fragment {
                 Log.d(TAG, bill.toString());
 
                 billViewModel.clearBillItems();
+
+                //This did not break it.
+                frequentCustomersViewModel.setTopCustomerEmail("no email");
+
                 MenuFragment menuFragment = new MenuFragment();
                 Bundle args = new Bundle();
                 args.putBoolean("CheckoutComplete", successfulCheckout);

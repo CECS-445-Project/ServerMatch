@@ -3,6 +3,8 @@
  */
 package com.example.servermatch.cecs445.ui.frequentcustomers;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.models.Customer;
 import com.example.servermatch.cecs445.models.MenuItem;
+import com.example.servermatch.cecs445.ui.menu.BillViewModel;
+import com.example.servermatch.cecs445.ui.menu.MenuViewModel;
+
 import java.util.List;
 
 
@@ -28,13 +33,14 @@ public class FrequentCustomersFragment extends Fragment {
     private RecyclerView recyclerViewTopItems;
     private static final String TAG = "FrequentCustomersFragment";
     private View view;
+    private Context context;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_frequent_customers, container, false);
-        frequentCustomersViewModel = new ViewModelProvider(this)
+        frequentCustomersViewModel = new ViewModelProvider(this.getActivity())
                 .get(FrequentCustomersViewModel.class);
         frequentCustomersViewModel.init();
         recyclerViewFrequentCustomers =  view.findViewById(R.id.recycle_view_customers);
@@ -65,6 +71,7 @@ public class FrequentCustomersFragment extends Fragment {
 
         });
 
+        context = this.getContext();
 
         return view;
     }
@@ -78,7 +85,7 @@ public class FrequentCustomersFragment extends Fragment {
         recyclerViewFrequentCustomers.setLayoutManager(layoutManager);
 
 //        TopMenuItems
-        topItemsAdapter = new TopItemsAdapter(frequentCustomersViewModel, getActivity(), frequentCustomersViewModel.getTopMenuItems().getValue());
+        topItemsAdapter = new TopItemsAdapter(new ViewModelProvider(this.getActivity()).get(BillViewModel.class), frequentCustomersViewModel, getActivity(), frequentCustomersViewModel.getTopMenuItems().getValue());
         RecyclerView.LayoutManager topItemsLayoutManager = new LinearLayoutManager(getActivity());
         recyclerViewTopItems.setLayoutManager(topItemsLayoutManager);
         recyclerViewTopItems.setAdapter(topItemsAdapter);

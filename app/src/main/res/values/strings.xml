@@ -14,9 +14,10 @@
     <string name="restaurant_phone"></string>
 
     <string name="menu_menu">Menu</string>
-    <string name="menu_add_menu_item">Add Menu Item</string>
     <string name="menu_frequent_customers">Frequent Customers</string>
     <string name="menu_add_customers">Add Customer</string>
+    <string name="menu_add_menu_item">Add Menu Item</string>
+    <string name="menu_logout">Logout</string>
 
     <string name="menu_tools">Tools</string>
     <string name="menu_send">Send</string>
