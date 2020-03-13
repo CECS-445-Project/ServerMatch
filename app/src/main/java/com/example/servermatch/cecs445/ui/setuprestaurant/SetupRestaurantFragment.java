@@ -27,7 +27,11 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.servermatch.cecs445.MainActivity;
 import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.models.Restaurant;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import static com.example.servermatch.cecs445.R.drawable.image1;
 import static com.example.servermatch.cecs445.R.drawable.image2;
@@ -40,6 +44,8 @@ public class SetupRestaurantFragment extends Fragment {
     public static final String EXTRA_RESTAURANT_PHONE = "com.example.servermatch.cecs445.ui.setuprestaurant.EXTRA_RESTAURANT_PHONE";
     public static final String EXTRA_RESTAURANT_PASS = "com.example.servermatch.cecs445.ui.setuprestaurant.EXTRA_RESTAURANT_PASS";
     public static final String EXTRA_RESTAURANT_ICON = "com.example.servermatch.cecs445.ui.setuprestaurant.EXTRA_RESTAURANT_ICON";
+
+    private static final String TAG = "SetupRestaurantFragment";
 
     private SetupRestaurantViewModel setupRestaurantViewModel;
     private TextInputLayout setupRestaurantName;
@@ -60,6 +66,8 @@ public class SetupRestaurantFragment extends Fragment {
 
     private TextView mLoginAccount;
     SharedPreferences prefs;
+
+    private FirebaseAuth mAuth;
 
 
     public SetupRestaurantFragment() {
@@ -91,6 +99,7 @@ public class SetupRestaurantFragment extends Fragment {
         imageButton3 = root.findViewById((R.id.imageButton3));
 
         mLoginAccount = root.findViewById(R.id.login_click_here);
+        mAuth = FirebaseAuth.getInstance();
 
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
@@ -143,7 +152,8 @@ public class SetupRestaurantFragment extends Fragment {
                 startActivity(intent);
 
                 //TODO: Implement the validation using database
-                //validateInput(restaurantName, restaurantEmail, restaurantPhone);
+                validateInput(restaurantName, restaurantEmail, restaurantPhone, restaurantPass);
+
                 //Restaurant newRestaurant = new Restaurant(restaurantName, restaurantEmail, restaurantPhone);
                 //setupRestaurantViewModel.setupRestaurant(newRestaurant);
             }
@@ -198,14 +208,39 @@ public class SetupRestaurantFragment extends Fragment {
         }
     }
 
-    public void validateInput(String name, String email, String phone) {
-        if(!validateName(name) | !validateEmail(email) | !validatePhone(phone)) {
+    private boolean validatePassword(String password) {
+        if(password.isEmpty()) {
+            setupRestaurantName.setError("Field can't be empty");
+            return false;
+        } else {
+            setupRestaurantName.setError(null);
+            return true;
+        }
+    }
+
+    public void validateInput(String name, String email, String phone, String password) {
+        if(!validateName(name) | !validateEmail(email) | !validatePhone(phone) | !validatePassword(password)) {
             return;
         }
 
         Restaurant r1 = new Restaurant(name, phone, email);
+        addRestaurant(email, password);
         Log.d("setup_restaurant", r1.toString());
         Toast.makeText(getContext(), "Restaurant Created", Toast.LENGTH_SHORT).show();
+    }
+
+    public void addRestaurant(String email, String password) {
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()) {
+                            Log.d(TAG, "addRestaurant: onComplete: Added user: " + email);
+                        } else {
+                            Log.d(TAG, "addRestaurant: onComplete: " + email + " user not added");
+                        }
+                    }
+                });
     }
 
     public void goToLoginAccount(){
