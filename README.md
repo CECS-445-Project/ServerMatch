@@ -47,5 +47,9 @@ The DataModel — abstracts the data source. The ViewModel works with the DataMo
 
 &nbsp;
 
+## Bill & Checkout
+| ![Bill](readme_img/cart.PNG) | ![Nav Bar](readme_img/checkout.PNG) |
+|--------------|--------------|
+| Bill | Checkout |
 
 
