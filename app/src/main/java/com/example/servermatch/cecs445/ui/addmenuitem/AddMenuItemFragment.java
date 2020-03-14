@@ -83,14 +83,19 @@ public class AddMenuItemFragment extends Fragment {
     private String downloadURL; // url provided to MenuItem for displaying on menu
     private boolean usedCamera; // boolean to determine if image was created from camera
     private byte[] dataBAOS; // byte array if image was created from camera
-    // arbitrary request code for requesting permission to read external storage
+
+    /* arbitrary request code for requesting permission to read external storage
+        notice STORAGE_PERMISSION_CODE is used differently from WRITE_STORAGE_PERMISSION_CODE
+    * */
     private static final int STORAGE_PERMISSION_CODE = 10;
     // arbitrary request code for requesting permission to access camera
     private static final int CAMERA_PERMISSION_CODE = 20;
     // arbitrary request code for requesting permission to write to storage
     private static final int WRITE_STORAGE_PERMISSION_CODE = 30;
+    // arbitrary request code for reading and writing permission
     private static final int CAMERA_AND_WRITE_PERMISSION_CODE = 40;
-    private String pictureFilePath;
+
+    private String pictureFilePath; // where we store the image taken by the camera
 
     String [] filters = {
             "Vegan",
@@ -195,11 +200,13 @@ public class AddMenuItemFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Log.d(TAG, "openDialog: Open Camera Pressed");
+                // if both permissions are granted
                 if((ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
                         &&
                         (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
                     openCamera();
                 } else {
+                    // both camera and write to storage is denied
                     if((ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
                             &&
                             (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)) {
@@ -207,11 +214,13 @@ public class AddMenuItemFragment extends Fragment {
                         requestPermissions(new String[]{Manifest.permission.CAMERA,
                                 Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                 CAMERA_AND_WRITE_PERMISSION_CODE);
+                    // only camera is denied
                     } else if((ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
                             &&
                             (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
                         Log.d(TAG, "Camera Permission Requested");
                         requestPermissions(new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+                    // only writing to storage is denied
                     } else if((ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
                             &&
                             (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)) {
@@ -240,6 +249,59 @@ public class AddMenuItemFragment extends Fragment {
             }
         });
         builder.create().show();
+    }
+
+    /**
+     * Used for requesting permissions. Different cases for when user denies some permissions
+     * or allows some permissions.
+     * @param requestCode the request code that we created
+     * @param permissions array of strings containing permissions that we are looking for
+     * @param grantResults array of 1's or 0's indicating if a permission has been granted, reflects
+     *                     the array of permissions
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case CAMERA_AND_WRITE_PERMISSION_CODE: {
+                if(grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    openCamera();
+                } else {
+                    Log.d(TAG, "onRequestPermissionsResult: User denied storage and camera");
+                }
+                return;
+            }
+            case STORAGE_PERMISSION_CODE: {
+                if(grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    choosePhoto();
+                } else {
+                    Log.d(TAG, "onRequestPermissionsResult: User denied reading storage");
+                }
+                return;
+            }
+            case WRITE_STORAGE_PERMISSION_CODE: {
+                if(grantResults.length > 0 
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openCamera();
+                } else {
+                    Log.d(TAG, "onRequestPermissionsResult: User denied writing to storage");
+                }
+                return;
+            }
+            case CAMERA_PERMISSION_CODE: {
+                if(grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // with camera, we STILL need to write to storage
+                    openCamera();
+                } else {
+                    Log.d(TAG, "onRequestPermissionsResult: User denied camera");
+                }
+                return;
+            }
+        }
     }
 
     /**
