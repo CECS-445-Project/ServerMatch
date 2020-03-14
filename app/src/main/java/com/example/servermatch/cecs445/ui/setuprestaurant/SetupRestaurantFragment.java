@@ -231,19 +231,19 @@ public class SetupRestaurantFragment extends Fragment {
 
     public void addRestaurant(String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
-                            Log.d(TAG, "addRestaurant: onComplete: Added user: " + email);
-                        } else {
-                            Log.d(TAG, "addRestaurant: onComplete: " + email + " user not added");
-                        }
+            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "addRestaurant: Added user: " + email);
+                    } else {
+                        Log.d(TAG, "addRestaurant: " + email + " user not added");
                     }
-                });
+                }
+            });
     }
 
-    public void goToLoginAccount(){
+        public void goToLoginAccount(){
         mLoginAccount.setOnClickListener(v -> {
             // setup switching between fragment
             openRestaurantLogin();
