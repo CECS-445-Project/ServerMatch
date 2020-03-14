@@ -170,7 +170,7 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" to create login."
+            android:text=" to login."
             android:textColor="@color/colorPrimaryDark"
             android:textSize="16sp"/>
     </LinearLayout>
