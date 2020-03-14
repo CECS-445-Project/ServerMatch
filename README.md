@@ -27,7 +27,7 @@ The DataModel — abstracts the data source. The ViewModel works with the DataMo
 &nbsp;
 
 ### Menu & Menu Items
-|![Menu Screen](readme_img/menu.PNG) | ![Menu Item](readme_img/menuItem.PNG) | ![Add Menu Item](readme_img/addMenuItem.PNG) | ![Filter Menu](readme_img/filters.PNG) | 
+|![Menu Screen](readme_img/menu.PNG) | ![Menu Item](readme_img/menuItem.PNG) | ![Add Menu Item]() | ![Filter Menu](readme_img/filters.PNG) | 
 |--------------| ------------------------|  ------------------- |  ------------------- |
 | Menu | Menu Item | Add Menu Item | Filter Menu |
 
@@ -41,11 +41,16 @@ The DataModel — abstracts the data source. The ViewModel works with the DataMo
 &nbsp;
 
 ### Navigation
-| ![Nav Bar](readme_img/navigation.PNG) |
+| ![Nav Bar]() |
 |--------------|
 | Navigation Bar |
 
 &nbsp;
+
+## Bill & Checkout
+|![Bill](readme_img/cart.PNG) | ![Checkout](readme_img/checkout.png) |
+| --------------- | ------------------|
+| Bill | Checkout/Confirmation |
 
 
 
