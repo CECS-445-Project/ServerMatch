@@ -373,7 +373,7 @@ public class AddMenuItemFragment extends Fragment {
             File imgFile = new File(pictureFilePath);
             if(imgFile.exists()) {
                 imageView.setImageURI(Uri.fromFile(imgFile));
-                Log.d(TAG, "onActivityResult: " + Uri.fromFile(imgFile).toString());
+                Log.d(TAG, "onActivityResult: Camera file location: " + Uri.fromFile(imgFile).toString());
             }
             // for some reason the uploads come out rotated, fix orientation before upload
             Matrix matrix = new Matrix();
@@ -419,7 +419,7 @@ public class AddMenuItemFragment extends Fragment {
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Log.d(TAG, "imageUploader: onFailure: Direct camera upload failed");
+                    Log.d(TAG, "imageUploader: onFailure: Direct Camera Upload Failed");
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -428,7 +428,7 @@ public class AddMenuItemFragment extends Fragment {
                         @Override
                         public void onSuccess(Uri uri) {
                             downloadURL = uri.toString();
-                            Log.d(TAG, "imageUploader: onSuccess: Direct camera upload success " + downloadURL);
+                            Log.d(TAG, "imageUploader: onSuccess: Direct Camera Upload Success " + downloadURL);
                         }
                     });
                 }
@@ -450,7 +450,7 @@ public class AddMenuItemFragment extends Fragment {
                         @Override
                         public void onSuccess(Uri uri) {
                             downloadURL = uri.toString();
-                            Log.d(TAG, "onSuccess: UPLOAD SUCCESS : "+ downloadURL);
+                            Log.d(TAG, "imageUploader: onSuccess: Success - Gallery Upload "+ downloadURL);
                         }
                     });
                 }
