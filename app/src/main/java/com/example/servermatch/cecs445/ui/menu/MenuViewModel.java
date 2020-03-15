@@ -80,7 +80,7 @@ public class MenuViewModel extends ViewModel {
             List<MenuItem> currentList = mMenuItems.getValue();
             Iterator<MenuItem> iterator = currentList.iterator();
 
-            boolean found = false;
+            boolean found;
 
             while (iterator.hasNext()) {
                 found = false;

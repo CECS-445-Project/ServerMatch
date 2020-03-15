@@ -193,7 +193,7 @@ public class MenuFragment extends Fragment {
     private void receiveCompletedBoolean(){
         Bundle bundle = getArguments();
 
-        if(bundle != null) {
+        if(bundle != null && bundle.get("CheckoutComplete") != null) {
             boolean completedCheckout= (boolean) bundle.get("CheckoutComplete");
             Log.d(TAG, "receiveCompletedBoolean: " + completedCheckout);
             if(completedCheckout) {

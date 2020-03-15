@@ -100,6 +100,7 @@ public class FiltersFragment extends Fragment {
             Log.d(TAG + " Selected Tags::", tags.toString());
             MenuFragment menuFragment = new MenuFragment();
 
+// Work on for keeping tags highlighted
 //            Bundle bundle = new Bundle();
 //            bundle.putStringArrayList("tags", (ArrayList<String>) selectedTags);
 //            menuFragment.setArguments(bundle);
@@ -128,6 +129,7 @@ public class FiltersFragment extends Fragment {
         return (ArrayList<String>) selectedTags;
     }
 
+// Work on for keeping tags highlighted
 //    private void setTags(){
 //        Bundle bundle = getArguments();
 //        if(bundle != null){
