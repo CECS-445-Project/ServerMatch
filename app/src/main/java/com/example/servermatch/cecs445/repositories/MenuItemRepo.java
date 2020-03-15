@@ -31,6 +31,7 @@ public class MenuItemRepo {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final String TAG = "MenuItemRepo";
     private boolean menuItemInitialized = false;
+    private List<MenuItem> originalItems;
 
     public static MenuItemRepo getInstance(){
         if(instance == null){
@@ -109,7 +110,7 @@ public class MenuItemRepo {
 
 
     public List<MenuItem> getOriginalMenuItems() {
-        List<MenuItem> originalItems = new ArrayList<>(dataSet);
+        if(originalItems == null) originalItems = new ArrayList<>(dataSet);
         return originalItems;
     }
 }
