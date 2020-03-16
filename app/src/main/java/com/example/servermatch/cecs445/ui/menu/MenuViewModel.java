@@ -73,11 +73,11 @@ public class MenuViewModel extends ViewModel {
         if (tags.size() == 0) {
             List<MenuItem> currentList = mMenuItems.getValue();
             currentList.clear();
-            currentList.addAll(mRepo.getMenuItems().getValue());
+            currentList.addAll(mRepo.getOriginalMenuItems());
             mMenuItems.postValue(currentList);
         }
         else {
-            List<MenuItem> currentList = mMenuItems.getValue();
+            List<MenuItem> currentList = new ArrayList<>(mRepo.getOriginalMenuItems());
             Iterator<MenuItem> iterator = currentList.iterator();
 
             boolean found;

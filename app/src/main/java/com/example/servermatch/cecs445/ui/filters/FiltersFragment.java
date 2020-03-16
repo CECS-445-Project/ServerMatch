@@ -97,7 +97,7 @@ public class FiltersFragment extends Fragment {
             ArrayList<String> tags = getSelectedTags();
             mMenuViewModel.setItems(tags);
 
-            Log.d(TAG + " Selected Tags::", tags.toString());
+            Log.d(TAG + " Selected Tags", tags.toString());
             MenuFragment menuFragment = new MenuFragment();
 
 // Work on for keeping tags highlighted
@@ -106,7 +106,7 @@ public class FiltersFragment extends Fragment {
 //            menuFragment.setArguments(bundle);
 
             FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-            transaction.setCustomAnimations(R.anim.slide_in_up,R.anim.slide_out_down, R.anim.slide_in_up,R.anim.slide_out_down);
+            //transaction.setCustomAnimations(R.anim.slide_out_down,R.anim.slide_in_up, R.anim.slide_out_down,R.anim.slide_in_up);
             transaction.replace(R.id.nav_host_fragment, menuFragment);
             transaction.addToBackStack(null);
             transaction.commit();
