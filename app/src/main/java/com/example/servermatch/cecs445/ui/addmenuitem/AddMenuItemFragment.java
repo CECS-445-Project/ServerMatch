@@ -25,7 +25,6 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
@@ -35,6 +34,7 @@ import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.models.MenuItem;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.ChipDrawable;
 import com.google.android.material.chip.ChipGroup;
@@ -90,7 +90,7 @@ public class AddMenuItemFragment extends Fragment {
     private static final int STORAGE_PERMISSION_CODE = 10;
     // arbitrary request code for requesting permission to access camera
     private static final int CAMERA_PERMISSION_CODE = 20;
-    // arbitrary request code for requesting permission to write to storage
+    // arbitrary request code for requesting permission to write storage
     private static final int WRITE_STORAGE_PERMISSION_CODE = 30;
     // arbitrary request code for reading and writing permission
     private static final int CAMERA_AND_WRITE_PERMISSION_CODE = 40;
@@ -424,21 +424,32 @@ public class AddMenuItemFragment extends Fragment {
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            downloadURL = uri.toString();
-                            Log.d(TAG, "imageUploader: onSuccess: Direct Camera Upload Success " + downloadURL);
-                        }
-                    });
+                    Log.d(TAG, "imageUploader: onSuccess: Direct Camera Upload Success");
+                }
+            });
+            Task<Uri> urlTask = uploadTask.continueWithTask(task -> {
+                if(!task.isSuccessful()) {
+                    throw task.getException();
+                }
+                return imagesRef.getDownloadUrl();
+            }).addOnCompleteListener(task -> {
+                if(task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
+                    if(downloadUri != null) {
+                        downloadURL = downloadUri.toString();
+                        Log.d(TAG, "imageUploader: Download URL " + downloadURL);
+                    }
+                } else {
+                    Log.d(TAG, "imageUploader: Error in image upload");
                 }
             });
         } else {
             String childName = System.currentTimeMillis() + "." + getExtension(imguri);
-            final StorageReference ref = mStorageRef.child(childName);
+            StorageReference ref = mStorageRef.child(childName);
 
             // uploads file to Firebase Cloud Storage
-            ref.putFile(imguri).addOnFailureListener(new OnFailureListener() {
+            UploadTask uploadTask = ref.putFile(imguri);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     Log.d(TAG, "imageUploader: onFailure: Gallery upload failed");
@@ -446,13 +457,23 @@ public class AddMenuItemFragment extends Fragment {
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            downloadURL = uri.toString();
-                            Log.d(TAG, "imageUploader: onSuccess: Success - Gallery Upload "+ downloadURL);
-                        }
-                    });
+                    Log.d(TAG, "onSuccess: Gallery Image Uploaded");
+                }
+            });
+            Task<Uri> urlTask = uploadTask.continueWithTask(task -> {
+                if(!task.isSuccessful()) {
+                    throw task.getException();
+                }
+                return ref.getDownloadUrl();
+            }).addOnCompleteListener(task -> {
+                if(task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
+                    if(downloadUri != null) {
+                        downloadURL = downloadUri.toString();
+                        Log.d(TAG, "imageUploader: Download URL " + downloadURL);
+                    }
+                } else {
+                    Log.d(TAG, "imageUploader: Error in image upload");
                 }
             });
         }
@@ -581,7 +602,7 @@ public class AddMenuItemFragment extends Fragment {
      * @param v the current view
      */
     public void addItem(View v) {
-        if(!validateName() | !validateCost() | !validateDesc() | !validateFilters() | !validateImage()) {
+        if (!validateName() | !validateCost() | !validateDesc() | !validateFilters() | !validateImage()) {
             return;
         }
 
@@ -604,17 +625,14 @@ public class AddMenuItemFragment extends Fragment {
 
             @Override
             protected Void doInBackground(Void... voids) {
-
-                try {
-                    Thread.sleep(4500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                while(downloadURL == null) {
+                    // buying some time for downloadURL to be completed
                 }
                 return null;
             }
         }.execute();
-
     }
+
 
     /***
      * After uploading a new MenuItem to Firebase, we set text fields, chip group,
