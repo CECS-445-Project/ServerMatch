@@ -45,4 +45,26 @@
         <item name="chipBackgroundColor">@color/bg_color_chip_state</item>
         <item name="android:textColor">@color/text_color_chip_state</item>
     </style>
+
+    <style name="AlertDialogTheme"
+        parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="android:buttonBarNeutralButtonStyle">@style/NeutralButtonStyle</item>
+    </style>
+
+    <style name="PositiveButtonStyle"
+        parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="NegativeButtonStyle"
+        parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="NeutralButtonStyle"
+        parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/secondary_text</item>
+    </style>
 </resources>
