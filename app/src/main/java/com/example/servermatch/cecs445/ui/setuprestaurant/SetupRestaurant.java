@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.servermatch.cecs445.MainActivity;
 import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.models.Restaurant;
@@ -77,51 +76,50 @@ public class SetupRestaurant extends AppCompatActivity {
         btnLoginRestaurant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putBoolean("loggedIn", true);
-                editor.apply();
                 String email = emailEditText.getText().toString();
                 String pw = pwEditText.getText().toString();
-                mAuth.signInWithEmailAndPassword(email, pw)
-                        .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Log.d(TAG, "signInWithEmail:success");
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    updateUI(user);
+                if( !(email.isEmpty() || pw.isEmpty())) {
+                    mAuth.signInWithEmailAndPassword(email, pw)
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        Log.d(TAG, "signInWithEmail:success");
+                                        FirebaseUser user = mAuth.getCurrentUser();
+                                        updateUI(user);
 
-                                    Intent intent = new Intent(SetupRestaurant.this , MainActivity.class);
-                                    Log.d(TAG, restaurantlist.toString());
-                                    for(Restaurant r : restaurantlist){
-                                        if(r.getEmail().equals(email)){
-                                            Log.d(TAG, "onComplete: IN LOOP wit intent stuff");
-                                            intent.putExtra(EXTRA_RESTAURANT_NAME, r.getName());
-                                            intent.putExtra(EXTRA_RESTAURANT_EMAIL, r.getEmail());
-                                            intent.putExtra(EXTRA_RESTAURANT_PHONE, r.getPhoneNum());
-                                            intent.putExtra(EXTRA_RESTAURANT_ICON, r.getIcon());
-                                            prefs = SetupRestaurant.this.getSharedPreferences("prefs", Context.MODE_PRIVATE);
-                                            SharedPreferences.Editor editor = prefs.edit();
-                                            editor.putBoolean("loggedIn", true);
-                                            editor.apply();
+                                        Intent intent = new Intent(SetupRestaurant.this, MainActivity.class);
+                                        Log.d(TAG, restaurantlist.toString());
+                                        for (Restaurant r : restaurantlist) {
+                                            if (r.getEmail().equals(email)) {
+                                                Log.d(TAG, "onComplete: IN LOOP wit intent stuff");
+                                                intent.putExtra(EXTRA_RESTAURANT_NAME, r.getName());
+                                                intent.putExtra(EXTRA_RESTAURANT_EMAIL, r.getEmail());
+                                                intent.putExtra(EXTRA_RESTAURANT_PHONE, r.getPhoneNum());
+                                                intent.putExtra(EXTRA_RESTAURANT_ICON, r.getIcon());
+                                                prefs = SetupRestaurant.this.getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                                                SharedPreferences.Editor editor = prefs.edit();
+                                                editor.putBoolean("loggedIn", true);
+                                                editor.apply();
+                                            }
                                         }
-                                    }
 
-                                    startActivity(intent);
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Toast.makeText(SetupRestaurant.this,
-                                            "Incorrect Username/Pw! Try again.", Toast.LENGTH_LONG).show();
-                                    Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                    updateUI(null);
+                                        startActivity(intent);
+                                    } else {
+                                        // If sign in fails, display a message to the user.
+                                        Toast.makeText(SetupRestaurant.this,
+                                                "Incorrect Username/Pw! Try again.", Toast.LENGTH_LONG).show();
+                                        Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                        updateUI(null);
+                                    }
                                 }
-                            }
-                        });
+                            });
+                }else{
+                    Toast.makeText(SetupRestaurant.this, "Incorrect Username/Pw! Try again. ", Toast.LENGTH_SHORT).show();
+                }
             }
         });
-
-
 
         goToSetupAccount();
     }
@@ -149,8 +147,6 @@ public class SetupRestaurant extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
     }
-
-
 
     private void updateUI(FirebaseUser currentUser) {
     }
