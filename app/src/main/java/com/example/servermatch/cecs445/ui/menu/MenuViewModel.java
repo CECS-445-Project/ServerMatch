@@ -30,6 +30,9 @@ public class MenuViewModel extends ViewModel {
 
     public void init(){
         if(mMenuItems != null){
+            List<MenuItem> currentItems = mMenuItems.getValue();
+            Collections.sort(currentItems);
+            mMenuItems.postValue(currentItems);
             return;
         }
         mRepo = MenuItemRepo.getInstance();
@@ -91,7 +94,7 @@ public class MenuViewModel extends ViewModel {
             List<MenuItem> currentList = mMenuItems.getValue();
             currentList.clear();
             // currentList.addAll(mRepo.getOriginalMenuItems());
-            currentList.addAll(Objects.requireNonNull(mRepo.getMenuItems().getValue()));
+            currentList.addAll(Objects.requireNonNull(mRepo.getOriginalMenuItems()));
             mMenuItems.postValue(currentList);
         }
         else {

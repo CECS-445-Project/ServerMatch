@@ -45,6 +45,7 @@ public class FiltersFragment extends Fragment {
     private ChipGroup mChipGroup;
     private List<String> filters;
     private Button mDone;
+    private Button mReset;
     private Boolean receivedTags = false;
 
     private MenuViewModel mMenuViewModel;
@@ -63,15 +64,27 @@ public class FiltersFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_filters, container,false);
         mChipGroup = view.findViewById(R.id.chip_group_filters);
         mDone = view.findViewById(R.id.filter_done);
+        mReset = view.findViewById(R.id.reset_tags);
         mMenuViewModel = new ViewModelProvider(this.getActivity()).get(MenuViewModel.class);
+
 
         //setTags();
         initChipGroup();
         doneButtonListener();
+        resetTagsButtonListener();
 
         Log.d(TAG +" Selected Tag in on create view", selectedTags.toString());
 
         return view;
+    }
+
+    private void resetTagsButtonListener(){
+        mReset.setOnClickListener(v -> {
+            selectedTags.clear();
+            mChipGroup.clearCheck();
+            mChipGroup.refreshDrawableState();
+            // initChipGroup();
+        });
     }
 
     private void initChipGroup(){
