@@ -53,6 +53,7 @@ public class SetupRestaurantFragment extends Fragment {
     private TextInputLayout setupRestaurantPhone;
     private TextInputLayout setupRestaurantPass;
     private Integer setupRestaurantIcon;
+    private Restaurant newRestaurant;
 
     private Button btnSetupRestaurant;
     private Button btnLoginRestaurant;
@@ -83,6 +84,7 @@ public class SetupRestaurantFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         setupRestaurantViewModel = new ViewModelProvider(this).get(SetupRestaurantViewModel.class);
+        setupRestaurantViewModel.init();
 
         View root = inflater.inflate(R.layout.fragment_setup_restaurant, container, false);
 
@@ -149,11 +151,11 @@ public class SetupRestaurantFragment extends Fragment {
                 editor.putBoolean("loggedIn", true);
                 editor.apply();
 
-                startActivity(intent);
 
                 //TODO: Implement the validation using database
                 validateInput(restaurantName, restaurantEmail, restaurantPhone, restaurantPass);
-
+                setupRestaurantViewModel.addRestaurant(getContext(), newRestaurant);
+                startActivity(intent);
                 //Restaurant newRestaurant = new Restaurant(restaurantName, restaurantEmail, restaurantPhone);
                 //setupRestaurantViewModel.setupRestaurant(newRestaurant);
             }
@@ -223,9 +225,10 @@ public class SetupRestaurantFragment extends Fragment {
             return;
         }
 
-        Restaurant r1 = new Restaurant(name, phone, email);
+        Log.d(TAG, "validateInput: " + setupRestaurantIcon);
+        newRestaurant = new Restaurant(name, phone, email, (Integer) setupRestaurantIcon);
         addRestaurant(email, password);
-        Log.d("setup_restaurant", r1.toString());
+        Log.d("setup_restaurant", newRestaurant.toString());
         Toast.makeText(getContext(), "Restaurant Created", Toast.LENGTH_SHORT).show();
     }
 
@@ -236,10 +239,10 @@ public class SetupRestaurantFragment extends Fragment {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         Log.d(TAG, "addRestaurant: Added user: " + email);
-                        Toast.makeText(getActivity(), "Registered Successfully", Toast.LENGTH_LONG).show();
+                       // Toast.makeText(getActivity(), "Registered Successfully", Toast.LENGTH_LONG).show();
                     } else {
                         Log.d(TAG, "addRestaurant: " + email + " user not added");
-                        Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                       // Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
             });
