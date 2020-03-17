@@ -58,4 +58,14 @@
     <string name="new_item_filter_17">Contains Pork</string>
     <string name="default_bill">$0.00</string>
     <string name="checkout_email">Enter in your email</string>
+
+    <string name="image_view_message">Before uploading, is this the correct image?</string>
+    <string name="cancel_image_view">Cancel</string>
+    <string name="confirm_image_view">Confirm</string>
+
+    <string name="alert_dialog_title_menu_item">Image Upload</string>
+    <string name="alert_dialog_message_menu_item">How would you like to upload your image?</string>
+    <string name="alert_dialog_message_pos_button_menu_item">Camera</string>
+    <string name="alert_dialog_message_neg_button_menu_item">Gallery</string>
+    <string name="alert_dialog_message_neutral_button_menu_item">Cancel</string>
 </resources>
