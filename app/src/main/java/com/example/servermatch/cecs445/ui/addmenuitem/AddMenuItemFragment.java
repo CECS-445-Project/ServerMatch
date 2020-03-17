@@ -32,6 +32,8 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
@@ -104,6 +106,8 @@ public class AddMenuItemFragment extends Fragment {
             }
         });
 
+
+        Arrays.sort(filters);
 
         chipGroup = root.findViewById(R.id.chip_group_filter);
         for(String filter : filters) {
