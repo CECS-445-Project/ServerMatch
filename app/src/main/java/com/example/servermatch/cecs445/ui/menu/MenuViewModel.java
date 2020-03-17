@@ -15,10 +15,12 @@ import com.example.servermatch.cecs445.models.MenuItem;
 import com.example.servermatch.cecs445.repositories.MenuItemRepo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Collections;
 
 public class MenuViewModel extends ViewModel {
 
@@ -38,8 +40,9 @@ public class MenuViewModel extends ViewModel {
             @Override
             protected void onPostExecute(Void aVoid) {
                 //super.onPostExecute(aVoid);
-                List<MenuItem> curentItems = mMenuItems.getValue();
-                mMenuItems.postValue(curentItems);
+                List<MenuItem> currentItems = mMenuItems.getValue();
+                Collections.sort(currentItems);
+                mMenuItems.postValue(currentItems);
 
             }
 
