@@ -24,6 +24,8 @@ import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.ui.menu.MenuFragment;
 import com.squareup.picasso.Picasso;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 
 public class DescriptionFragment extends Fragment {
@@ -33,6 +35,7 @@ public class DescriptionFragment extends Fragment {
     private TextView mNameMenuItem;
     private TextView mCostMenuItem;
     private TextView mDescriptionMenuItem;
+    private TextView mTags;
     private Button mDoneButton;
 
     @Nullable
@@ -45,7 +48,7 @@ public class DescriptionFragment extends Fragment {
         mNameMenuItem = view.findViewById(R.id.item_name_description);
         mCostMenuItem = view.findViewById(R.id.item_cost_description);
         mDescriptionMenuItem = view.findViewById(R.id.item_description);
-
+        mTags = view.findViewById(R.id.description_tags);
         mDoneButton = view.findViewById(R.id.description_back);
 
         initItemInfo();
@@ -58,11 +61,22 @@ public class DescriptionFragment extends Fragment {
         Bundle bundle = getArguments();
         if(bundle != null){
 
-
             Picasso.get().load(bundle.get("itemUrl").toString()).into(mImageMenuItem);
             mNameMenuItem.setText(bundle.get("itemName").toString());
             mCostMenuItem.setText("$" + String.format("%.2f",bundle.get("itemCost")));
             mDescriptionMenuItem.setText(bundle.get("itemDescription").toString());
+            StringBuilder tag = new StringBuilder();
+            tag.append("Tags: ");
+
+            List<String> tagsFromBundle = bundle.getStringArrayList("tags");
+            Iterator i = tagsFromBundle.iterator();
+
+            while(i.hasNext()){
+                tag.append(i.next());
+                if(i.hasNext()) tag.append(", ");
+            }
+
+            mTags.setText(tag);
         }
     }
 
