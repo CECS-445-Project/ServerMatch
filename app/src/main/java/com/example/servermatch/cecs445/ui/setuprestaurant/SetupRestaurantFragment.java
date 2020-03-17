@@ -236,8 +236,10 @@ public class SetupRestaurantFragment extends Fragment {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         Log.d(TAG, "addRestaurant: Added user: " + email);
+                        Toast.makeText(getActivity(), "Registered Successfully", Toast.LENGTH_LONG).show();
                     } else {
                         Log.d(TAG, "addRestaurant: " + email + " user not added");
+                        Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
             });
