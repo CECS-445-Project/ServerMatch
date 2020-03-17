@@ -49,7 +49,12 @@ public class FiltersFragment extends Fragment {
 
     private MenuViewModel mMenuViewModel;
     private final List<MenuItem> menuItems = MenuItemRepo.getInstance().getOriginalMenuItems();
-    private List<String> selectedTags = new ArrayList<>();
+    //private List<String> selectedTags = new ArrayList<>();
+    private SortedSet<String> selectedTags = new TreeSet<>();
+    private boolean changeTags = false;
+
+    // For bundle
+    Bundle bundle;
 
     @Nullable
     @Override
@@ -64,11 +69,15 @@ public class FiltersFragment extends Fragment {
         initChipGroup();
         doneButtonListener();
 
+        Log.d(TAG +" Selected Tag in on create view", selectedTags.toString());
+
         return view;
     }
 
     private void initChipGroup(){
+
             SortedSet<String> tags = new TreeSet<>();
+            setTags();
 
             for(MenuItem m : menuItems){
                 tags.addAll(m.getTags());
@@ -94,16 +103,19 @@ public class FiltersFragment extends Fragment {
 
     private void doneButtonListener(){
         mDone.setOnClickListener(v->{
-            ArrayList<String> tags = getSelectedTags();
+            getSelectedTags();
+            ArrayList<String> tags = new ArrayList<>(selectedTags);
+            //selectedTags = new TreeSet<>(getSelectedTags());
             mMenuViewModel.setItems(tags);
 
             Log.d(TAG + " Selected Tags", tags.toString());
             MenuFragment menuFragment = new MenuFragment();
 
-// Work on for keeping tags highlighted
-//            Bundle bundle = new Bundle();
-//            bundle.putStringArrayList("tags", (ArrayList<String>) selectedTags);
-//            menuFragment.setArguments(bundle);
+            // Work on for keeping tags highlighted
+            bundle = new Bundle();
+            bundle.putStringArrayList("selectedTags", new ArrayList<>(selectedTags));
+            bundle.putString("bool","false"); //figure out if this should actually be true or false
+            menuFragment.setArguments(bundle);
 
             FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
             //transaction.setCustomAnimations(R.anim.slide_out_down,R.anim.slide_in_up, R.anim.slide_out_down,R.anim.slide_in_up);
@@ -113,7 +125,9 @@ public class FiltersFragment extends Fragment {
         });
     }
 
-    private ArrayList<String> getSelectedTags(){
+    private void getSelectedTags(){
+        selectedTags.clear();
+
         if(mChipGroup.getChildCount() > 0) {
 
             int chipsClicked = mChipGroup.getChildCount();
@@ -126,14 +140,14 @@ public class FiltersFragment extends Fragment {
         }
         Log.d(TAG, selectedTags.toString());
 
-        return (ArrayList<String>) selectedTags;
+        //return new ArrayList<>(selectedTags);
     }
 
 // Work on for keeping tags highlighted
-//    private void setTags(){
-//        Bundle bundle = getArguments();
-//        if(bundle != null){
-//            selectedTags = bundle.getStringArrayList("tags");
-//        }
-//    }
+    private void setTags(){
+        bundle = getArguments();
+        if(bundle != null && bundle.getStringArrayList("selectedTags") != null){
+            selectedTags = new TreeSet<>(bundle.getStringArrayList("selectedTags"));
+        }
+    }
 }

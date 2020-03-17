@@ -15,8 +15,10 @@ import com.example.servermatch.cecs445.models.MenuItem;
 import com.example.servermatch.cecs445.repositories.MenuItemRepo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class MenuViewModel extends ViewModel {
 
@@ -57,10 +59,22 @@ public class MenuViewModel extends ViewModel {
     }
 
     public void clearMenuItems(){
+        // List<MenuItem> currentList = mMenuItems.getValue();
         List<MenuItem> currentList = mMenuItems.getValue();
         for (MenuItem menuItem : currentList){
             menuItem.setmIntQuantity(0);
         }
+
+        List<MenuItem> oldList = mRepo.getMenuItems().getValue();
+
+        List<String> currentListTitles = new ArrayList<>();
+        currentList.forEach(menuItem -> currentListTitles.add(menuItem.getItemName()));
+
+
+        for(MenuItem m : oldList){
+            if(!currentList.contains(m.getItemName())) currentList.add(m);
+        }
+
         mMenuItems.postValue(currentList);
     }
 
@@ -73,7 +87,8 @@ public class MenuViewModel extends ViewModel {
         if (tags.size() == 0) {
             List<MenuItem> currentList = mMenuItems.getValue();
             currentList.clear();
-            currentList.addAll(mRepo.getOriginalMenuItems());
+            // currentList.addAll(mRepo.getOriginalMenuItems());
+            currentList.addAll(Objects.requireNonNull(mRepo.getMenuItems().getValue()));
             mMenuItems.postValue(currentList);
         }
         else {
@@ -96,6 +111,12 @@ public class MenuViewModel extends ViewModel {
             Log.d(TAG, currentList.toString());
 
             mMenuItems.postValue(currentList);
+        }
+    }
+
+    public void checkForUpdate() {
+        if(mMenuItems.getValue().size() != mRepo.getMenuItems().getValue().size()){
+            mMenuItems.postValue(mRepo.getMenuItems().getValue());
         }
     }
 }

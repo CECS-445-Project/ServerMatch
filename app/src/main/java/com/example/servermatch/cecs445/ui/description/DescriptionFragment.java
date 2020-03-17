@@ -3,19 +3,28 @@
  */
 package com.example.servermatch.cecs445.ui.description;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.servermatch.cecs445.R;
+import com.example.servermatch.cecs445.ui.menu.MenuFragment;
 import com.squareup.picasso.Picasso;
+
+import java.util.Objects;
 
 public class DescriptionFragment extends Fragment {
 
@@ -24,6 +33,7 @@ public class DescriptionFragment extends Fragment {
     private TextView mNameMenuItem;
     private TextView mCostMenuItem;
     private TextView mDescriptionMenuItem;
+    private Button mDoneButton;
 
     @Nullable
     @Override
@@ -36,7 +46,10 @@ public class DescriptionFragment extends Fragment {
         mCostMenuItem = view.findViewById(R.id.item_cost_description);
         mDescriptionMenuItem = view.findViewById(R.id.item_description);
 
+        mDoneButton = view.findViewById(R.id.description_back);
+
         initItemInfo();
+        backButtonListener();
 
         return view;
     }
@@ -51,5 +64,16 @@ public class DescriptionFragment extends Fragment {
             mCostMenuItem.setText("$" + String.format("%.2f",bundle.get("itemCost")));
             mDescriptionMenuItem.setText(bundle.get("itemDescription").toString());
         }
+    }
+
+    private void backButtonListener(){
+        mDoneButton.setOnClickListener(v -> {
+
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            //transaction.setCustomAnimations(R.anim.slide_in_up,R.anim.slide_out_down, R.anim.slide_in_up,R.anim.slide_out_down);
+            transaction.replace(R.id.nav_host_fragment, new MenuFragment());
+            transaction.addToBackStack(null);
+            transaction.commit();
+        });
     }
 }
