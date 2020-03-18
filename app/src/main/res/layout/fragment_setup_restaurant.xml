@@ -57,12 +57,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        app:errorEnabled="true">
+        app:errorEnabled="true"
+        app:passwordToggleEnabled="true">
+
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
-            android:inputType="text"></com.google.android.material.textfield.TextInputEditText>
+            android:inputType="textPassword">
+        </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -167,7 +170,7 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" to create login."
+            android:text=" to login."
             android:textColor="@color/colorPrimaryDark"
             android:textSize="16sp"/>
     </LinearLayout>
