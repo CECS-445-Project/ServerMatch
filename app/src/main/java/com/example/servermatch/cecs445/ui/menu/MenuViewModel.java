@@ -101,17 +101,18 @@ public class MenuViewModel extends ViewModel {
             List<MenuItem> currentList = new ArrayList<>(mRepo.getOriginalMenuItems());
             Iterator<MenuItem> iterator = currentList.iterator();
 
-            boolean found;
+            Collections.sort(tags);
 
             while (iterator.hasNext()) {
-                found = false;
-                MenuItem menuItem = iterator.next();
-                for (String s : tags) {
-                    if (menuItem.getTags().contains(s)) {
-                        found = true;
+               MenuItem menuItem = iterator.next();
+
+               List<String> t = new ArrayList<>(menuItem.getTags());
+               t.retainAll(tags);
+               Collections.sort(t);
+
+                    if (!t.equals(tags)) {
+                        iterator.remove();
                     }
-                }
-                if (!found) iterator.remove();
             }
 
             Log.d(TAG, currentList.toString());
