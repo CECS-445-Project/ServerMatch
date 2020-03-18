@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.example.servermatch.cecs445.ui.setuprestaurant.SetupRestaurant;
 
@@ -23,9 +25,14 @@ public class SplashScreenActivity extends AppCompatActivity {
         EasySplashScreen config = new EasySplashScreen(SplashScreenActivity.this)
                 .withFullScreen()
                 .withSplashTimeOut(3000)
-                .withBackgroundResource(R.drawable.servermatch_startup)
-                .withLogo(R.mipmap.ic_launcher_foreground);
+                .withBackgroundResource(R.drawable.servermatch_startup_background)
+                .withLogo(R.drawable.servermatch_icon);
 
+        Log.d("logoTest", config.getLogo().getScaleType().toString());
+        config.getLogo().setScaleType(ImageView.ScaleType.CENTER);
+        Log.d("logoTest", config.getLogo().getScaleType().toString());
+
+        //SharedPreferences to direct to correct activity based on login flag
         prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
         boolean loggedIn = prefs.getBoolean("loggedIn", false);
         if(loggedIn) {

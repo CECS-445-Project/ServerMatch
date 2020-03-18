@@ -36,10 +36,6 @@ public class SetupRestaurant extends AppCompatActivity {
 
         //SharedPreferences to save login information
         prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
-        boolean loggedIn = prefs.getBoolean("loggedIn", false);
-        if(loggedIn) {
-            startActivity(new Intent(SetupRestaurant.this, MainActivity.class));
-        }
 
         btnLoginRestaurant.setOnClickListener(new View.OnClickListener() {
             @Override
