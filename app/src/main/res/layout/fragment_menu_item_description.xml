@@ -53,9 +53,28 @@
         android:id="@+id/item_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#FFFFFF"
         android:paddingLeft="5dp"
         android:paddingTop="5dp"
         android:text="item_description"
         android:textColor="#2D2C2C"
         android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/description_tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:text="TextView"
+        android:textColor="#515151"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/description_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center_horizontal"
+        android:layout_margin="20dp"
+        android:text="@string/description_back" />
 </LinearLayout>

@@ -59,6 +59,8 @@
     <string name="default_bill">$0.00</string>
     <string name="checkout_email">Enter in your email</string>
 
+    <string name="description_back">Done</string>
+
     <string name="image_view_message">Before uploading, is this the correct image?</string>
     <string name="cancel_image_view">Cancel</string>
     <string name="confirm_image_view">Confirm</string>
