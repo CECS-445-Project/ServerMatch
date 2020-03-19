@@ -6,7 +6,10 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.servermatch.cecs445.models.MenuItem;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -22,9 +25,12 @@ import java.util.List;
 public class TopMenuItemRepo {
     private static final String TAG = "TopMenuItemRepo";
     private static TopMenuItemRepo instance;
-    private  ArrayList<MenuItem> dataSet = new ArrayList<>();
-    private  FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private  CollectionReference collRef = db.collection("Customer");
+    private ArrayList<MenuItem> dataSet = new ArrayList<>();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseUser currentUser = mAuth.getCurrentUser();
+    private DocumentReference restaurantRef = db.collection("Restaurant").document(currentUser.getEmail());
+    private CollectionReference collRef = restaurantRef.collection("Customer");
 
     public static TopMenuItemRepo getInstance(){
         if(instance == null){
@@ -33,7 +39,7 @@ public class TopMenuItemRepo {
         return instance;
     }
 
-    public MutableLiveData<List<MenuItem>> getTopItems( String email){
+    public MutableLiveData<List<MenuItem>> getTopItems(String email){
         if(dataSet.isEmpty()) loadMenuItems( email);
 
         MutableLiveData<List<MenuItem>> data = new MutableLiveData<>();
