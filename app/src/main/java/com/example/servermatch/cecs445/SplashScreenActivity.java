@@ -33,6 +33,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 } else {
                     startActivity(new Intent(SplashScreenActivity.this, SetupRestaurant.class));
                 }
+                finish();
             }
         }, SPLASH_TIME);
     }
