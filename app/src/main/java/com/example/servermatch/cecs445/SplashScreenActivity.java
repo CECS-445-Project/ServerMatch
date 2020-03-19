@@ -4,44 +4,36 @@ package com.example.servermatch.cecs445;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
+import android.os.Handler;
 
 import com.example.servermatch.cecs445.ui.setuprestaurant.SetupRestaurant;
 
-import gr.net.maroulis.library.EasySplashScreen;
-
 public class SplashScreenActivity extends AppCompatActivity {
 
+    private int SPLASH_TIME = 3000;
     SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_splash_screen);
 
-        EasySplashScreen config = new EasySplashScreen(SplashScreenActivity.this)
-                .withFullScreen()
-                .withSplashTimeOut(3000)
-                .withBackgroundResource(R.drawable.servermatch_startup_background)
-                .withLogo(R.drawable.servermatch_icon);
-
-        Log.d("logoTest", config.getLogo().getScaleType().toString());
-        config.getLogo().setScaleType(ImageView.ScaleType.CENTER);
-        Log.d("logoTest", config.getLogo().getScaleType().toString());
-
-        //SharedPreferences to direct to correct activity based on login flag
-        prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
-        boolean loggedIn = prefs.getBoolean("loggedIn", false);
-        if(loggedIn) {
-            config.withTargetActivity(MainActivity.class);
-        } else {
-            config.withTargetActivity(SetupRestaurant.class);
-        }
-
-        View easySplashScreen = config.create();
-        setContentView(easySplashScreen);
+        //Display the splash screen for 3 seconds and then direct to the correct activity
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //SharedPreferences to direct to correct activity based on login flag
+                prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                boolean loggedIn = prefs.getBoolean("loggedIn", false);
+                if(loggedIn) {
+                    startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+                } else {
+                    startActivity(new Intent(SplashScreenActivity.this, SetupRestaurant.class));
+                }
+            }
+        }, SPLASH_TIME);
     }
 }

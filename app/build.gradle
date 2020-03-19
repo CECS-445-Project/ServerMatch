@@ -45,8 +45,6 @@ dependencies {
     repositories {
         mavenCentral()
     }
-    //EasySplashScreen
-    implementation 'gr.pantrif:easy-android-splash-screen:0.0.1'
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
     implementation 'com.google.firebase:firebase-storage:19.1.1'
     implementation 'com.google.firebase:firebase-auth:19.2.0'
