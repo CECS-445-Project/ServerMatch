@@ -29,12 +29,6 @@ public class MenuViewModel extends ViewModel {
     private MenuItemRepo mRepo;
 
     public void init(){
-        if(mMenuItems != null){
-            List<MenuItem> currentItems = mMenuItems.getValue();
-            Collections.sort(currentItems);
-            mMenuItems.postValue(currentItems);
-            return;
-        }
         mRepo = MenuItemRepo.getInstance();
         mMenuItems = mRepo.getMenuItems();
 
