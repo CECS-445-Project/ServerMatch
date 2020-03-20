@@ -62,6 +62,7 @@ public class CustomerRepo {
     }
 
     private void loadCustomers(){
+        dataSet.clear();
         restaurantRef.collection("Customer").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
