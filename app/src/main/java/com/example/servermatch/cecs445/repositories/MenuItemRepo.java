@@ -51,6 +51,7 @@ public class MenuItemRepo {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         currentUserEmail = currentUser.getEmail();
         restaurantRef = db.collection("Restaurant").document(currentUserEmail);
+        dataSet.clear();
         loadMenuItems();
         MutableLiveData<List<MenuItem>> data = new MutableLiveData<>();
         data.setValue(dataSet);
