@@ -28,6 +28,7 @@ public class TopMenuItemRepo {
     private ArrayList<MenuItem> dataSet = new ArrayList<>();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private String currentUserEmail;
     private FirebaseUser currentUser = mAuth.getCurrentUser();
     private DocumentReference restaurantRef = db.collection("Restaurant").document(currentUser.getEmail());
     private CollectionReference collRef = restaurantRef.collection("Customer");
@@ -40,8 +41,10 @@ public class TopMenuItemRepo {
     }
 
     public MutableLiveData<List<MenuItem>> getTopItems(String email){
-        if(dataSet.isEmpty()) loadMenuItems( email);
-
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        currentUserEmail = currentUser.getEmail();
+        restaurantRef = db.collection("Restaurant").document(currentUserEmail);
+        loadMenuItems( email);
         MutableLiveData<List<MenuItem>> data = new MutableLiveData<>();
         data.setValue(dataSet);
 
@@ -49,6 +52,7 @@ public class TopMenuItemRepo {
     }
 
     public ArrayList<MenuItem> loadMenuItems(String email){
+
         dataSet.clear();
         collRef.document(email).collection("MenuItems")
         .orderBy("mIntQuantity", Query.Direction.DESCENDING ).limit(5).get()
