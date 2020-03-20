@@ -18,6 +18,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.ui.setuprestaurant.SetupRestaurant;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.w3c.dom.Text;
 
@@ -31,6 +32,7 @@ public class DialogLogout extends DialogFragment {
 
     private TextView mActionCancel;
     private TextView mActionLogout;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     SharedPreferences prefs;
 
     @Nullable
@@ -52,6 +54,7 @@ public class DialogLogout extends DialogFragment {
                 editor.putBoolean("setupNavHeader", true);
                 editor.apply();
                 startActivity(new Intent(getActivity(), SetupRestaurant.class));
+                mAuth.signOut();
                 getDialog().dismiss();
             }
         });

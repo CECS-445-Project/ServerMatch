@@ -9,7 +9,10 @@ import com.example.servermatch.cecs445.models.Customer;
 import com.example.servermatch.cecs445.models.MenuItem;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -27,10 +30,13 @@ public class FrequentCustomerRepo {
     private static final String TAG = "FrequentCustomerRepo";
     private static FrequentCustomerRepo instance;
     private String emailData;
-    private  ArrayList<Customer> dataSet = new ArrayList<>();
+    private ArrayList<Customer> dataSet = new ArrayList<>();
     private ArrayList<MenuItem> menuItemsDataSet = new ArrayList<>();
-    private  FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private  CollectionReference collRef = db.collection("Customer");
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseUser currentUser = mAuth.getCurrentUser();
+    private DocumentReference restaurantRef = db.collection("Restaurant").document(currentUser.getEmail());
+    private CollectionReference collRef = restaurantRef.collection("Customer");
 
     public static FrequentCustomerRepo getInstance(){
         if(instance == null){

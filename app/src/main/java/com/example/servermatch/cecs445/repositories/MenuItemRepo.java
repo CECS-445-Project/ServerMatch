@@ -12,6 +12,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.servermatch.cecs445.models.MenuItem;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -29,6 +31,9 @@ public class MenuItemRepo {
     private static MenuItemRepo instance;
     private ArrayList<MenuItem> dataSet = new ArrayList<>();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseUser currentUser = mAuth.getCurrentUser();
+    private DocumentReference restaurantRef = db.collection("Restaurant").document(currentUser.getEmail());
     private static final String TAG = "MenuItemRepo";
     private boolean menuItemInitialized = false;
     private List<MenuItem> originalItems;
@@ -49,17 +54,17 @@ public class MenuItemRepo {
     }
 
     private void loadMenuItems(){
+        restaurantRef.collection("MenuItem");
         collectionListener("MenuItem");
     }
 
     public void addMenuItem(MenuItem newItem, final Context context){
         final String itemName = newItem.getItemName();
-        db.collection("MenuItem").add(newItem).addOnSuccessListener
-                (new OnSuccessListener<DocumentReference>() {
+        restaurantRef.collection("MenuItem").add(newItem)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Toast.makeText(context, itemName +" Added!", Toast.LENGTH_SHORT).show();
-
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -72,7 +77,7 @@ public class MenuItemRepo {
     }
 
     private void collectionListener(String collection){
-        db.collection(collection).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        restaurantRef.collection(collection).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if(e != null){
@@ -80,7 +85,7 @@ public class MenuItemRepo {
                     return;
                 }
 
-                db.collection(collection).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                restaurantRef.collection(collection).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
