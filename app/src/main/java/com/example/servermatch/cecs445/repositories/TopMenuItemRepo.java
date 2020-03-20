@@ -44,6 +44,8 @@ public class TopMenuItemRepo {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         currentUserEmail = currentUser.getEmail();
         restaurantRef = db.collection("Restaurant").document(currentUserEmail);
+        collRef = restaurantRef.collection("Customer");
+        dataSet.clear();
         loadMenuItems( email);
         MutableLiveData<List<MenuItem>> data = new MutableLiveData<>();
         data.setValue(dataSet);
@@ -53,7 +55,6 @@ public class TopMenuItemRepo {
 
     public ArrayList<MenuItem> loadMenuItems(String email){
 
-        dataSet.clear();
         collRef.document(email).collection("MenuItems")
         .orderBy("mIntQuantity", Query.Direction.DESCENDING ).limit(5).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
