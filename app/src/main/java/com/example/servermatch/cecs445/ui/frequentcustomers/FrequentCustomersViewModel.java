@@ -39,7 +39,6 @@ public class FrequentCustomersViewModel extends ViewModel {
         mTopCustomers = fCRepo.getCustomers();
         mEmail = new MutableLiveData<>();
 
-
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected void onPostExecute(Void aVoid) {
