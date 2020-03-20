@@ -53,8 +53,9 @@ public class DialogLogout extends DialogFragment {
                 editor.putBoolean("loggedIn", false);
                 editor.putBoolean("setupNavHeader", true);
                 editor.apply();
-                startActivity(new Intent(getActivity(), SetupRestaurant.class));
                 mAuth.signOut();
+                startActivity(new Intent(getActivity(), SetupRestaurant.class));
+
                 getDialog().dismiss();
             }
         });
