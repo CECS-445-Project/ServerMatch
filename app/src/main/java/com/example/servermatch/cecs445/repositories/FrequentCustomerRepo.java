@@ -48,6 +48,7 @@ public class FrequentCustomerRepo {
         currentUser = mAuth.getCurrentUser();
         currentUserEmail = currentUser.getEmail();
         restaurantRef = db.collection("Restaurant").document(currentUserEmail);
+        collRef = restaurantRef.collection("Customer");
         dataSet.clear();
         loadCustomers();
         MutableLiveData<List<Customer>> data = new MutableLiveData<>();
@@ -61,11 +62,12 @@ public class FrequentCustomerRepo {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         if (!queryDocumentSnapshots.isEmpty()) {
-                            dataSet.clear();
                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
 
                             for (DocumentSnapshot documentSnapshot : list) {
-                                dataSet.add(documentSnapshot.toObject(Customer.class));
+                                if(!dataSet.contains(documentSnapshot.toObject(Customer.class))) {
+                                    dataSet.add(documentSnapshot.toObject(Customer.class));
+                                }
                             }
                         }
                     }
