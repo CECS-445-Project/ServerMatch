@@ -34,6 +34,7 @@ public class CustomerRepo {
 
     private static final String TAG = "CustomerRepo";
     private static CustomerRepo instance;
+    private String currentUserEmail;
     private ArrayList<Customer> dataSet = new ArrayList<>();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -50,15 +51,39 @@ public class CustomerRepo {
     }
 
     public MutableLiveData<List<Customer>> getCustomers(){
-        if(dataSet.isEmpty()) loadCustomers();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        currentUserEmail = currentUser.getEmail();
+        restaurantRef = db.collection("Restaurant").document(currentUserEmail);
+        loadCustomers();
         MutableLiveData<List<Customer>> data = new MutableLiveData<>();
         data.setValue(dataSet);
         return data;
     }
 
     private void loadCustomers(){
-        //listens for updates on Collection in realtime
-        collectionListener("Customer");
+        restaurantRef.collection("Customer").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                if(!queryDocumentSnapshots.isEmpty()){
+                    List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                    for(DocumentSnapshot documentSnapshot : list){
+                        if(!dataSet.contains(documentSnapshot.toObject(Customer.class))) {
+                            dataSet.add(documentSnapshot.toObject(Customer.class));
+                        }
+                    }
+                }
+
+                Log.e(TAG, "onSuccess: added" );
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG, "onFailure: " + e.toString());
+            }
+        });
     }
 
     public boolean addCustomer(Customer newCustomer, Context context){
