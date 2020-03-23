@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.DialogFragment;
 
@@ -53,10 +54,11 @@ public class DialogLogout extends DialogFragment {
                 editor.putBoolean("loggedIn", false);
                 editor.putBoolean("setupNavHeader", true);
                 editor.apply();
+                Log.d(TAG, "DiaglLogout: " + mAuth.getCurrentUser().getEmail() + " signed out");
                 mAuth.signOut();
                 startActivity(new Intent(getActivity(), SetupRestaurant.class));
-
                 getDialog().dismiss();
+                Toast.makeText(getContext(), "Signed Out", Toast.LENGTH_SHORT).show();
             }
         });
 
