@@ -27,18 +27,11 @@ public class FrequentCustomersViewModel extends ViewModel {
     private TopMenuItemRepo tMIRepo;
 
     public void init(){
-        if(fCRepo != null){
-            return;
-        }
-        if( tMIRepo != null){
-            return;
-        }
 
         fCRepo = FrequentCustomerRepo.getInstance();
         tMIRepo = TopMenuItemRepo.getInstance();
         mTopCustomers = fCRepo.getCustomers();
         mEmail = new MutableLiveData<>();
-
 
         new AsyncTask<Void, Void, Void>() {
             @Override

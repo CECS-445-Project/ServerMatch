@@ -28,6 +28,7 @@ import com.example.servermatch.cecs445.MainActivity;
 import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.models.Restaurant;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
@@ -226,23 +227,42 @@ public class SetupRestaurantFragment extends Fragment {
         }
 
         Log.d(TAG, "validateInput: " + setupRestaurantIcon);
-        newRestaurant = new Restaurant(name, phone, email, (Integer) setupRestaurantIcon);
         addRestaurant(email, password);
+        newRestaurant = new Restaurant(name, phone, email, (Integer) setupRestaurantIcon);
         Log.d("setup_restaurant", newRestaurant.toString());
         Toast.makeText(getContext(), "Restaurant Created", Toast.LENGTH_SHORT).show();
     }
 
     public void addRestaurant(String email, String password) {
+        Log.d(TAG, "addRestaurant: Registering Restaurant to Firebase");
         mAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         Log.d(TAG, "addRestaurant: Added user: " + email);
-                       // Toast.makeText(getActivity(), "Registered Successfully", Toast.LENGTH_LONG).show();
                     } else {
                         Log.d(TAG, "addRestaurant: " + email + " user not added");
-                       // Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "onFailure: User not created");
+            }
+        });
+        while(mAuth.getCurrentUser() == null) {
+            // wait till user object is initialized
+        }
+        Log.d(TAG, "addRestaurant: Signing in Restaurant to Firebase");
+        mAuth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "addRestaurant: Signed In: " + email);
+                    } else {
+                        Log.d(TAG, "addRestaurant: Not Signed In: " + email);
                     }
                 }
             });
