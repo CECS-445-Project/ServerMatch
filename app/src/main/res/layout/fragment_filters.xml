@@ -4,26 +4,43 @@
     android:id="@+id/parent_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F60B0B"
-    android:backgroundTint="#00FFFFFF"
+    android:background="#FFFFFF"
+    android:backgroundTint="#FFFFFF"
+    android:clickable="true"
     android:orientation="vertical">
 
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chip_group_filters"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:padding="10dp">
-        </com.google.android.material.chip.ChipGroup>
-
-    <Button
-        android:id="@+id/filter_done"
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group_filters"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:padding="15dp"
-        android:paddingHorizontal="10dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:text="Done" />
+        android:background="#FFFFFF"
+        android:clipToPadding="false"
+        android:padding="10dp"></com.google.android.material.chip.ChipGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/reset_tags"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="10dp"
+            android:layout_weight="1"
+            android:text="Reset Tags" />
+
+        <Button
+            android:id="@+id/filter_done"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:text="Done" />
+    </LinearLayout>
+
 </LinearLayout>

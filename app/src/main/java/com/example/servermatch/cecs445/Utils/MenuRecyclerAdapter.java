@@ -26,6 +26,8 @@ import com.example.servermatch.cecs445.ui.menu.MenuViewModel;
 import com.example.servermatch.cecs445.models.MenuItem;
 import com.google.android.material.card.MaterialCardView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MenuRecyclerAdapter extends RecyclerView.Adapter {
@@ -115,6 +117,7 @@ public class MenuRecyclerAdapter extends RecyclerView.Adapter {
             bundle.putDouble("itemCost",mMenuItem.get(position).getItemCost());
             bundle.putString("itemDescription",mMenuItem.get(position).getItemDesc());
             bundle.putString("itemUrl",mMenuItem.get(position).getImage());
+            bundle.putStringArrayList("tags", (ArrayList<String>) mMenuItem.get(position).getTags());
             descriptionFragment.setArguments(bundle);
 
             FragmentTransaction transaction = ((AppCompatActivity)thisContext).getSupportFragmentManager().beginTransaction();

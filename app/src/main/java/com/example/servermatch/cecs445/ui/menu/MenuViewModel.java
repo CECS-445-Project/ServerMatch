@@ -5,7 +5,6 @@ package com.example.servermatch.cecs445.ui.menu;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.Menu;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -15,8 +14,11 @@ import com.example.servermatch.cecs445.models.MenuItem;
 import com.example.servermatch.cecs445.repositories.MenuItemRepo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+
 
 public class MenuViewModel extends ViewModel {
 
@@ -25,9 +27,6 @@ public class MenuViewModel extends ViewModel {
     private MenuItemRepo mRepo;
 
     public void init(){
-        if(mMenuItems != null){
-            return;
-        }
         mRepo = MenuItemRepo.getInstance();
         mMenuItems = mRepo.getMenuItems();
 
@@ -36,8 +35,9 @@ public class MenuViewModel extends ViewModel {
             @Override
             protected void onPostExecute(Void aVoid) {
                 //super.onPostExecute(aVoid);
-                List<MenuItem> curentItems = mMenuItems.getValue();
-                mMenuItems.postValue(curentItems);
+                List<MenuItem> currentItems = mMenuItems.getValue();
+                Collections.sort(currentItems);
+                mMenuItems.postValue(currentItems);
 
             }
 
@@ -57,10 +57,22 @@ public class MenuViewModel extends ViewModel {
     }
 
     public void clearMenuItems(){
+
         List<MenuItem> currentList = mMenuItems.getValue();
         for (MenuItem menuItem : currentList){
             menuItem.setmIntQuantity(0);
         }
+
+        List<MenuItem> oldList = mRepo.getMenuItems().getValue();
+
+        List<String> currentListTitles = new ArrayList<>();
+        currentList.forEach(menuItem -> currentListTitles.add(menuItem.getItemName()));
+
+
+        for(MenuItem m : oldList){
+            if(!currentList.contains(m.getItemName())) currentList.add(m);
+        }
+
         mMenuItems.postValue(currentList);
     }
 
@@ -73,29 +85,36 @@ public class MenuViewModel extends ViewModel {
         if (tags.size() == 0) {
             List<MenuItem> currentList = mMenuItems.getValue();
             currentList.clear();
-            currentList.addAll(mRepo.getMenuItems().getValue());
+            currentList.addAll(Objects.requireNonNull(mRepo.getOriginalMenuItems()));
             mMenuItems.postValue(currentList);
         }
         else {
-            List<MenuItem> currentList = mMenuItems.getValue();
+            List<MenuItem> currentList = new ArrayList<>(mRepo.getOriginalMenuItems());
             Iterator<MenuItem> iterator = currentList.iterator();
 
-            boolean found = false;
+            Collections.sort(tags);
 
             while (iterator.hasNext()) {
-                found = false;
-                MenuItem menuItem = iterator.next();
-                for (String s : tags) {
-                    if (menuItem.getTags().contains(s)) {
-                        found = true;
+               MenuItem menuItem = iterator.next();
+
+               List<String> t = new ArrayList<>(menuItem.getTags());
+               t.retainAll(tags);
+               Collections.sort(t);
+
+                    if (!t.equals(tags)) {
+                        iterator.remove();
                     }
-                }
-                if (!found) iterator.remove();
             }
 
             Log.d(TAG, currentList.toString());
 
             mMenuItems.postValue(currentList);
+        }
+    }
+
+    public void checkForUpdate() {
+        if(mMenuItems.getValue().size() != mRepo.getMenuItems().getValue().size()){
+            mMenuItems.postValue(mRepo.getMenuItems().getValue());
         }
     }
 }

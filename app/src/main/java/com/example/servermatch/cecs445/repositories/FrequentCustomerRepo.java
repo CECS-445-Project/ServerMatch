@@ -9,7 +9,10 @@ import com.example.servermatch.cecs445.models.Customer;
 import com.example.servermatch.cecs445.models.MenuItem;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -26,11 +29,13 @@ import java.util.List;
 public class FrequentCustomerRepo {
     private static final String TAG = "FrequentCustomerRepo";
     private static FrequentCustomerRepo instance;
-    private String emailData;
-    private  ArrayList<Customer> dataSet = new ArrayList<>();
-    private ArrayList<MenuItem> menuItemsDataSet = new ArrayList<>();
-    private  FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private  CollectionReference collRef = db.collection("Customer");
+    private String currentUserEmail;
+    private ArrayList<Customer> dataSet = new ArrayList<>();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseUser currentUser = mAuth.getCurrentUser();
+    private DocumentReference restaurantRef = db.collection("Restaurant").document(currentUser.getEmail());
+    private CollectionReference collRef = restaurantRef.collection("Customer");
 
     public static FrequentCustomerRepo getInstance(){
         if(instance == null){
@@ -39,55 +44,41 @@ public class FrequentCustomerRepo {
         return instance;
     }
 
-    public MutableLiveData<String> getEmail(){
-        if(emailData == null) emailData = "howardshowered@gmail.com";
-        MutableLiveData<String> data = new MutableLiveData<>();
-        data.setValue(emailData);
-        return data;
-    }
-
     public MutableLiveData<List<Customer>> getCustomers(){
-        if(dataSet.isEmpty()) loadCustomers();
+        currentUser = mAuth.getCurrentUser();
+        currentUserEmail = currentUser.getEmail();
+        restaurantRef = db.collection("Restaurant").document(currentUserEmail);
+        collRef = restaurantRef.collection("Customer");
+        dataSet.clear();
+        loadCustomers();
         MutableLiveData<List<Customer>> data = new MutableLiveData<>();
         data.setValue(dataSet);
         return data;
     }
 
     private void loadCustomers(){
-        frequentCustomerListener();
-    }
+        collRef.orderBy("visits", Query.Direction.DESCENDING ).limit(5).get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
 
-    public void frequentCustomerListener(){
-        collRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                if(e != null){
-                    Log.w(TAG,"Listen Failed", e );
-                    return;
-                }
-
-                collRef.orderBy("visits", Query.Direction.DESCENDING ).limit(5).get()
-                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                            @Override
-                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                if (!queryDocumentSnapshots.isEmpty()) {
-                                    dataSet.clear();
-                                    List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-
-                                    for (DocumentSnapshot documentSnapshot : list) {
-                                        dataSet.add(documentSnapshot.toObject(Customer.class));
-                                    }
+                            for (DocumentSnapshot documentSnapshot : list) {
+                                if(!dataSet.contains(documentSnapshot.toObject(Customer.class))) {
+                                    dataSet.add(documentSnapshot.toObject(Customer.class));
                                 }
                             }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "onFailure: " + e.toString());
+                        }
                     }
-                });
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG, "onFailure: " + e.toString());
             }
         });
     }
+
 
 
 }

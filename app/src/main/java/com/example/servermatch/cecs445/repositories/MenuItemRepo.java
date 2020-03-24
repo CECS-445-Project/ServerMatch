@@ -12,6 +12,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.servermatch.cecs445.models.MenuItem;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -29,8 +31,12 @@ public class MenuItemRepo {
     private static MenuItemRepo instance;
     private ArrayList<MenuItem> dataSet = new ArrayList<>();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseUser currentUser = mAuth.getCurrentUser();
+    private String currentUserEmail;
+    private DocumentReference restaurantRef = db.collection("Restaurant").document(currentUser.getEmail());
     private static final String TAG = "MenuItemRepo";
-    private boolean menuItemInitialized = false;
+    private List<MenuItem> originalItems;
 
     public static MenuItemRepo getInstance(){
         if(instance == null){
@@ -41,24 +47,43 @@ public class MenuItemRepo {
     }
 
     public MutableLiveData<List<MenuItem>> getMenuItems(){
-        if(dataSet.isEmpty()) loadMenuItems();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        currentUserEmail = currentUser.getEmail();
+        restaurantRef = db.collection("Restaurant").document(currentUserEmail);
+        dataSet.clear();
+        loadMenuItems();
         MutableLiveData<List<MenuItem>> data = new MutableLiveData<>();
         data.setValue(dataSet);
         return data;
     }
 
     private void loadMenuItems(){
-        collectionListener("MenuItem");
+        restaurantRef.collection("MenuItem").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                if (!queryDocumentSnapshots.isEmpty()) {
+                    List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                    dataSet.clear();
+                    for (DocumentSnapshot documentSnapshot : list) {
+                        if (dataSet.contains(dataSet.add(documentSnapshot.toObject(MenuItem.class)))) {
+                            dataSet.add(documentSnapshot.toObject(MenuItem.class));
+                        }
+                    }
+
+                }
+            }
+        });
     }
 
     public void addMenuItem(MenuItem newItem, final Context context){
         final String itemName = newItem.getItemName();
-        db.collection("MenuItem").add(newItem).addOnSuccessListener
-                (new OnSuccessListener<DocumentReference>() {
+        restaurantRef.collection("MenuItem").add(newItem)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Toast.makeText(context, itemName +" Added!", Toast.LENGTH_SHORT).show();
-
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -70,46 +95,8 @@ public class MenuItemRepo {
 
     }
 
-    private void collectionListener(String collection){
-        db.collection(collection).addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                if(e != null){
-                    Log.w(TAG,"Listen Failed", e );
-                    return;
-                }
-
-                db.collection(collection).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-
-                        if(!queryDocumentSnapshots.isEmpty()){
-                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-                            dataSet.clear();
-                            for (DocumentSnapshot documentSnapshot : list) {
-                                if(dataSet.contains(dataSet.add(documentSnapshot.toObject(MenuItem.class)))) {
-                                    dataSet.add(documentSnapshot.toObject(MenuItem.class));
-                                }
-                            }
-                            menuItemInitialized = true;
-                        }
-
-                        Log.e(TAG, "onSuccess: added" );
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "onFailure: " + e.toString());
-                    }
-                });
-            }
-        });
-    }
-
-
     public List<MenuItem> getOriginalMenuItems() {
-        List<MenuItem> originalItems = new ArrayList<>(dataSet);
+        if(originalItems == null) originalItems = new ArrayList<>(dataSet);
         return originalItems;
     }
 }

@@ -42,6 +42,11 @@ public class MenuFragment extends Fragment {
     private FragmentTransaction ft;
     //private static final List<MenuItem> ALL_ITEMS = MenuItemRepo.getInstance().getMenuItems().getValue();
 
+    // Bundle Section
+    private boolean filterBool = false;
+    private List<String> selectedTags;
+    Bundle bundle;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -56,6 +61,8 @@ public class MenuFragment extends Fragment {
         mFab = view.findViewById(R.id.floatingActionButton);
         checkoutButton = view.findViewById(R.id.checkout);
 
+        mMenuViewModel.checkForUpdate();
+
         // This works without the recycler view. Time to add that.
         checkoutButtonListener();
         viewModelObserver();
@@ -65,6 +72,8 @@ public class MenuFragment extends Fragment {
         initRecyclerViews();
 
         ft = getParentFragmentManager().beginTransaction();
+
+        saveBundle();
 
         return view;
     }
@@ -147,17 +156,33 @@ public class MenuFragment extends Fragment {
 
             //Creates Bundle
             FiltersFragment filtersFragment = new FiltersFragment();
-            Bundle bundle = new Bundle();
+            //Bundle bundle = new Bundle();
+            Bundle b = getArguments();
+            if(b != null) bundle = getArguments();
+            else bundle = new Bundle();
+
+
             bundle.putStringArrayList("tags",tags);
+            bundle.putString("bool","true");
             filtersFragment.setArguments(bundle);
 
             // Goes to Filter Fragment
             FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
             transaction.setCustomAnimations(R.anim.slide_in_up,R.anim.slide_out_down, R.anim.slide_in_up,R.anim.slide_out_down);
             transaction.replace(R.id.nav_host_fragment, filtersFragment);
-            transaction.addToBackStack(null);
+            //transaction.addToBackStack(null);
             transaction.commit();
         });
+    }
+
+    // This is used to pass the state of the filters back and forth with the Filters Fragment.
+    private void saveBundle(){
+
+        bundle = getArguments();
+//        if(bundle != null && bundle.get("selectedTags") != null){
+//            filterBool = Boolean.getBoolean(bundle.get("bool").toString());
+//            selectedTags = bundle.getStringArrayList("selectedTags");
+//        }
     }
 
     private ArrayList<String> getTags(){
@@ -193,7 +218,7 @@ public class MenuFragment extends Fragment {
     private void receiveCompletedBoolean(){
         Bundle bundle = getArguments();
 
-        if(bundle != null) {
+        if(bundle != null && bundle.get("CheckoutComplete") != null) {
             boolean completedCheckout= (boolean) bundle.get("CheckoutComplete");
             Log.d(TAG, "receiveCompletedBoolean: " + completedCheckout);
             if(completedCheckout) {

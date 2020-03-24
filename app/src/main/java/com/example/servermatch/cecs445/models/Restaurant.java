@@ -5,11 +5,15 @@ public class Restaurant {
     private String name;
     private String phoneNum;
     private String email;
+    private Integer icon;
 
-    public Restaurant(String name, String phoneNum, String email) {
+    public Restaurant(){}
+
+    public Restaurant(String name, String phoneNum, String email, Integer icon) {
         this.name = name;
         this.phoneNum = phoneNum;
         this.email = email;
+        this.icon = icon;
     }
 
     public String getName() { return name; }
@@ -21,8 +25,17 @@ public class Restaurant {
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 
+    public Integer getIcon() {
+        return icon;
+    }
+
+    public void setIcon(Integer icon) {
+        this.icon = icon;
+    }
+
     @Override
     public String toString(){
-        return ("Restaurant[name=" + name + ", phone=" + phoneNum + ", email=" + email + "]");
+        return ("Restaurant[name=" + name + ", phone=" + phoneNum + ", email=" + email
+        + "icon= " + icon + "]");
     }
 }

@@ -12,7 +12,10 @@ import com.example.servermatch.cecs445.models.Customer;
 import com.example.servermatch.cecs445.models.MenuItem;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
@@ -31,12 +34,14 @@ public class CustomerRepo {
 
     private static final String TAG = "CustomerRepo";
     private static CustomerRepo instance;
+    private String currentUserEmail;
     private ArrayList<Customer> dataSet = new ArrayList<>();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseUser currentUser = mAuth.getCurrentUser();
+    private DocumentReference restaurantRef = db.collection("Restaurant").document(currentUser.getEmail());
     private  final CollectionReference customerRef =
-            db.collection("Customer");
-    private  final CollectionReference billRef =
-            db.collection("Bill");
+            restaurantRef.collection("Customer");
 
     public static CustomerRepo getInstance(){
         if(instance == null){
@@ -46,15 +51,40 @@ public class CustomerRepo {
     }
 
     public MutableLiveData<List<Customer>> getCustomers(){
-        if(dataSet.isEmpty()) loadCustomers();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        currentUserEmail = currentUser.getEmail();
+        restaurantRef = db.collection("Restaurant").document(currentUserEmail);
+        loadCustomers();
         MutableLiveData<List<Customer>> data = new MutableLiveData<>();
         data.setValue(dataSet);
         return data;
     }
 
     private void loadCustomers(){
-        //listens for updates on Collection in realtime
-        collectionListener("Customer");
+        dataSet.clear();
+        restaurantRef.collection("Customer").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                if(!queryDocumentSnapshots.isEmpty()){
+                    List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                    for(DocumentSnapshot documentSnapshot : list){
+                        if(!dataSet.contains(documentSnapshot.toObject(Customer.class))) {
+                            dataSet.add(documentSnapshot.toObject(Customer.class));
+                        }
+                    }
+                }
+
+                Log.e(TAG, "onSuccess: added" );
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG, "onFailure: " + e.toString());
+            }
+        });
     }
 
     public boolean addCustomer(Customer newCustomer, Context context){
@@ -132,7 +162,7 @@ public class CustomerRepo {
             collectionName = "Guest";
         }
 
-        db.collection(collectionName).document(email).collection("Bills").document(checkoutTime)
+        customerRef.document(email).collection("Bills").document(checkoutTime)
                 .set(billInformation).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
@@ -148,7 +178,7 @@ public class CustomerRepo {
         });
         //add to MenuItems List
         for(MenuItem menuItem : billItems) {
-            db.collection(collectionName).document(email).collection("MenuItems")
+            customerRef.document(email).collection("MenuItems")
                     .document(menuItem.getItemName())
                     .update("mIntQuantity", FieldValue.increment(menuItem.getmIntQuantity()))
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -159,7 +189,7 @@ public class CustomerRepo {
                     }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    db.collection(collectionName).document(email)
+                    customerRef.document(email)
                             .collection("MenuItems").document(menuItem.getItemName())
                             .set(menuItem);
                     Log.e(TAG, "onFailure: " + e.toString() );
@@ -184,7 +214,7 @@ public class CustomerRepo {
 
     private void collectionListener(String collection){
 
-        db.collection(collection).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        restaurantRef.collection(collection).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if(e != null){
@@ -192,7 +222,7 @@ public class CustomerRepo {
                     return;
                 }
 
-                db.collection(collection).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                restaurantRef.collection(collection).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 

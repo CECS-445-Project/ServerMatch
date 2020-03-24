@@ -50,6 +50,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -173,6 +175,8 @@ public class AddMenuItemFragment extends Fragment {
             }
         });
 
+        Arrays.sort(filters);
+
         chipGroup = root.findViewById(R.id.chip_group_filter);
         for(String filter : filters) {
             Chip chip = new Chip(getContext());
@@ -283,7 +287,7 @@ public class AddMenuItemFragment extends Fragment {
                 return;
             }
             case WRITE_STORAGE_PERMISSION_CODE: {
-                if(grantResults.length > 0 
+                if(grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     openCamera();
                 } else {
