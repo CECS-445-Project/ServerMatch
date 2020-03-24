@@ -9,6 +9,8 @@
 
     <string name="setup_restaurant_button">Set Up Restaurant</string>
     <string name="restaurant_login">LOGIN</string>
+    <string name="login_restaurant_email">Email</string>
+    <string name="login_restaurant_password">Password</string>
     <string name="restaurant_name"></string>
     <string name="restaurant_email"></string>
     <string name="restaurant_phone"></string>

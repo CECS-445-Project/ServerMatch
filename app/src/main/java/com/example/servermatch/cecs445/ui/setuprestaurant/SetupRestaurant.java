@@ -23,6 +23,7 @@ import com.example.servermatch.cecs445.models.Restaurant;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,8 +41,8 @@ public class SetupRestaurant extends AppCompatActivity {
     private SetupRestaurantViewModel setupRestaurantViewModel;
     private Button btnLoginRestaurant;
     private TextView mCreateAccount;
-    private EditText emailEditText;
-    private EditText pwEditText;
+    private TextInputLayout mEmailLogin;
+    private TextInputLayout mPasswordLogin;
     private List<Restaurant> restaurantlist;
     SharedPreferences prefs;
     private FirebaseAuth mAuth;
@@ -63,22 +64,18 @@ public class SetupRestaurant extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         btnLoginRestaurant = findViewById(R.id.login_restaurant_button);
         mCreateAccount = findViewById(R.id.setup_click_here);
-        emailEditText = findViewById(R.id.et_login_email);
-        pwEditText =  findViewById(R.id.et_login_pw);
+        mEmailLogin = findViewById(R.id.et_login_email);
+        mPasswordLogin =  findViewById(R.id.et_login_pw);
 
 
         //SharedPreferences to save login information
         prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
-        boolean loggedIn = prefs.getBoolean("loggedIn", false);
-        if(loggedIn) {
-            startActivity(new Intent(SetupRestaurant.this, MainActivity.class));
-        }
 
         btnLoginRestaurant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = emailEditText.getText().toString().toLowerCase();
-                String pw = pwEditText.getText().toString();
+                String email = mEmailLogin.getEditText().getText().toString().toLowerCase();
+                String pw = mPasswordLogin.getEditText().getText().toString();
                 if( !(email.isEmpty() || pw.isEmpty())) {
                     mAuth.signInWithEmailAndPassword(email, pw)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
