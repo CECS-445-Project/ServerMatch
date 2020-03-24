@@ -5,7 +5,6 @@ package com.example.servermatch.cecs445.ui.menu;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.Menu;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -15,12 +14,11 @@ import com.example.servermatch.cecs445.models.MenuItem;
 import com.example.servermatch.cecs445.repositories.MenuItemRepo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Collections;
+
 
 public class MenuViewModel extends ViewModel {
 
@@ -29,12 +27,6 @@ public class MenuViewModel extends ViewModel {
     private MenuItemRepo mRepo;
 
     public void init(){
-        if(mMenuItems != null){
-            List<MenuItem> currentItems = mMenuItems.getValue();
-            Collections.sort(currentItems);
-            mMenuItems.postValue(currentItems);
-            return;
-        }
         mRepo = MenuItemRepo.getInstance();
         mMenuItems = mRepo.getMenuItems();
 
@@ -65,7 +57,7 @@ public class MenuViewModel extends ViewModel {
     }
 
     public void clearMenuItems(){
-        // List<MenuItem> currentList = mMenuItems.getValue();
+
         List<MenuItem> currentList = mMenuItems.getValue();
         for (MenuItem menuItem : currentList){
             menuItem.setmIntQuantity(0);
@@ -93,7 +85,6 @@ public class MenuViewModel extends ViewModel {
         if (tags.size() == 0) {
             List<MenuItem> currentList = mMenuItems.getValue();
             currentList.clear();
-            // currentList.addAll(mRepo.getOriginalMenuItems());
             currentList.addAll(Objects.requireNonNull(mRepo.getOriginalMenuItems()));
             mMenuItems.postValue(currentList);
         }

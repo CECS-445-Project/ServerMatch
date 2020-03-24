@@ -65,7 +65,7 @@ public class RestaurantRepo {
                 newEmail = false;
             }
         }
-        if(newEmail = true) {
+        if(newEmail) {
             //stores new customer with email as document id.
             restaurantRef.document(newRestaurantEmail).set(newRestaurant)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {

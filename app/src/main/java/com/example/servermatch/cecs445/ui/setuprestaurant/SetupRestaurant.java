@@ -77,7 +77,7 @@ public class SetupRestaurant extends AppCompatActivity {
         btnLoginRestaurant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = emailEditText.getText().toString();
+                String email = emailEditText.getText().toString().toLowerCase();
                 String pw = pwEditText.getText().toString();
                 if( !(email.isEmpty() || pw.isEmpty())) {
                     mAuth.signInWithEmailAndPassword(email, pw)
