@@ -41,6 +41,7 @@
             app:boxBackgroundColor="@android:color/white"
             app:boxStrokeColor="@android:color/black"
             app:hintTextAppearance="@style/FloatingLabelText"
+            app:hintEnabled="false"
             app:errorEnabled="true" >
 
             <com.google.android.material.textfield.TextInputEditText

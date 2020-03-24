@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@drawable/servermatch_startup_background"
     android:padding="16dp"
     android:orientation="vertical">
 
@@ -12,6 +12,10 @@
         android:id="@+id/setup_restaurant_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxBackgroundColor="@android:color/white"
+        app:boxStrokeColor="@android:color/black"
+        app:hintTextAppearance="@style/FloatingLabelText"
         android:layout_marginBottom="5dp"
         app:errorEnabled="true">
         <com.google.android.material.textfield.TextInputEditText
@@ -25,6 +29,10 @@
         android:id="@+id/setup_restaurant_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxBackgroundColor="@android:color/white"
+        app:boxStrokeColor="@android:color/black"
+        app:hintTextAppearance="@style/FloatingLabelText"
         android:layout_marginBottom="5dp"
         app:errorEnabled="true">
         <com.google.android.material.textfield.TextInputEditText
@@ -39,7 +47,11 @@
         android:id="@+id/setup_restaurant_phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxBackgroundColor="@android:color/white"
+        app:boxStrokeColor="@android:color/black"
+        app:hintTextAppearance="@style/FloatingLabelText"
+        android:layout_marginBottom="5dp"
         app:counterEnabled="true"
         app:counterMaxLength="10"
         app:errorEnabled="true">
@@ -56,6 +68,10 @@
         android:id="@+id/setup_restaurant_pass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxBackgroundColor="@android:color/white"
+        app:boxStrokeColor="@android:color/black"
+        app:hintTextAppearance="@style/FloatingLabelText"
         android:layout_marginBottom="5dp"
         app:errorEnabled="true"
         app:passwordToggleEnabled="true">
@@ -84,7 +100,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="25dp"
         android:layout_gravity="center_horizontal"
         android:orientation="horizontal">
 
@@ -132,9 +148,11 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:backgroundTint="@color/colorAccent"
+        android:paddingVertical="20dp"
         android:text="ADD RESTAURANT"
-        android:textColor="@android:color/white"
-        android:textSize="16sp" />
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        app:cornerRadius="32dp" />
 
     <TextView
         android:id="@+id/textView"
@@ -144,7 +162,7 @@
         android:layout_centerHorizontal="true"
         android:text="Already have an account?"
         android:layout_gravity="center"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@android:color/white"
         android:textSize="16sp"/>
 
     <LinearLayout
@@ -161,7 +179,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Click here"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorAccent"
             android:clickable="true"
             android:focusable="true"
             android:textSize="16sp"/>
@@ -171,7 +189,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=" to login."
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@android:color/white"
             android:textSize="16sp"/>
     </LinearLayout>
 
