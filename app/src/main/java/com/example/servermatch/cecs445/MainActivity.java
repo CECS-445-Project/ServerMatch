@@ -3,7 +3,6 @@ package com.example.servermatch.cecs445;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.os.Bundle;
 
 import com.example.servermatch.cecs445.Utils.DialogLogout;
@@ -11,28 +10,23 @@ import com.example.servermatch.cecs445.ui.addcustomer.AddCustomerFragment;
 import com.example.servermatch.cecs445.ui.addmenuitem.AddMenuItemFragment;
 import com.example.servermatch.cecs445.ui.frequentcustomers.FrequentCustomersFragment;
 import com.example.servermatch.cecs445.ui.menu.MenuFragment;
-import com.example.servermatch.cecs445.ui.setuprestaurant.SetupRestaurant;
+import com.example.servermatch.cecs445.ui.settings.SettingsActivity;
+import com.example.servermatch.cecs445.ui.settings.SettingsFragment;
 import com.example.servermatch.cecs445.ui.setuprestaurant.SetupRestaurantFragment;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.textfield.TextInputLayout;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -40,10 +34,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import static com.example.servermatch.cecs445.ui.setuprestaurant.SetupRestaurantFragment.*;
 
@@ -73,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_menu, R.id.nav_frequent_customers, R.id.nav_add_customer, R.id.nav_add_menu_item, R.id.nav_logout)
+                R.id.nav_menu, R.id.nav_frequent_customers, R.id.nav_add_customer, R.id.nav_add_menu_item, R.id.nav_settings, R.id.nav_logout)
                 .setDrawerLayout(mDrawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -156,6 +148,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Log.d("navMenu", "Add Menu Item");
             AddMenuItemFragment addMenuItemFragment = new AddMenuItemFragment();
             transaction.replace(R.id.nav_host_fragment, addMenuItemFragment);
+        }
+        if(id == R.id.nav_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
         }
         if(id == R.id.nav_logout) {
             Log.d("navMenu", "Logout");

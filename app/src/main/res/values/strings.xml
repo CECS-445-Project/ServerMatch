@@ -17,6 +17,7 @@
     <string name="menu_frequent_customers">Frequent Customers</string>
     <string name="menu_add_customers">Add Customer</string>
     <string name="menu_add_menu_item">Add Menu Item</string>
+    <string name="menu_settings">Settings</string>
     <string name="menu_logout">Logout</string>
 
     <string name="menu_tools">Tools</string>
@@ -70,4 +71,19 @@
     <string name="alert_dialog_message_pos_button_menu_item">Camera</string>
     <string name="alert_dialog_message_neg_button_menu_item">Gallery</string>
     <string name="alert_dialog_message_neutral_button_menu_item">Cancel</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="preference_key_theme" translatable="false">preference_key_theme</string>
+    <string name="preference_theme_title">Theme</string>
+
+    <string name="light_theme_name">Light theme</string>
+    <string name="dark_theme_name">Dark theme</string>
+    <string name="auto_battery_name">Auto battery</string>
+    <string name="follow_system_name">Follow system</string>
+
+    <string name="light_theme_value" translatable="false">Light</string>
+    <string name="dark_theme_value" translatable="false">Dark</string>
+    <string name="preferences">Select your preferences: </string>
+    <string name="preferences_explanation">Disclaimer: This screen will only be dark when Dark Mode is forced in the OS settings in Android Q and above.</string>
 </resources>
