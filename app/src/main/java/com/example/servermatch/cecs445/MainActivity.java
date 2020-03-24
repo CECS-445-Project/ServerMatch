@@ -141,25 +141,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Log.d("navMenu", "Menu");
             MenuFragment menuFragment = new MenuFragment();
             transaction.replace(R.id.nav_host_fragment, menuFragment);
-            getSupportActionBar().setTitle("Menu");
         }
         if(id == R.id.nav_frequent_customers) {
             Log.d("navMenu", "Frequent Customers");
             FrequentCustomersFragment frequentCustomersFragment = new FrequentCustomersFragment();
             transaction.replace(R.id.nav_host_fragment, frequentCustomersFragment);
-            getSupportActionBar().setTitle("Frequent Customers");
         }
         if(id == R.id.nav_add_customer) {
             Log.d("navMenu", "Add Customer");
             AddCustomerFragment addCustomerFragment = new AddCustomerFragment();
             transaction.replace(R.id.nav_host_fragment, addCustomerFragment);
-            getSupportActionBar().setTitle("Add Customer");
         }
         if(id == R.id.nav_add_menu_item) {
             Log.d("navMenu", "Add Menu Item");
             AddMenuItemFragment addMenuItemFragment = new AddMenuItemFragment();
             transaction.replace(R.id.nav_host_fragment, addMenuItemFragment);
-            getSupportActionBar().setTitle("Add Menu Item");
         }
         if(id == R.id.nav_logout) {
             Log.d("navMenu", "Logout");

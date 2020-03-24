@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -74,6 +75,15 @@ public class FrequentCustomersFragment extends Fragment {
         context = this.getContext();
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //Set action bar title
+        if(getActivity() != null) {
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Frequent Customers");
+        }
     }
 
 
