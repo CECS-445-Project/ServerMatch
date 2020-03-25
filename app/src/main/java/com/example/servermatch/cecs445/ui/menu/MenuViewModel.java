@@ -34,7 +34,7 @@ public class MenuViewModel extends ViewModel {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected void onPostExecute(Void aVoid) {
-                //super.onPostExecute(aVoid);
+                super.onPostExecute(aVoid);
                 List<MenuItem> currentItems = mMenuItems.getValue();
                 Collections.sort(currentItems);
                 mMenuItems.postValue(currentItems);
