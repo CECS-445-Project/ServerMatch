@@ -6,6 +6,7 @@ package com.example.servermatch.cecs445.ui.checkout;
 /*
 @author -  Andrew Delgado and Howard Chen
  */
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -109,9 +110,9 @@ public class CheckoutFragment extends Fragment {
                 Log.d(TAG, mEmail.getEditText().toString());
                 Log.d(TAG, bill.toString());
 
-                Log.d(TAG,billViewModel.getBillItems().getValue().toString());
+
                 sendEmail();
-                Log.d(TAG,billViewModel.getBillItems().getValue().toString());
+
 
                 billViewModel.clearBillItems();
 
@@ -142,28 +143,29 @@ public class CheckoutFragment extends Fragment {
         bm.setGmailPassword("");
         bm.setMailTo("andrewdelgado017@gmail.com");
         bm.setFormSubject("ServerMatch Receipt");
-        bm.setFormBody("Hello " + this.bill.getCustomerID() +"!\n\n Here is your receipt for: \n"
+        bm.setFormBody("Hello " + this.bill.getCustomerID() +"!\n\nHere is your receipt: \n\n"
                 + bill
-                + "\n " + this.bill.getTotalCost()
+                + "\n Total: $" + this.bill.getTotalCost()
                 + "\n- Thank you");
         bm.send();
     }
 
+    @SuppressLint("DefaultLocale")
     private String createBill(){
         StringBuilder billText = new StringBuilder();
         List<MenuItem> menuItems = bill.getBillItems();
 
         for(int i = 0; i < menuItems.size(); i++) {
             billText.append(menuItems.get(i).getItemName());
-
-
-                billText.append("               ")
-                .append(" ")
-                .append(menuItems.get(i).getmIntQuantity())
-                .append("X")
-                .append(" $")
-                .append(menuItems.get(i).getItemCost())
-                .append("\n");
+            int j = 25 - menuItems.get(i).getItemName().length();
+            for(int k = j; k >0; k--){
+                billText.append(" ");
+            }
+            billText.append(menuItems.get(i).getmIntQuantity())
+            .append("X")
+            .append(" ")
+            .append(String.format("$%.2f",menuItems.get(i).getItemCost()))
+            .append("\n");
         }
         return billText.toString();
     }
