@@ -57,4 +57,7 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$archLifecycleVersion"
     annotationProcessor "android.arch.lifecycle:compiler:$archLifecycleVersion"
     implementation 'com.google.firebase:firebase-database:19.2.1'
+    implementation project(path: ':backgroundMailLibrary')
+
+    //implementation 'com.github.nlubello:BackgroundMailLibrary:1.5'
 }

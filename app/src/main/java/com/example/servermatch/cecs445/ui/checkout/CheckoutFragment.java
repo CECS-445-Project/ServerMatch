@@ -36,10 +36,12 @@ import com.example.servermatch.cecs445.ui.menu.BillViewModel;
 import com.example.servermatch.cecs445.ui.menu.MenuFragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.kristijandraca.backgroundmaillibrary.BackgroundMail;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class CheckoutFragment extends Fragment {
@@ -80,17 +82,6 @@ public class CheckoutFragment extends Fragment {
         return view;
     }
 
-    private void checkForEmail(){
-        // TODO: Add the users email to the bundle from the TopItemsAdapter -> MenuFragment -> CheckoutFragment
-        Bundle bundle = getArguments();
-
-        if(bundle.get("Email") != null) {
-            TextInputEditText edit = view.findViewById(R.id.checkout_edit_email);
-            mEmail.setHintAnimationEnabled(false);
-            edit.setText(bundle.get("Email").toString());
-        }
-    }
-
     private void checkForEmail2(){
 
         if (frequentCustomersViewModel.getCustomerEmail() != null & frequentCustomersViewModel.getCustomerEmail().getValue() != null){
@@ -118,6 +109,10 @@ public class CheckoutFragment extends Fragment {
                 Log.d(TAG, mEmail.getEditText().toString());
                 Log.d(TAG, bill.toString());
 
+                Log.d(TAG,billViewModel.getBillItems().getValue().toString());
+                sendEmail();
+                Log.d(TAG,billViewModel.getBillItems().getValue().toString());
+
                 billViewModel.clearBillItems();
 
                 //This did not break it.
@@ -137,6 +132,40 @@ public class CheckoutFragment extends Fragment {
             }
 
         });
+    }
+
+    private void sendEmail(){
+        String bill = createBill();
+
+        BackgroundMail bm = new BackgroundMail(this.getContext());
+        bm.setGmailUserName("ServerMatchApp@gmail.com");
+        bm.setGmailPassword("");
+        bm.setMailTo("andrewdelgado017@gmail.com");
+        bm.setFormSubject("ServerMatch Receipt");
+        bm.setFormBody("Hello " + this.bill.getCustomerID() +"!\n\n Here is your receipt for: \n"
+                + bill
+                + "\n " + this.bill.getTotalCost()
+                + "\n- Thank you");
+        bm.send();
+    }
+
+    private String createBill(){
+        StringBuilder billText = new StringBuilder();
+        List<MenuItem> menuItems = bill.getBillItems();
+
+        for(int i = 0; i < menuItems.size(); i++) {
+            billText.append(menuItems.get(i).getItemName());
+
+
+                billText.append("               ")
+                .append(" ")
+                .append(menuItems.get(i).getmIntQuantity())
+                .append("X")
+                .append(" $")
+                .append(menuItems.get(i).getItemCost())
+                .append("\n");
+        }
+        return billText.toString();
     }
 
 
