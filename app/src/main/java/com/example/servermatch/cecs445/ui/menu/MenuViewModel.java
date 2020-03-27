@@ -27,6 +27,8 @@ public class MenuViewModel extends ViewModel {
     private MenuItemRepo mRepo;
 
     public void init(){
+        if(mMenuItems !=  null)
+            return;
         mRepo = MenuItemRepo.getInstance();
         mMenuItems = mRepo.getMenuItems();
 
@@ -117,4 +119,5 @@ public class MenuViewModel extends ViewModel {
             mMenuItems.postValue(mRepo.getMenuItems().getValue());
         }
     }
+
 }
