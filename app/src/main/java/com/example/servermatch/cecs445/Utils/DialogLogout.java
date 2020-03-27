@@ -16,10 +16,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.servermatch.cecs445.R;
 import com.example.servermatch.cecs445.models.MenuItem;
 import com.example.servermatch.cecs445.repositories.MenuItemRepo;
+import com.example.servermatch.cecs445.ui.menu.MenuViewModel;
 import com.example.servermatch.cecs445.ui.setuprestaurant.SetupRestaurant;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -38,6 +40,7 @@ public class DialogLogout extends DialogFragment {
     private TextView mActionCancel;
     private TextView mActionLogout;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private MenuViewModel menuViewModel;
     SharedPreferences prefs;
 
     @Nullable
@@ -48,6 +51,8 @@ public class DialogLogout extends DialogFragment {
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mActionLogout = view.findViewById(R.id.logout_action_logout);
         mActionCancel = view.findViewById(R.id.logout_action_cancel);
+        menuViewModel = new ViewModelProvider(this.getActivity()).get(MenuViewModel.class);
+        menuViewModel.init();
 
         mActionLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +64,7 @@ public class DialogLogout extends DialogFragment {
                 editor.putBoolean("setupNavHeader", true);
                 editor.apply();
                 Log.d(TAG, "DiaglLogout: " + mAuth.getCurrentUser().getEmail() + " signed out");
-                mAuth.getInstance().signOut();
+                menuViewModel = null;
                 setArguments(null);
                 MenuItemRepo.dataSet.clear();
                 startActivity(new Intent(getActivity(), SetupRestaurant.class));
