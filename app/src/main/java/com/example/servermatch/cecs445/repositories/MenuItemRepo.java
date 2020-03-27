@@ -58,40 +58,15 @@ public class MenuItemRepo {
     }
 
     private void loadMenuItems(){
-//       restaurantRef.collection("MenuItem").addSnapshotListener(new EventListener<QuerySnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-//                if(e != null){
-//                    Log.w(TAG,"Listen Failed", e );
-//                    return;
-//                }
-//
-//                restaurantRef.collection("MenuItem").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-//
-//                        if(!queryDocumentSnapshots.isEmpty()){
-//                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-//                            dataSet.clear();
-//                            for (DocumentSnapshot documentSnapshot : list) {
-//                                if(dataSet.contains(dataSet.add(documentSnapshot.toObject(MenuItem.class)))) {
-//                                    dataSet.add(documentSnapshot.toObject(MenuItem.class));
-//                                }
-//                            }
-//                        }
-//
-//                        Log.e(TAG, "onSuccess: added" );
-//
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Log.e(TAG, "onFailure: " + e.toString());
-//                    }
-//                });
-//            }
-//        }
-        restaurantRef.collection("MenuItem").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+       restaurantRef.collection("MenuItem").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if(e != null){
+                    Log.w(TAG,"Listen Failed", e );
+                    return;
+                }
+
+                restaurantRef.collection("MenuItem").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
@@ -114,6 +89,8 @@ public class MenuItemRepo {
                         Log.e(TAG, "onFailure: " + e.toString());
                     }
                 });
+            }
+        });
 
     }
 
