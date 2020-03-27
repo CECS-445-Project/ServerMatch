@@ -189,16 +189,16 @@ public class MenuFragment extends Fragment {
     private void saveBundle(){
 
         bundle = getArguments();
-//        if(bundle != null && bundle.get("selectedTags") != null){
-//            filterBool = Boolean.getBoolean(bundle.get("bool").toString());
-//            selectedTags = bundle.getStringArrayList("selectedTags");
-//        }
+        if(bundle != null && bundle.get("selectedTags") != null){
+            filterBool = Boolean.getBoolean(bundle.get("bool").toString());
+            selectedTags = bundle.getStringArrayList("selectedTags");
+        }
     }
 
     private ArrayList<String> getTags(){
         ArrayList<String> tags = new ArrayList<>();
 
-        List<MenuItem> all_menu_items = MenuItemRepo.getInstance().getMenuItems().getValue();;
+        List<MenuItem> all_menu_items = MenuItemRepo.getInstance().getMenuItems().getValue();
 
         if(all_menu_items != null) {
             for (MenuItem m : all_menu_items) {
