@@ -18,10 +18,14 @@ import android.widget.Toast;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.servermatch.cecs445.R;
+import com.example.servermatch.cecs445.models.MenuItem;
+import com.example.servermatch.cecs445.repositories.MenuItemRepo;
 import com.example.servermatch.cecs445.ui.setuprestaurant.SetupRestaurant;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.w3c.dom.Text;
+
+import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -55,7 +59,9 @@ public class DialogLogout extends DialogFragment {
                 editor.putBoolean("setupNavHeader", true);
                 editor.apply();
                 Log.d(TAG, "DiaglLogout: " + mAuth.getCurrentUser().getEmail() + " signed out");
-                mAuth.signOut();
+                mAuth.getInstance().signOut();
+                setArguments(null);
+                MenuItemRepo.dataSet.clear();
                 startActivity(new Intent(getActivity(), SetupRestaurant.class));
                 getDialog().dismiss();
                 Toast.makeText(getContext(), "Signed Out", Toast.LENGTH_SHORT).show();
