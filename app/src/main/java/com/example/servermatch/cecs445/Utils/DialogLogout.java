@@ -52,8 +52,6 @@ public class DialogLogout extends DialogFragment {
         mActionLogout = view.findViewById(R.id.logout_action_logout);
         mActionCancel = view.findViewById(R.id.logout_action_cancel);
         menuViewModel = new ViewModelProvider(this.getActivity()).get(MenuViewModel.class);
-        menuViewModel.init();
-
         mActionLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,8 +62,7 @@ public class DialogLogout extends DialogFragment {
                 editor.putBoolean("setupNavHeader", true);
                 editor.apply();
                 Log.d(TAG, "DiaglLogout: " + mAuth.getCurrentUser().getEmail() + " signed out");
-                menuViewModel = null;
-                setArguments(null);
+                menuViewModel.clearMenuItems1();
                 MenuItemRepo.dataSet.clear();
                 startActivity(new Intent(getActivity(), SetupRestaurant.class));
                 getDialog().dismiss();
@@ -83,4 +80,12 @@ public class DialogLogout extends DialogFragment {
 
         return view;
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        this.getArguments().clear();
+    }
+
+
 }

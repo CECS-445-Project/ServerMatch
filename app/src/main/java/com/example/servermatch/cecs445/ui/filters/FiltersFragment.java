@@ -50,7 +50,7 @@ public class FiltersFragment extends Fragment {
 
     private MenuViewModel mMenuViewModel;
     private final List<MenuItem> menuItems = MenuItemRepo.getInstance().getOriginalMenuItems();
-    //private List<String> selectedTags = new ArrayList<>();
+
     private SortedSet<String> selectedTags = new TreeSet<>();
     private boolean changeTags = false;
 
