@@ -113,7 +113,7 @@ public class MenuItemRepo {
     }
 
     public List<MenuItem> getOriginalMenuItems() {
-        if(originalItems == null) originalItems = new ArrayList<>(dataSet);
+        if(originalItems == null || originalItems.size() < dataSet.size()) originalItems = new ArrayList<>(dataSet);
         return originalItems;
     }
 
