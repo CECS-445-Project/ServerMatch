@@ -66,15 +66,15 @@ public class MenuViewModel extends ViewModel {
             menuItem.setmIntQuantity(0);
         }
 
-        List<MenuItem> oldList = mRepo.getMenuItems().getValue();
+        List<MenuItem> oldList = mRepo.getOriginalMenuItems();
 
-        List<String> currentListTitles = new ArrayList<>();
-        currentList.forEach(menuItem -> currentListTitles.add(menuItem.getItemName()));
+        currentList.clear();
+        assert oldList != null;
+        currentList.addAll(oldList);
 
-
-        for(MenuItem m : oldList){
-            if(!currentList.contains(m.getItemName())) currentList.add(m);
-        }
+//        for(MenuItem m : oldList){
+//            if(!currentList.contains(m.getItemName())) currentList.add(m);
+//        }
 
         mMenuItems.postValue(currentList);
     }
