@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
@@ -188,6 +189,15 @@ public class AddMenuItemFragment extends Fragment {
         }
 
         return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //Set action bar title
+        if(getActivity() != null) {
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Add Menu Item");
+        }
     }
 
     /**

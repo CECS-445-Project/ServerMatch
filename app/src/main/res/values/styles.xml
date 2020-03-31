@@ -67,4 +67,10 @@
         parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">@color/secondary_text</item>
     </style>
+
+    <style name="FloatingLabelText" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
 </resources>

@@ -27,6 +27,9 @@ public class MenuViewModel extends ViewModel {
     private MenuItemRepo mRepo;
 
     public void init(){
+        if(mMenuItems !=  null)
+            return;
+
         mRepo = MenuItemRepo.getInstance();
         mMenuItems = mRepo.getMenuItems();
 
@@ -34,7 +37,7 @@ public class MenuViewModel extends ViewModel {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected void onPostExecute(Void aVoid) {
-                //super.onPostExecute(aVoid);
+                super.onPostExecute(aVoid);
                 List<MenuItem> currentItems = mMenuItems.getValue();
                 Collections.sort(currentItems);
                 mMenuItems.postValue(currentItems);
@@ -117,4 +120,9 @@ public class MenuViewModel extends ViewModel {
             mMenuItems.postValue(mRepo.getMenuItems().getValue());
         }
     }
+
+    public void clearMenuItems1(){
+        mMenuItems = null;
+    }
+
 }

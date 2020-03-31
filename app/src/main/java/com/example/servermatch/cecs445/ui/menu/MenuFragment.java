@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
@@ -76,6 +77,15 @@ public class MenuFragment extends Fragment {
         saveBundle();
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //Set action bar title
+        if(getActivity() != null) {
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Menu");
+        }
     }
 
     private void viewModelObserver(){
@@ -179,16 +189,16 @@ public class MenuFragment extends Fragment {
     private void saveBundle(){
 
         bundle = getArguments();
-//        if(bundle != null && bundle.get("selectedTags") != null){
-//            filterBool = Boolean.getBoolean(bundle.get("bool").toString());
-//            selectedTags = bundle.getStringArrayList("selectedTags");
-//        }
+        if(bundle != null && bundle.get("selectedTags") != null){
+            filterBool = Boolean.getBoolean(bundle.get("bool").toString());
+            selectedTags = bundle.getStringArrayList("selectedTags");
+        }
     }
 
     private ArrayList<String> getTags(){
         ArrayList<String> tags = new ArrayList<>();
 
-        List<MenuItem> all_menu_items = MenuItemRepo.getInstance().getMenuItems().getValue();;
+        List<MenuItem> all_menu_items = MenuItemRepo.getInstance().getMenuItems().getValue();
 
         if(all_menu_items != null) {
             for (MenuItem m : all_menu_items) {

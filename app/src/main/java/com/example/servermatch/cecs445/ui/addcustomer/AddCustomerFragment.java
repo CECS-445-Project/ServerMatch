@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -74,6 +75,15 @@ public class AddCustomerFragment extends Fragment {
         });
 
         return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //Set action bar title
+        if(getActivity() != null) {
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Add Customer");
+        }
     }
 
     private boolean validateFname() {

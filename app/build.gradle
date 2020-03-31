@@ -39,10 +39,8 @@ dependencies {
     implementation 'android.arch.lifecycle:extensions:1.1.1'
     //recyclerview
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
-
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
-
     //AndroidSlidingUpPanel
     repositories {
         mavenCentral()
