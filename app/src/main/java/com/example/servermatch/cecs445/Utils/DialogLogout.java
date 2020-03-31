@@ -84,7 +84,9 @@ public class DialogLogout extends DialogFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        this.getArguments().clear();
+        if(getArguments() != null )
+            this.getArguments().clear();
+
     }
 
 
