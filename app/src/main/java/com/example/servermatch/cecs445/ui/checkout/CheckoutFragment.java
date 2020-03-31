@@ -135,18 +135,19 @@ public class CheckoutFragment extends Fragment {
         });
     }
 
+    @SuppressLint("DefaultLocale")
     private void sendEmail(){
         String bill = createBill();
 
         BackgroundMail bm = new BackgroundMail(this.getContext());
         bm.setGmailUserName("ServerMatchApp@gmail.com");
-        bm.setGmailPassword("");
-        bm.setMailTo("andrewdelgado017@gmail.com");
+        bm.setGmailPassword("hseoPcghSoyQAfMzD1pq");
+        bm.setMailTo(mEmail.getEditText().getText().toString().trim());
         bm.setFormSubject("ServerMatch Receipt");
         bm.setFormBody("Hello " + this.bill.getCustomerID() +"!\n\nHere is your receipt: \n\n"
                 + bill
-                + "\n Total: $" + this.bill.getTotalCost()
-                + "\n- Thank you");
+                + "\nTotal: $" + String.format("%.2f",this.bill.getTotalCost())
+                + "\n\n- Thank you");
         bm.send();
     }
 
@@ -156,17 +157,14 @@ public class CheckoutFragment extends Fragment {
         List<MenuItem> menuItems = bill.getBillItems();
 
         for(int i = 0; i < menuItems.size(); i++) {
-            billText.append(menuItems.get(i).getItemName());
-            int j = 25 - menuItems.get(i).getItemName().length();
-            for(int k = j; k >0; k--){
-                billText.append(" ");
-            }
-            billText.append(menuItems.get(i).getmIntQuantity())
-            .append("X")
-            .append(" ")
-            .append(String.format("$%.2f",menuItems.get(i).getItemCost()))
-            .append("\n");
+            String menuItemName = menuItems.get(i).getItemName();
+            String quantity = String.valueOf(menuItems.get(i).getQuantity());
+            String cost = String.format(" X " + "$%.2f",menuItems.get(i).getItemCost());
+            String quantityAndCost = quantity + cost;
+
+            billText.append(String.format("%-20s %15s %n", menuItemName,quantityAndCost));
         }
+
         return billText.toString();
     }
 
