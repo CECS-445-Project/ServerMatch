@@ -16,12 +16,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.servermatch.cecs445.R;
+import com.example.servermatch.cecs445.models.MenuItem;
+import com.example.servermatch.cecs445.repositories.MenuItemRepo;
+import com.example.servermatch.cecs445.ui.menu.MenuViewModel;
 import com.example.servermatch.cecs445.ui.setuprestaurant.SetupRestaurant;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.w3c.dom.Text;
+
+import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -34,6 +40,7 @@ public class DialogLogout extends DialogFragment {
     private TextView mActionCancel;
     private TextView mActionLogout;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private MenuViewModel menuViewModel;
     SharedPreferences prefs;
 
     @Nullable
@@ -44,7 +51,7 @@ public class DialogLogout extends DialogFragment {
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mActionLogout = view.findViewById(R.id.logout_action_logout);
         mActionCancel = view.findViewById(R.id.logout_action_cancel);
-
+        menuViewModel = new ViewModelProvider(this.getActivity()).get(MenuViewModel.class);
         mActionLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,7 +62,8 @@ public class DialogLogout extends DialogFragment {
                 editor.putBoolean("setupNavHeader", true);
                 editor.apply();
                 Log.d(TAG, "DiaglLogout: " + mAuth.getCurrentUser().getEmail() + " signed out");
-                mAuth.signOut();
+                menuViewModel.clearMenuItems1();
+                MenuItemRepo.dataSet.clear();
                 startActivity(new Intent(getActivity(), SetupRestaurant.class));
                 getDialog().dismiss();
                 Toast.makeText(getContext(), "Signed Out", Toast.LENGTH_SHORT).show();
@@ -72,4 +80,14 @@ public class DialogLogout extends DialogFragment {
 
         return view;
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(getArguments() != null )
+            this.getArguments().clear();
+
+    }
+
+
 }
